@@ -222,7 +222,7 @@ cancer_IC_mat <- matrix(nrow = 12, ncol = 4,
                                         c("Pediatric inflamed", "Myeloid-driven", "Pediatric cold", "Immune excluded")))
 
 for(i in 1:nrow(cancer_IC_mat)){
-  mycancer <- metadata_IC_genesets[ metadata_IC_genesets$cohort == rownames(cancer_IC_mat)[i],]    
+  mycancer <- metadata_IC[ metadata_IC$cohort == rownames(cancer_IC_mat)[i],]    
   freq_tab <- as.data.frame(table(mycancer$immune_cluster), stringsAsFactors = F)
   freq_tab$perc <- freq_tab$Freq/sum(freq_tab$Freq)    
   cancer_IC_mat[i, freq_tab$Var1] <- freq_tab$perc *100
@@ -285,7 +285,7 @@ cri_IC_mat <- matrix(nrow = 6, ncol = 4,
                      dimnames = list(tab$Var1,c("Pediatric inflamed", "Myeloid-driven", "Pediatric cold", "Immune excluded")))
 
 for(i in 1:nrow(cri_IC_mat)){
-  mycancer <- metadata_IC_genesets[ metadata_IC_genesets$CRI_cluster == rownames(cri_IC_mat)[i],]    
+  mycancer <- metadata_IC[ metadata_IC$CRI_cluster == rownames(cri_IC_mat)[i],]    
   freq_tab <- as.data.frame(table(mycancer$immune_cluster), stringsAsFactors = F)
   freq_tab$perc <- freq_tab$Freq/sum(freq_tab$Freq)    
   cri_IC_mat[i, freq_tab$Var1] <- freq_tab$perc *100
