@@ -325,7 +325,7 @@ ha = rowAnnotation(
   show_annotation_name = FALSE)
 
 pdf("/results/Figure1E.pdf",width = 10, height = 10)
-draw(cri_hm + ha)
+draw(hm1E + ha)
 dev.off()
 
 # Legend
