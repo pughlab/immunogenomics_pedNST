@@ -1,4 +1,6 @@
 library(ComplexHeatmap)
+library(circlize)
+
 # heatmap for groups, TARGET, ICGC, CBTN
 
 group_hm.fx <- function(group_vector_ordered){
