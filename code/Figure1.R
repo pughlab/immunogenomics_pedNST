@@ -259,7 +259,7 @@ ha = rowAnnotation(`cohort size` = anno_barplot(tab$Freq, bar_width = 1,
                                                 axis_param = list(at = c(0, 100,200,300), labels_rot = 45),
                                                 width = unit(4, "cm")), show_annotation_name = FALSE)
 
-pdf("/results/Figure1D.pdf", width = 10, height = 10)
+pdf("/results/Fig1D.pdf", width = 10, height = 10)
 draw(hm1D + ha)
 dev.off()
 
@@ -324,7 +324,7 @@ ha = rowAnnotation(
                                width = unit(4, "cm")), 
   show_annotation_name = FALSE)
 
-pdf("/results/Figure1E.pdf",width = 10, height = 10)
+pdf("/results/Fig1E.pdf",width = 10, height = 10)
 draw(hm1E + ha)
 dev.off()
 
