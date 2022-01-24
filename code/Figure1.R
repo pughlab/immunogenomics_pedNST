@@ -9,8 +9,8 @@ library(gridExtra)
 library(gtable)
 library(grid)
 
-source("~/OneDrive - UHN/R_src/ggplot2_theme.R")
-source("~/OneDrive - UHN/R_src/color_schemes.R")
+source("/R/ggplot2_theme.R")
+source("/R/color_schemes.R")
 
 datapath <- "/data/"
 
