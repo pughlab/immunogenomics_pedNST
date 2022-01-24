@@ -18,7 +18,7 @@ datapath <- "/data/"
 # Figure 1A
 ###############
 
-load(paste0(datapath,"ESTIMATE/estimate_ped_pdx.RData"))
+load(paste0(datapath,"estimate_ped_pdx.RData"))
 
 ped <- estimate_ped_pdx[ estimate_ped_pdx$group != "TCGA",]
 
@@ -40,7 +40,7 @@ dev.off()
 # Figure 1B
 ###############
 
-load(paste0(datapath,"ESTIMATE/estimate_ped_pdx.RData"))
+load(paste0(datapath,"estimate_ped_pdx.RData"))
 #Create two dummy variables to split adult and ped
 emptyvar <- as.data.frame(matrix(ncol = 7, nrow = 2))
 colnames(emptyvar) <- colnames(estimate_ped_pdx)
