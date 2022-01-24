@@ -9,8 +9,8 @@ library(gridExtra)
 library(gtable)
 library(grid)
 
-source("/R/ggplot2_theme.R")
-source("/R/color_schemes.R")
+source("/code/functions/ggplot2_theme.R")
+source("/code/functions/color_schemes.R")
 
 datapath <- "/data/"
 
