@@ -11,6 +11,7 @@ library(grid)
 
 source("/code/functions/ggplot2_theme.R")
 source("/code/functions/color_schemes.R")
+source("/code/functions/Heatmap_functions.R")
 
 datapath <- "/data/"
 
