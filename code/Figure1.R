@@ -27,13 +27,13 @@ tab <- tab[order(tab$Freq, decreasing = T),]
 ped$cohort <- factor(ped$cohort, levels = tab$Var1)
 ped$group <- factor(ped$group, levels = c("CBTN", "ICGC", "TARGET", "PDX (ITCC)"))
 
-plot1A <- ggplot(data = ped) + geom_bar(aes(y = cohort, fill = group)) + myaxis + myplot +
+fig1A <- ggplot(data = ped) + geom_bar(aes(y = cohort, fill = group)) + myaxis + myplot +
 theme(axis.title = element_blank(), axis.text.x = element_text(size = 25, angle = 0, hjust = 0.5), 
       legend.position = c(0.8,0.9), legend.title = element_blank()) + scale_fill_manual(values = group_col)
 
 pdf(file = "/results/Fig1A.pdf",
     width = 10, height = 10, useDingbats = FALSE)
-cancersplot
+fig1A
 dev.off()
 
 ###############
@@ -130,7 +130,7 @@ immune.cohorts$color_crossbar[immune.cohorts$cohort == "EMPTY2"] <- "white"
 
 immune.cohorts$color_crossbar[is.na(immune.cohorts$color_crossbar)] <- "black"
 
-plot1B <- ggplot() + 
+fig1B <- ggplot() + 
   geom_point(data = sorted.estimate_ped_pdx, aes(x = Xpos ,y = percread, color = cohort), 
              size = 7, shape = 20) +
   geom_crossbar(data = immune.cohorts, 
@@ -147,7 +147,7 @@ plot1B <- ggplot() +
 
 pdf(file = "/results/Fig1B.pdf",
     width = 20, height = 8, useDingbats = FALSE)
-print(immuneplot)
+print(fig1B)
 dev.off()
 
 ###############
