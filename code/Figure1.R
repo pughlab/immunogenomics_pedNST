@@ -347,3 +347,26 @@ dev.off()
 ###############
 # Figure 1G
 ###############
+
+load(file = paste0(datapath,"metadata_IC.RData"))
+
+lggp <- subgroup_IC.fx(metadata_IC, "pedLGG", "Purples")
+hggp <- subgroup_IC.fx(metadata_IC, "pedHGG", "Oranges")
+atrtp <- subgroup_IC.fx(metadata_IC, "ATRT", "Greens")
+epnp <- subgroup_IC.fx(metadata_IC, "EPN", "Reds")
+mbp <- subgroup_IC.fx(metadata_IC, "MB", "Blues")
+nblp <- subgroup_IC.fx(metadata_IC, "NBL", "GnBu")
+
+p1 <- plot_grid(atrtp+ ggtitle(expression(~underline("ATRT"))),
+                epnp + ggtitle(expression(~underline("EPN"))),
+                hggp+ ggtitle(expression(~underline("pedHGG"))),
+                nblp + ggtitle(expression(~underline("NBL"))), 
+                mbp+ ggtitle(expression(~underline("MB"))), 
+                lggp+ ggtitle(expression(~underline("pedLGG"))),
+                nrow=1 ,
+                align="h")
+pdf(paste0(plotpath, "Fig1G.pdf"),
+    width = 50, height = 15, useDingbats = FALSE)
+p1
+dev.off()
+
