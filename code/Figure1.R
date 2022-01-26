@@ -371,7 +371,7 @@ p1 <- plot_grid(atrtp+ ggtitle(expression(~underline("ATRT"))),
                 lggp+ ggtitle(expression(~underline("pedLGG"))),
                 nrow=1 ,
                 align="h")
-pdf(paste0(plotpath, "Fig1G.pdf"),
+pdf(file = "/results/Fig1G.pdf",
     width = 50, height = 15, useDingbats = FALSE)
 p1
 dev.off()
