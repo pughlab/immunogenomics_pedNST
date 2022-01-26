@@ -4,10 +4,15 @@
 
 library(dplyr)
 library(reshape2)
+library(ggplot2)
+library(ggridges)
 library(ggbeeswarm)
+library(cowplot)
 library(gridExtra)
 library(gtable)
 library(grid)
+library(ComplexHeatmap)
+library(circlize)
 
 source("/code/functions/ggplot2_theme.R")
 source("/code/functions/color_schemes.R")

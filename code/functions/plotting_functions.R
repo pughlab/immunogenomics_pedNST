@@ -1,7 +1,3 @@
-library(ggplot2)
-library(ggridges)
-library(dplyr)
-
 #Ridge plot
 plot_ridge.fx <- function(mydf, var){  
   
