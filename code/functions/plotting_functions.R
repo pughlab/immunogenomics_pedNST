@@ -35,24 +35,13 @@ densplot.fx <- function(dat, pheno){
   return(densplot)  
 }
 
-
-
 # Stacked barplots for cancer subtypes
 subgroup_IC.fx <- function(metadata, tumour, color){
   mytumour <- metadata[metadata$cohort == tumour,]
   tumour_tab <- as.data.frame(table(mytumour$tumour_subtype, mytumour$immune_cluster),
                               stringsAsFactors = T)
 
-
-  message(tumour)
-  
-print(  mytumour %>% group_by(tumour_subtype,immune_cluster) %>%
-    summarise(n = n()) %>% mutate(freq = n / sum(n)) )
-
-
-  
   if(length(which(tumour_tab$Var2 == "Pediatric inflamed")) == 0){
-    
     tumour_tab <- rbind(tumour_tab, NA)
     tumour_tab[ is.na(tumour_tab$Var1),1:3] <- list(tumour_tab$Var1[1], "C1", 0)
   }
@@ -76,8 +65,6 @@ print(  mytumour %>% group_by(tumour_subtype,immune_cluster) %>%
           legend.key.height= unit(2, 'cm'),
           legend.key.width= unit(2, 'cm'),
           legend.title = element_blank()) + labs(y = "counts")
-  
-
   return(myplot)
 }
 
