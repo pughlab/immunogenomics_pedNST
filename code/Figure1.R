@@ -7,6 +7,7 @@ library(reshape2)
 library(ggplot2)
 library(ggridges)
 library(ggbeeswarm)
+library(ggsignif)
 library(cowplot)
 library(gridExtra)
 library(gtable)
@@ -349,6 +350,28 @@ dev.off()
 # Figure 1F
 ###############
 
+load(file = file.path(datapath,"HE_manifest.RData"))
+
+heplot <- ggplot(data = HE_manifest,
+                 aes(x = immune_cluster, y = agg_tilScore, fill = immune_cluster)) + 
+  geom_violin() + geom_boxplot(width = 0.1, outlier.colour = NA) + 
+  myaxis + myplot +
+  scale_fill_manual(values = cluster_col) +
+  theme(legend.position = "none", 
+        axis.title.x = element_blank(),
+        plot.title = element_text(size = 25, hjust = 0.5)) +
+  geom_signif(comparisons = list(c("Pediatric inflamed", "Myeloid-driven")), y_position = 0.4,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  geom_signif(comparisons = list(c("Pediatric inflamed", "Pediatric cold")), y_position = 0.42,
+              map_signif_level=TRUE, textsize = 15, test = "wilcox.test", vjust = 0.5) +
+  geom_signif(comparisons = list(c("Pediatric inflamed", "Immune excluded")), y_position = 0.44,
+              map_signif_level=TRUE, textsize = 15, test = "wilcox.test", vjust = 0.5) +
+  labs(y = "Average TIL score (H&E)") + ggtitle(~underline("pedCNS (n = 319)"))
+
+pdf(paste0(plotpath, "Fig1F.pdf"),
+    width = 10, height = 12)
+print(heplot)
+dev.off()
 
 ###############
 # Figure 1G
