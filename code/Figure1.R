@@ -368,7 +368,7 @@ heplot <- ggplot(data = HE_manifest,
               map_signif_level=TRUE, textsize = 15, test = "wilcox.test", vjust = 0.5) +
   labs(y = "Average TIL score (H&E)") + ggtitle(~underline("pedCNS (n = 319)"))
 
-pdf(paste0(plotpath, "Fig1F.pdf"),
+pdf("/results/Fig1F.pdf",
     width = 10, height = 12)
 print(heplot)
 dev.off()
