@@ -1,4 +1,4 @@
-# hash:sha256:f8bdeef303754e887c37608a212d7ed83d397b655f5610f3879459c96f9cc150
+# hash:sha256:931fa2d488a1e6d25b708f43729f1659f2635188834a07bd25b64bb965e3a0eb
 FROM registry.codeocean.com/codeocean/r-studio:1.4.1106-r4.0.5-ubuntu18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -8,7 +8,7 @@ RUN Rscript -e 'remotes::install_version("circlize", "0.4.13")' \
     && Rscript -e 'remotes::install_version("ggbeeswarm", "0.6.0")' \
     && Rscript -e 'remotes::install_version("ggplot", "0.4.2")' \
     && Rscript -e 'remotes::install_version("ggridges", "0.5.3")' \
-    && Rscript -e 'remotes::install_version("ggsignif")' \
+    && Rscript -e 'remotes::install_version("ggsignif", "0.6.3")' \
     && Rscript -e 'remotes::install_version("gridExtra", "2.3")' \
     && Rscript -e 'remotes::install_version("gtable", "0.3.0")' \
     && Rscript -e 'remotes::install_version("reshape2", "1.4.4")'
