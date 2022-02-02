@@ -1,4 +1,4 @@
-# hash:sha256:e69995bdfe7b1dc55080faf4bbc63a73eaa169e7ef5905c7a431e545e46aa005
+# hash:sha256:1f05e39a481446a932ca7a51229c15db95dfbcc7f30dcc76c1a714cd4263705d
 FROM registry.codeocean.com/codeocean/r-studio:1.4.1106-r4.0.5-ubuntu18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -12,7 +12,7 @@ RUN Rscript -e 'remotes::install_version("circlize", "0.4.13")' \
     && Rscript -e 'remotes::install_version("gridExtra", "2.3")' \
     && Rscript -e 'remotes::install_version("gtable", "0.3.0")' \
     && Rscript -e 'remotes::install_version("reshape2", "1.4.4")' \
-    && Rscript -e 'remotes::install_version("survival")' \
+    && Rscript -e 'remotes::install_version("survival", "3.2-13")' \
     && Rscript -e 'remotes::install_version("survminer")'
 
 RUN Rscript -e 'options(warn=2); install.packages("BiocManager")'
