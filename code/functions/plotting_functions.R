@@ -17,20 +17,6 @@ plot_ridge.fx <- function(mydf, var){
   
 }
 
-#density plot for tpm values
-densplot.fx <- function(dat, pheno){
-  groups_df <- as.data.frame(t(dat))  
-  matchsamples <- match(rownames(groups_df), rownames(pheno))
-  groups_df$group <- NA
-  groups_df$group <- pheno$group[matchsamples] 
-  print(table(groups_df$group))  
-  groups_df_m <- reshape2::melt(groups_df)    
-  densplot <- ggplot(data = groups_df_m) + geom_density(aes(value, group = group, color = group)) + 
-    myplot + myaxis  
-  
-  return(densplot)  
-}
-
 # Stacked barplots for cancer subtypes
 subgroup_IC.fx <- function(metadata, tumour, color){
   mytumour <- metadata[metadata$cohort == tumour,]
@@ -80,7 +66,6 @@ align_plots1 <- function (...) {
 
 
 #circle plots for repertoire analysis
-
 circlepack.reads.fx <- function(inputfile, sample_id){
   #inputfile is: all_clustered_IGH_12rm
   sample_df <- inputfile[inputfile$sample_id == sample_id,]
@@ -170,4 +155,28 @@ circlepack.reads.fx <- function(inputfile, sample_id){
 }
 
 
-
+#KM plot for survival
+KM_plot <- function(metadata, fit_model, col, title, ylab, legendlabs){
+  kmplot <- ggsurvplot(fit_model, data = metadata,
+                       palette = as.vector(col),conf.int=FALSE, 
+                       xlim = c(0,5000),break.x.by = 1000,
+                       #Risk table
+                       risk.table = TRUE,
+                       # pvalue
+                       pval = TRUE, pval.size = 10, pval.coord = c(200, 0.1),
+                       # legend
+                       legend.title="", font.legend = 25, legend.labs = legendlabs, legend = c(0.75, 0.9),
+                       # fonts
+                       font.main = 30, font.x = 30, font.y = 30, font.tickslab = 30, 
+                       # titles
+                       title = title, xlab = "Time (days)", ylab = ylab)
+  
+  kmplot$table <- ggrisktable(fit_model, data = metadata, 
+                              color = "strata", palette = as.vector(col),
+                              fontsize = 10, risk.table.title = "",
+                              xlim = c(0,5000),break.time.by = 1000,
+                              y.text = TRUE, ylab = "",  xlab = "",legend.labs = legendlabs,
+                              tables.theme = theme_cleantable(), font.tickslab = 20)
+  
+  return(kmplot)
+}
