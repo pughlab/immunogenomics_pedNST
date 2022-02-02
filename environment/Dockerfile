@@ -1,4 +1,4 @@
-# hash:sha256:b63ffa6d20ac61eafe8715d66e55189086803a6585ced9326a0789f784e4809c
+# hash:sha256:d4c33370c654c13e4fbabcdd0d088595cc3dcda42c90fc62a9289fb9e992388e
 FROM registry.codeocean.com/codeocean/r-studio:1.4.1106-r4.0.5-ubuntu18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -6,6 +6,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         cmake=3.10.2-1ubuntu2.18.04.2 \
+        libnlopt-dev \
     && rm -rf /var/lib/apt/lists/*
 
 RUN Rscript -e 'remotes::install_version("BiocManager", "1.30.16")' \
@@ -27,7 +28,7 @@ RUN Rscript -e 'remotes::install_version("BiocManager", "1.30.16")' \
 RUN Rscript -e 'options(warn=2); install.packages("BiocManager")'
 RUN Rscript -e 'options(warn=2); BiocManager::install(c( \
         "ComplexHeatmap" \
-    ))' # Original versions: latest
+    ))' # Original versions: 2.10.0
 
 COPY postInstall /
 RUN /postInstall
