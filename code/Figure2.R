@@ -37,11 +37,6 @@ datapath <- "/data/"
 
 
 
-pdf(file = "/results/Fig1B.pdf",
-    width = 20, height = 8, useDingbats = FALSE)
-print(fig1B)
-dev.off()
-
 ###############
 # Figure 2C
 ###############
