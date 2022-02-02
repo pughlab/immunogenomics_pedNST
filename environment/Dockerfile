@@ -1,4 +1,4 @@
-# hash:sha256:d4c33370c654c13e4fbabcdd0d088595cc3dcda42c90fc62a9289fb9e992388e
+# hash:sha256:2532696ab9e5a2346f251ab91da5b15033961c0f6cbcf6ea0a3360b9a8ae153c
 FROM registry.codeocean.com/codeocean/r-studio:1.4.1106-r4.0.5-ubuntu18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -6,7 +6,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         cmake=3.10.2-1ubuntu2.18.04.2 \
-        libnlopt-dev \
+        libnlopt-dev=2.4.2+dfsg-4 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN Rscript -e 'remotes::install_version("BiocManager", "1.30.16")' \
@@ -20,7 +20,7 @@ RUN Rscript -e 'remotes::install_version("BiocManager", "1.30.16")' \
     && Rscript -e 'remotes::install_version("ggtext", "0.1.1")' \
     && Rscript -e 'remotes::install_version("gridExtra", "2.3")' \
     && Rscript -e 'remotes::install_version("gtable", "0.3.0")' \
-    && Rscript -e 'remotes::install_version("nloptr")' \
+    && Rscript -e 'remotes::install_version("nloptr", "2.0.0")' \
     && Rscript -e 'remotes::install_version("reshape2", "1.4.4")' \
     && Rscript -e 'remotes::install_version("survival", "3.2-13")' \
     && Rscript -e 'remotes::install_version("survminer", "0.4.9")'
