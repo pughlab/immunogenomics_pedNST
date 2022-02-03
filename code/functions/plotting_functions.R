@@ -19,6 +19,7 @@ plot_ridge.fx <- function(mydf, var){
 # ridgeplot for proteomics Fig3B
 hallmark_IC_stats_ridge <- function(proteinmat, metadata, hallmark){
   
+  Hs.H <- read.gmt("/data/h.all.v7.1.symbols.gmt")
   protein_mat_pathway <- as.matrix(proteinmat[rownames(proteinmat) %in% Hs.H[[hallmark]], rownames(metadata)])
   print(dim(protein_mat_pathway))
   pathway_mean <- colMeans(protein_mat_pathway)
