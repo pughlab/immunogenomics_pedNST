@@ -34,7 +34,7 @@ datapath <- "/data/"
 load(file = paste0(datapath,"pathwaytable_qusage.RData"))
 
 fc_tab <- pathwaytable_qusage[,c("pathway.name", "contrast","log.fold.change")]
-fdr_tab <- pathwaytable[,c("pathway.name", "contrast","FDR")]
+fdr_tab <- pathwaytable_qusage[,c("pathway.name", "contrast","FDR")]
 
 fc_mat <- spread(fc_tab, key = contrast, value = log.fold.change)
 fdr_mat <- spread(fdr_tab, key = contrast, value = FDR)
