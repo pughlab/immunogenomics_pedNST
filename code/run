@@ -2,7 +2,7 @@
 set -ex
 
 # This is the master script for the capsule. When you click "Reproducible Run", the code in this file will execute.
-Rscript Figure2.R "$@"
+Rscript Figure3.R "$@"
 
 # The previous version of this file was commented-out and follows below:
 #
@@ -10,6 +10,7 @@ Rscript Figure2.R "$@"
 # 
 # # The previous version of this file was commented-out and follows below:
 # #
-  Rscript Figure1.R "$@"
+Rscript Figure1.R "$@"
+
 # # 
 # 

@@ -1,4 +1,4 @@
-# hash:sha256:be93b6afbfb2ff52c5d96de682186a388b7bfc91114b844ed5bdfaad50349747
+# hash:sha256:c321f96825d67df664079c098187ff43caf38323d56f3bc5d288b02d7bbdcdf8
 FROM registry.codeocean.com/codeocean/r-studio:1.4.1106-r4.0.5-ubuntu18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -25,7 +25,7 @@ RUN Rscript -e 'remotes::install_version("BiocManager", "1.30.16")' \
     && Rscript -e 'remotes::install_version("reshape2", "1.4.4")' \
     && Rscript -e 'remotes::install_version("survival", "3.2-13")' \
     && Rscript -e 'remotes::install_version("survminer", "0.4.9")' \
-    && Rscript -e 'remotes::install_version("tidyr")'
+    && Rscript -e 'remotes::install_version("tidyr", "1.2.0")'
 
 RUN Rscript -e 'options(warn=2); install.packages("BiocManager")'
 RUN Rscript -e 'options(warn=2); BiocManager::install(c( \
