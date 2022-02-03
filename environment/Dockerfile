@@ -1,4 +1,4 @@
-# hash:sha256:2532696ab9e5a2346f251ab91da5b15033961c0f6cbcf6ea0a3360b9a8ae153c
+# hash:sha256:be93b6afbfb2ff52c5d96de682186a388b7bfc91114b844ed5bdfaad50349747
 FROM registry.codeocean.com/codeocean/r-studio:1.4.1106-r4.0.5-ubuntu18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -18,12 +18,14 @@ RUN Rscript -e 'remotes::install_version("BiocManager", "1.30.16")' \
     && Rscript -e 'remotes::install_version("ggridges", "0.5.3")' \
     && Rscript -e 'remotes::install_version("ggsignif", "0.6.3")' \
     && Rscript -e 'remotes::install_version("ggtext", "0.1.1")' \
+    && Rscript -e 'remotes::install_version("grid")' \
     && Rscript -e 'remotes::install_version("gridExtra", "2.3")' \
     && Rscript -e 'remotes::install_version("gtable", "0.3.0")' \
     && Rscript -e 'remotes::install_version("nloptr", "2.0.0")' \
     && Rscript -e 'remotes::install_version("reshape2", "1.4.4")' \
     && Rscript -e 'remotes::install_version("survival", "3.2-13")' \
-    && Rscript -e 'remotes::install_version("survminer", "0.4.9")'
+    && Rscript -e 'remotes::install_version("survminer", "0.4.9")' \
+    && Rscript -e 'remotes::install_version("tidyr")'
 
 RUN Rscript -e 'options(warn=2); install.packages("BiocManager")'
 RUN Rscript -e 'options(warn=2); BiocManager::install(c( \
