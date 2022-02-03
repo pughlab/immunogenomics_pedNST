@@ -1,2 +1,12 @@
 metadata_version: 1
-name: PedNST
+name: ImmunePedNST
+description: ImmunePedNST
+tags:
+- tumor-microenvironment
+- ImmunoOncology
+- RNA-seq
+- Pediatric cancers
+authors:
+- name: Arash Nabbi
+  affiliations:
+  - name: University Health Network
