@@ -1,21 +1,21 @@
-# hash:sha256:51f5edacf00e856624a86998fa680633300fc63ae7acbb3916cfee7d0c7adeb4
+# hash:sha256:dd9389ba4bd9a9901e1d399924542179bfdf3f401f77a6b6ecfe47ba27704cb7
 FROM registry.codeocean.com/codeocean/r-studio:1.4.1106-r4.0.5-ubuntu18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        build-essential \
+        build-essential=12.4ubuntu1 \
         cmake=3.10.2-1ubuntu2.18.04.2 \
-        fftw3 \
-        fftw3-dev \
+        fftw3=3.3.7-1 \
+        fftw3-dev=3.3.7-1 \
         libnlopt-dev=2.4.2+dfsg-4 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN Rscript -e 'remotes::install_version("BiocManager", "1.30.16")' \
     && Rscript -e 'remotes::install_version("circlize", "0.4.13")' \
     && Rscript -e 'remotes::install_version("cowplot", "1.1.1")' \
-    && Rscript -e 'remotes::install_version("fftw")' \
+    && Rscript -e 'remotes::install_version("fftw", "1.0-6.1")' \
     && Rscript -e 'remotes::install_version("ggbeeswarm", "0.6.0")' \
     && Rscript -e 'remotes::install_version("ggplot", "0.4.2")' \
     && Rscript -e 'remotes::install_version("ggrepel", "0.9.1")' \
@@ -35,7 +35,7 @@ RUN Rscript -e 'options(warn=2); install.packages("BiocManager")'
 RUN Rscript -e 'options(warn=2); BiocManager::install(c( \
         "ComplexHeatmap", \
         "qusage" \
-    ))' # Original versions: 2.10.0 latest
+    ))' # Original versions: 2.10.0 2.28.0
 
 COPY postInstall /
 RUN /postInstall
