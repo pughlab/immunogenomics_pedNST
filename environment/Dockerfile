@@ -1,4 +1,4 @@
-# hash:sha256:1a63943f38481b373b362bf78adf03a45a10d88c16012bfd1e20356939523f7a
+# hash:sha256:d8bf51bf50004cc835b48a1c2258b316bee0aa4eb07891c7919444398589bb96
 FROM registry.codeocean.com/codeocean/r-studio:1.4.1106-r4.0.5-ubuntu18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -14,6 +14,7 @@ RUN apt-get update \
 RUN Rscript -e 'remotes::install_version("BiocManager", "1.30.16")' \
     && Rscript -e 'remotes::install_version("circlize", "0.4.13")' \
     && Rscript -e 'remotes::install_version("cowplot", "1.1.1")' \
+    && Rscript -e 'remotes::install_version("fftw")' \
     && Rscript -e 'remotes::install_version("ggbeeswarm", "0.6.0")' \
     && Rscript -e 'remotes::install_version("ggplot", "0.4.2")' \
     && Rscript -e 'remotes::install_version("ggrepel", "0.9.1")' \
