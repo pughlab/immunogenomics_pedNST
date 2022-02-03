@@ -6,16 +6,31 @@ plot_ridge.fx <- function(mydf, var){
     myplot +
     theme(axis.line = element_line(color = "black"),
           axis.text = element_text(size = 30, color = "black"),
-          axis.title = element_text(size = 30), 
-          axis.title.y = element_blank(), 
+          axis.title = element_blank(), 
+          axis.text.x = element_blank(),
           plot.title = element_text(size = 30, hjust = 0.5),
-          legend.position = "none") +
+          legend.position = "none") + coord_flip() + #flip axes
     
     scale_fill_manual(values = cluster_col) 
   
-  return(ridgeline.plot)
-  
+  return(ridgeline.plot) 
 }
+
+# ridgeplot for proteomics Fig3B
+hallmark_IC_stats_ridge <- function(proteinmat, metadata, hallmark){
+  
+  protein_mat_pathway <- as.matrix(proteinmat[rownames(proteinmat) %in% Hs.H[[hallmark]], rownames(metadata)])
+  print(dim(protein_mat_pathway))
+  pathway_mean <- colMeans(protein_mat_pathway)
+  
+  metadata$pathway_mean <- pathway_mean
+  
+  print(pairwise.t.test(metadata$pathway_mean, metadata$immune_cluster, p.adjust = "bonferroni"))
+  
+  ridge_plot <- plot_ridge.fx(metadata, "pathway_mean")
+  return(ridge_plot)
+}
+
 
 # Stacked barplots for cancer subtypes
 subgroup_IC.fx <- function(metadata, tumour, color){
