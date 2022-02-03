@@ -79,7 +79,7 @@ pathways_hm = Heatmap(fc_mat_pathways,
 )
 
 pdf("/results/Fig3A.pdf",
-    width = 10, height = 45)
+    width = 10, height = 25)
 draw(pathways_hm)
 decorate_heatmap_body("Log2_FC", {
   grid.rect(x = 0, y = 1, just = c("left", "top"),
