@@ -3,6 +3,7 @@
 ###############
 
 library(ggplot2)
+library(ggridges)
 library(cowplot)
 library(gridExtra)
 library(grid)
