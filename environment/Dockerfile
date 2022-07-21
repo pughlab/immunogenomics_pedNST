@@ -1,4 +1,4 @@
-# hash:sha256:dd9389ba4bd9a9901e1d399924542179bfdf3f401f77a6b6ecfe47ba27704cb7
+# hash:sha256:43450abd95276912057ce581abd919a5624d656c2cf8423efa7fa93415505219
 FROM registry.codeocean.com/codeocean/r-studio:1.4.1106-r4.0.5-ubuntu18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -9,6 +9,7 @@ RUN apt-get update \
         cmake=3.10.2-1ubuntu2.18.04.2 \
         fftw3=3.3.7-1 \
         fftw3-dev=3.3.7-1 \
+        ghostscript \
         libnlopt-dev=2.4.2+dfsg-4 \
     && rm -rf /var/lib/apt/lists/*
 
@@ -30,6 +31,9 @@ RUN Rscript -e 'remotes::install_version("BiocManager", "1.30.16")' \
     && Rscript -e 'remotes::install_version("survival", "3.2-13")' \
     && Rscript -e 'remotes::install_version("survminer", "0.4.9")' \
     && Rscript -e 'remotes::install_version("tidyr", "1.2.0")'
+
+RUN Rscript -e 'remotes::install_github( \
+        "trinker/plotflow")'
 
 RUN Rscript -e 'options(warn=2); install.packages("BiocManager")'
 RUN Rscript -e 'options(warn=2); BiocManager::install(c( \
