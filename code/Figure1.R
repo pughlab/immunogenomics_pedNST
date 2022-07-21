@@ -27,7 +27,7 @@ fig1a <- ggplot(data = ped) + geom_bar(aes(y = cohort, fill = group)) + myaxis +
 theme(axis.title = element_blank(), axis.text.x = element_text(size = 25, angle = 0, hjust = 0.5), 
       legend.position = c(0.8,0.9), legend.title = element_blank()) + scale_fill_manual(values = group_col)
 
-pdf(file = "~/Fig1_A.pdf",
+pdf(file = "/results/Fig1_A.pdf",
     width = 10, height = 10, useDingbats = FALSE)
 fig1a
 dev.off()
@@ -139,7 +139,7 @@ fig1b <- ggplot() +
   scale_y_continuous(breaks = seq(0, 70, by = 10)) + 
   labs(y = "% Immune Reads") 
 
-pdf(file = "~/Fig1_B.pdf",
+pdf(file = "/results/Fig1_B.pdf",
     width = 20, height = 8, useDingbats = FALSE)
 fig1b
 dev.off()
