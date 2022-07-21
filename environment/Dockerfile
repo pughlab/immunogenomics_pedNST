@@ -1,4 +1,4 @@
-# hash:sha256:d7e3d2013f9256064363f1b2f6e4e283ae2f2c5681cfcebfa2a50c39ddf1188a
+# hash:sha256:62afa1c8b002f8a798f9740e2a27e77fc8cdec51fe128648a0bea225c54ceee6
 FROM registry.codeocean.com/codeocean/r-studio:1.4.1106-r4.0.5-ubuntu18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -7,13 +7,13 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential=12.4ubuntu1 \
         cmake=3.10.2-1ubuntu2.18.04.2 \
-        fftw3 \
-        fftw3-dev \
-        ghostscript \
+        fftw3=3.3.7-1 \
+        fftw3-dev=3.3.7-1 \
+        ghostscript=9.26~dfsg+0-0ubuntu0.18.04.16 \
         libnlopt-dev=2.4.2+dfsg-4 \
     && rm -rf /var/lib/apt/lists/*
 
-RUN Rscript -e 'remotes::install_version("BiocManager", "1.30.16")' \
+RUN Rscript -e 'remotes::install_version("BiocManager", "1.30.18")' \
     && Rscript -e 'remotes::install_version("circlize", "0.4.13")' \
     && Rscript -e 'remotes::install_version("cowplot", "1.1.1")' \
     && Rscript -e 'remotes::install_version("fftw", "1.0-6.1")' \
@@ -26,14 +26,15 @@ RUN Rscript -e 'remotes::install_version("BiocManager", "1.30.16")' \
     && Rscript -e 'remotes::install_version("grid")' \
     && Rscript -e 'remotes::install_version("gridExtra", "2.3")' \
     && Rscript -e 'remotes::install_version("gtable", "0.3.0")' \
-    && Rscript -e 'remotes::install_version("nloptr", "2.0.0")' \
+    && Rscript -e 'remotes::install_version("nloptr", "2.0.3")' \
     && Rscript -e 'remotes::install_version("reshape2", "1.4.4")' \
     && Rscript -e 'remotes::install_version("survival", "3.2-13")' \
     && Rscript -e 'remotes::install_version("survminer", "0.4.9")' \
     && Rscript -e 'remotes::install_version("tidyr", "1.2.0")'
 
 RUN Rscript -e 'remotes::install_github( \
-        "trinker/plotflow")'
+        "trinker/plotflow", \
+        ref = "e21b80fcd604f6c2514b42a6f519453c85dc4fed")'
 
 RUN Rscript -e 'options(warn=2); install.packages("BiocManager")'
 RUN Rscript -e 'options(warn=2); BiocManager::install(c( \
