@@ -2,23 +2,11 @@
 # Figure 1
 ###############
 
-library(dplyr)
-library(reshape2)
-library(ggplot2)
-library(ggridges)
-library(ggbeeswarm)
-library(ggsignif)
-library(cowplot)
-library(gridExtra)
-library(gtable)
-library(grid)
-library(ComplexHeatmap)
-library(circlize)
-
-source("/code/functions/ggplot2_theme.R")
-source("/code/functions/color_schemes.R")
-source("/code/functions/Heatmap_functions.R")
-source("/code/functions/plotting_functions.R")
+source("/functions/dependencies.R")
+source("/functions/ggplot2_theme.R")
+source("/functions/color_schemes.R")
+source("/functions/Heatmap_functions.R")
+source("/functions/plotting_functions.R")
 
 datapath <- "/data/"
 
@@ -35,13 +23,13 @@ tab <- tab[order(tab$Freq, decreasing = T),]
 ped$cohort <- factor(ped$cohort, levels = tab$Var1)
 ped$group <- factor(ped$group, levels = c("CBTN", "ICGC", "TARGET", "PDX (ITCC)"))
 
-fig1A <- ggplot(data = ped) + geom_bar(aes(y = cohort, fill = group)) + myaxis + myplot +
+fig1a <- ggplot(data = ped) + geom_bar(aes(y = cohort, fill = group)) + myaxis + myplot +
 theme(axis.title = element_blank(), axis.text.x = element_text(size = 25, angle = 0, hjust = 0.5), 
       legend.position = c(0.8,0.9), legend.title = element_blank()) + scale_fill_manual(values = group_col)
 
-pdf(file = "/results/Fig1A.pdf",
+pdf(file = "~/Fig1_A.pdf",
     width = 10, height = 10, useDingbats = FALSE)
-fig1A
+fig1a
 dev.off()
 
 ###############
@@ -98,7 +86,6 @@ immune.cohorts$cohort <- factor(immune.cohorts$cohort, levels = c("PDX","ETMR", 
 
 immune.cohorts <- immune.cohorts[order(immune.cohorts$cohort),]
 
-
 disease.width <- (nrow(estimate_ped_pdx)/nrow(immune.cohorts)) 
 sorted.estimate_ped_pdx <- estimate_ped_pdx[0,]
 
@@ -124,7 +111,6 @@ for(i in 1:(nrow(immune.cohorts))){
 }
 
 immune.cohorts$medianloc <- immune.cohorts$Median.start+((immune.cohorts$Median.stop-immune.cohorts$Median.start)/2)
-
 sorted.estimate_ped_pdx$cohort <- factor(sorted.estimate_ped_pdx$cohort, levels = levels(immune.cohorts$cohort))     
 
 #Color dummy variables white
@@ -138,7 +124,7 @@ immune.cohorts$color_crossbar[immune.cohorts$cohort == "EMPTY2"] <- "white"
 
 immune.cohorts$color_crossbar[is.na(immune.cohorts$color_crossbar)] <- "black"
 
-fig1B <- ggplot() + 
+fig1b <- ggplot() + 
   geom_point(data = sorted.estimate_ped_pdx, aes(x = Xpos ,y = percread, color = cohort), 
              size = 7, shape = 20) +
   geom_crossbar(data = immune.cohorts, 
@@ -153,9 +139,9 @@ fig1B <- ggplot() +
   scale_y_continuous(breaks = seq(0, 70, by = 10)) + 
   labs(y = "% Immune Reads") 
 
-pdf(file = "/results/Fig1B.pdf",
+pdf(file = "~/Fig1_B.pdf",
     width = 20, height = 8, useDingbats = FALSE)
-print(fig1B)
+fig1b
 dev.off()
 
 ###############
@@ -163,7 +149,7 @@ dev.off()
 ###############
 
 load(file = paste0(datapath,"metadata_IC.RData"))
-load( file = paste0(datapath, "geneset_cc_normalized.RData"))
+load(file = paste0(datapath, "geneset_cc_normalized.RData"))
 
 #order based on immune clusters
 cluster_cohort <- metadata_IC[order(metadata_IC$immune_cluster, metadata_IC$cohort),]
@@ -186,15 +172,15 @@ cells_mat <- geneset_cc_norm[,rownames(cluster_cohort)]
 cells_hm <- cells_hm.fx(cells_mat)
 
 #annotation
-annotation_order <- c("Pediatric inflammed", "Myeloid-driven", "Pediatric cold", "Immune excluded")
+annotation_order <- c("Pediatric Inflammed", "Myeloid Predominant", "Immune Neutral", "Immune Excluded")
 
 cluster_ha = HeatmapAnnotation(clusters = anno_mark(at = c(50, 235, 566, 844), labels_rot = 0,
                                                     labels = annotation_order, side = "top",
                                                     labels_gp = gpar(fontsize = 20), 
                                                     link_height = unit(0.5, "cm")))
 
-pdf("/results/Fig1C.pdf",width = 18, height = 10)
-draw(cluster_ha%v% cluster_hm %v% cells_hm %v% cohorts_hm, gap = unit(0.5, "cm"))
+pdf("/results/Fig1_C.pdf",width = 18, height = 10)
+draw(cluster_ha %v% cluster_hm %v% cells_hm %v% cohorts_hm, gap = unit(0.5, "cm"))
 dev.off()
 
 #Legends
@@ -226,7 +212,7 @@ tab <- tab[order(tab$Freq, decreasing = F),]
 
 cancer_IC_mat <- matrix(nrow = 12, ncol = 4,
                         dimnames = list(tab$Var1, 
-                                        c("Pediatric inflamed", "Myeloid-driven", "Pediatric cold", "Immune excluded")))
+                                        c("Pediatric Inflamed", "Myeloid Predominant", "Immune Neutral", "Immune Excluded")))
 
 for(i in 1:nrow(cancer_IC_mat)){
   mycancer <- metadata_IC[ metadata_IC$cohort == rownames(cancer_IC_mat)[i],]    
@@ -258,123 +244,44 @@ hm1D = Heatmap(cancer_IC_mat,
                     column_title_gp = gpar(fontsize = 20),
                     column_title = NULL,
                     row_title = NULL,
-                    show_heatmap_legend = FALSE)
+                    show_heatmap_legend = TRUE)
 
-ha = rowAnnotation(`cohort size` = anno_barplot(tab$Freq, bar_width = 1,
-                                                gp = gpar(col = "white", fill = "#4d4d4d"), 
-                                                border = FALSE,
-                                                axis_param = list(at = c(0, 100,200,300), labels_rot = 45),
-                                                width = unit(4, "cm")), show_annotation_name = FALSE)
-
-pdf("/results/Fig1D.pdf", width = 10, height = 10)
-draw(hm1D + ha)
+pdf("/results/Fig1_D.pdf", width = 10, height = 10)
+draw(hm1D)
 dev.off()
-
-#Legend
-col_fun = colorRamp2(c(0, 100), c("white", "red"))
-cancer_lgd = Legend(col_fun = col_fun, title = "% cancer")
-
-pdf(file = "/results/1D_legend.pdf",
-    width = 8, height = 8,useDingbats = FALSE)
-draw(cancer_lgd)
-dev.off() 
 
 ###############
 # Figure 1E
 ###############
 
-load(file = paste0(datapath,"metadata_IC.RData"))
-
-tab <- as.data.frame(table(metadata_IC$CRI_cluster), stringsAsFactors = F)
-tab <- tab[order(tab$Freq, decreasing = F),]
-
-cri_IC_mat <- matrix(nrow = 6, ncol = 4,
-                     dimnames = list(tab$Var1,c("Pediatric inflamed", "Myeloid-driven", "Pediatric cold", "Immune excluded")))
-
-for(i in 1:nrow(cri_IC_mat)){
-  mycancer <- metadata_IC[ metadata_IC$CRI_cluster == rownames(cri_IC_mat)[i],]    
-  freq_tab <- as.data.frame(table(mycancer$immune_cluster), stringsAsFactors = F)
-  freq_tab$perc <- freq_tab$Freq/sum(freq_tab$Freq)    
-  cri_IC_mat[i, freq_tab$Var1] <- freq_tab$perc *100
-}
-
-cri_IC_mat[is.na(cri_IC_mat)] <- 0
-
-col_fun= colorRamp2(c(0, 100), c("white", "red"))
-hm1E = Heatmap(cri_IC_mat,
-                 #titles and names   
-                 name = "% CRI-iAtlas cluster",   
-                 show_row_names = TRUE,
-                 show_column_names = TRUE,     
-                 #clusters and orders  
-                 cluster_columns = FALSE,
-                 cluster_rows = FALSE,
-                 show_column_dend = TRUE,
-                 #aesthestics
-                 row_names_side = "left",
-                 col = col_fun,
-                 column_names_rot = 45,                 
-                 column_names_gp = gpar(fontsize = 20),
-                 row_names_gp = gpar(fontsize = 20),
-                 height = unit(nrow(cri_IC_mat), "cm"),
-                 width = unit(ncol(cri_IC_mat), "cm"),
-                 column_title_gp = gpar(fontsize = 20),
-                 column_title = NULL,
-                 row_title = NULL,
-                 show_heatmap_legend = FALSE)
-
-ha = rowAnnotation(
-  `cohort size` = anno_barplot(tab$Freq, bar_width = 1, 
-                               gp = gpar(col = "white", fill = "#4d4d4d"), 
-                               border = FALSE,
-                               axis_param = list(at = c(0, 100,250,500), labels_rot = 45),
-                               width = unit(4, "cm")), 
-  show_annotation_name = FALSE)
-
-pdf("/results/Fig1E.pdf",width = 10, height = 10)
-draw(hm1E + ha)
-dev.off()
-
-# Legend
-col_fun = colorRamp2(c(0, 100), c("white", "red"))
-cri_lgd = Legend(col_fun = col_fun, 
-                 title = "% CRI-iAtlas\ncluster")
-
-pdf(file = "/results/1E_legend.pdf",
-    width = 8, height = 8, useDingbats = FALSE)
-draw(cri_lgd)
-dev.off() 
-
-
-###############
-# Figure 1F
-###############
-
 load(file = file.path(datapath,"HE_manifest.RData"))
 
 heplot <- ggplot(data = HE_manifest,
-                 aes(x = immune_cluster, y = agg_tilScore, fill = immune_cluster)) + 
-  geom_violin() + geom_boxplot(width = 0.1, outlier.colour = NA) + 
+                 aes(x = immune_cluster, y = agg_tilScore)) + 
+  geom_beeswarm(cex = 1.5,aes(color = cohort), size = 5) + 
+  geom_boxplot(width = 0.5, outlier.colour = NA, fill = NA) + 
   myaxis + myplot +
-  scale_fill_manual(values = cluster_col) +
+  scale_color_manual(values = cohort_col) +
   theme(legend.position = "none", 
         axis.title.x = element_blank(),
-        plot.title = element_text(size = 25, hjust = 0.5)) +
-  geom_signif(comparisons = list(c("Pediatric inflamed", "Myeloid-driven")), y_position = 0.4,
-              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
-  geom_signif(comparisons = list(c("Pediatric inflamed", "Pediatric cold")), y_position = 0.42,
+        axis.title.y = element_text(size = 40),
+        axis.text.x = element_text(size = 40),
+        axis.text.y = element_text(size = 40),
+        plot.title = element_text(size = 40, hjust = 0.5)) + 
+  geom_signif(comparisons = list(c("Pediatric Inflamed", "Myeloid Predominant")), y_position = 0.4,
               map_signif_level=TRUE, textsize = 15, test = "wilcox.test", vjust = 0.5) +
-  geom_signif(comparisons = list(c("Pediatric inflamed", "Immune excluded")), y_position = 0.44,
+  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Excluded")), y_position = 0.45,
               map_signif_level=TRUE, textsize = 15, test = "wilcox.test", vjust = 0.5) +
-  labs(y = "Average TIL score (H&E)") + ggtitle(~underline("pedCNS (n = 319)"))
+  
+  labs(y = "Average TIL score") + ggtitle(~underline("H&E TIL score (n = 356)"))
 
-pdf("/results/Fig1F.pdf",
+pdf("/results/Fig1_E.pdf",
     width = 10, height = 12)
 print(heplot)
 dev.off()
 
 ###############
-# Figure 1G
+# Figure 1F
 ###############
 
 load(file = paste0(datapath,"metadata_IC.RData"))
@@ -386,7 +293,7 @@ epnp <- subgroup_IC.fx(metadata_IC, "EPN", "Reds")
 mbp <- subgroup_IC.fx(metadata_IC, "MB", "Blues")
 nblp <- subgroup_IC.fx(metadata_IC, "NBL", "GnBu")
 
-p1 <- plot_grid(atrtp+ ggtitle(expression(~underline("ATRT"))),
+fig1f <- plot_grid(atrtp+ ggtitle(expression(~underline("ATRT"))),
                 epnp + ggtitle(expression(~underline("EPN"))),
                 hggp+ ggtitle(expression(~underline("pedHGG"))),
                 nblp + ggtitle(expression(~underline("NBL"))), 
@@ -394,8 +301,26 @@ p1 <- plot_grid(atrtp+ ggtitle(expression(~underline("ATRT"))),
                 lggp+ ggtitle(expression(~underline("pedLGG"))),
                 nrow=1 ,
                 align="h")
-pdf(file = "/results/Fig1G.pdf",
+
+pdf(file = "/results/Fig1_f.pdf",
     width = 50, height = 15, useDingbats = FALSE)
-p1
+fig1f
 dev.off()
+
+###############
+# Compile in one file
+###############
+
+plotflow::mergePDF(
+  in.file = list.files(file.path("/results"), pattern = "Fig1_", full.names = TRUE),
+  file="Figure1.pdf"
+)
+
+
+
+
+
+
+
+
 
