@@ -311,14 +311,12 @@ dev.off()
 # Compile in one file
 ###############
 
+setwd("/results")
+
 plotflow:::mergePDF(
   in.file = list.files(file.path("/results"), pattern = "Fig1_", full.names = TRUE),
   file="Figure1.pdf"
 )
 
 do.call(file.remove, list(list.files("/results/", pattern = "Fig1_", full.names = TRUE)))
-
-
-
-
 
