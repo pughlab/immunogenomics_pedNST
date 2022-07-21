@@ -2,11 +2,11 @@
 # Figure 1
 ###############
 
-source("/functions/dependencies.R")
-source("/functions/ggplot2_theme.R")
-source("/functions/color_schemes.R")
-source("/functions/Heatmap_functions.R")
-source("/functions/plotting_functions.R")
+source("/code/functions/dependencies.R")
+source("/code/functions/ggplot2_theme.R")
+source("/code/functions/color_schemes.R")
+source("/code/functions/Heatmap_functions.R")
+source("/code/functions/plotting_functions.R")
 
 datapath <- "/data/"
 
@@ -316,9 +316,7 @@ plotflow::mergePDF(
   file="Figure1.pdf"
 )
 
-
-
-
+do.call(file.remove, list(list.files("/results/", pattern = "Fig1_", full.names = TRUE)))
 
 
 
