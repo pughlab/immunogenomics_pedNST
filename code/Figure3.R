@@ -4,8 +4,6 @@
 
 source("/code/functions/dependencies.R")
 source("/code/functions/ggplot2_theme.R")
-source("/code/functions/color_schemes.R")
-source("/code/functions/Heatmap_functions.R")
 source("/code/functions/plotting_functions.R")
 
 datapath <- "/data/"
@@ -182,6 +180,44 @@ y.grob <- textGrob("Average protein z-score", gp=gpar(fontsize=30), rot=90)
 pdf(paste0(plotpath, "Fig3_B.pdf"),
     width = 30, height = 15, useDingbats = FALSE)
 fig3b
+dev.off()
+
+###############
+# Figure 3C
+###############
+
+load(file = paste0(gitpath, "DESeq2_genetable.RData"))
+
+C1_volcano <- volcano_DEG_plot(genetable, "C1-Others", 1.5, 0.1) + 
+  scale_x_continuous(expand = c(0.4,0)) + 
+  scale_y_continuous(expand = c(0.1,0)) +
+  ggtitle(expression(~underline("Pediatric Inflamed"))) +
+  geom_vline(xintercept = c(-1.5, 1.5), linetype="dashed", color = "black")
+
+C2_volcano <- volcano_DEG_plot(genetable, "C2-Others", 1.5, 0.1) + 
+  scale_x_continuous(expand = c(0.5,0)) +
+  scale_y_continuous(expand = c(0.2,0)) +
+  ggtitle(expression(~underline("Myeloid Predominant"))) +
+  geom_vline(xintercept = c(-1.5, 1.5), linetype="dashed", color = "black")
+
+C3_volcano <- volcano_DEG_plot(genetable, "C3-Others", 1.5, 0.1) + 
+  scale_x_continuous(expand = c(0.3,0)) +
+  scale_y_continuous(expand = c(0.2,0)) +
+  ggtitle(expression(~underline("Immune Neutral"))) +
+  geom_vline(xintercept = c(-1.5, 1.5), linetype="dashed", color = "black")
+
+C4_volcano <- volcano_DEG_plot(genetable, "C4-Others", 1.5, 0.1) + 
+  scale_x_continuous(expand = c(0.3,0)) +
+  scale_y_continuous(expand = c(0.1,0)) +
+  ggtitle(expression(~underline("Immune Excluded"))) +
+  geom_vline(xintercept = c(-1.5, 1.5), linetype="dashed", color = "black")
+
+fig3c <- plot_grid(C1_volcano, C2_volcano, C3_volcano, C4_volcano,
+                          ncol = 4, nrow =1, align = "h")
+
+pdf(paste0(plotpath, "Fig3_C.pdf"),
+    width = 50, height = 15, useDingbats = FALSE)
+fig3c
 dev.off()
 
 ###############

@@ -139,6 +139,57 @@ subgroupfreq_IC.fx <- function(metadata, tumour){
   
 }
 
+
+
+# Volcano plot for DEG
+volcano_DEG_plot <- function(genetable, contrast, foldchange, padj){
+  res <- genetable[ genetable$contrast == contrast,]      
+  res$threshold <- NA
+  res$threshold[res$log2FoldChange > foldchange & res$padj < padj] <- "Up-regulated"
+  res$threshold[res$log2FoldChange < -(foldchange) & res$padj < padj] <- "Down-regulated"
+  res$threshold[is.na(res$threshold)] <- "not significant"    
+  res_upreg <- res[ res$threshold == "Up-regulated",]    
+  res_upreg <- res_upreg[order(res_upreg$log2FoldChange, decreasing = T),]    
+  
+  res_downreg <- res[ res$threshold == "Down-regulated",]    
+  res_downreg <- res_downreg[order(res_downreg$log2FoldChange, decreasing = F),]  
+  
+  if(nrow(res_upreg) < 10){
+    res$genelabels[res$Gene %in% res_upreg$Gene] <- "UP"
+  }
+  
+  if(nrow(res_downreg) < 10){
+    res$genelabels[res$Gene %in% res_downreg$Gene] <- "DOWN"    
+  }    
+  
+  if(nrow(res_upreg) >= 10){
+    res$genelabels[res$Gene %in% res_upreg$Gene[1:10]] <- "UP"   
+  }
+  
+  if(nrow(res_downreg) >= 10){
+    res$genelabels[res$Gene %in% res_downreg$Gene[1:10]] <- "DOWN"      
+  }
+  
+  myvolcano_plot <- ggplot(res, aes(x=log2FoldChange, y=-log10(pvalue))) +
+    geom_point(aes(color = threshold), size=2.5) +
+    scale_colour_manual(values = c("Down-regulated"= "blue", "Up-regulated"="red",  "not significant"= "black")) +
+    geom_text_repel(label = ifelse(res$genelabels == "UP", as.character(res$Gene),""), 
+                    size = 8, box.padding = 1, max.overlaps = Inf, direction = "y", nudge_x = 0.9, 
+                    vjust = 0.9, min.segment.length = 0) + 
+    geom_text_repel(label = ifelse(res$genelabels == "DOWN", as.character(res$Gene),""), 
+                    size = 8, box.padding = 1, max.overlaps = Inf, direction = "y", nudge_x = -1.2, 
+                    vjust = 0.5, min.segment.length = 0) +     
+    myplot + myaxis + 
+    theme(axis.text.x = element_text(size = 50, angle = 0, hjust = 0.5),
+          axis.title = element_text(size = 50), axis.text.y = element_text(size = 50),
+          plot.title = element_text(size = 50, hjust = 0.5),
+          legend.position = "none") + 
+    labs(x = "Fold change (Log2)" ,y = "p-value (-Log10)") 
+  
+  return(myvolcano_plot)    
+}
+
+
 #to align plots (from stackoverflow)
 # Function to align plots (from stackoverflow) 
 align_plots1 <- function (...) {
