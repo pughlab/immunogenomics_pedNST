@@ -64,8 +64,8 @@ right_ha = rowAnnotation(`% mutated` = anno_barplot(percmutations, border = FALS
 
 #legend
 lgd = Legend(labels = names(col), title = "Alteration", 
-             legend_height = unit(6, "cm"), grid_width = unit(1, "cm"),
-             legend_gp = gpar(fill = col), labels_gp = gpar(font = 10))
+             grid_height = unit(6, "cm"), grid_width = unit(1, "cm"),
+             legend_gp = gpar(fill = col), labels_gp = gpar(font = 25))
 
 pdf(file = "/results/Fig4_G.pdf",
     width = 40, 
