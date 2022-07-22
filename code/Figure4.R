@@ -62,7 +62,6 @@ right_ha = rowAnnotation(`% mutated` = anno_barplot(percmutations, border = FALS
                          width = unit(8,"cm"), annotation_name_side = "top", annotation_name_rot = 0,
                          annotation_name_gp = gpar(fontsize = 50))
 
-
 #legend
 lgd = Legend(labels = names(col), title = "Alteration", 
              legend_height = unit(6, "cm"), grid_width = unit(1, "cm"),
@@ -89,9 +88,9 @@ dev.off()
 setwd("/results")
 
 plotflow:::mergePDF(
-  in.file = list.files(file.path("/results"), pattern = "Fig3_", full.names = TRUE),
-  file="Figure3.pdf"
+  in.file = list.files(file.path("/results"), pattern = "Fig4_", full.names = TRUE),
+  file="Figure4.pdf"
 )
 
-do.call(file.remove, list(list.files("/results/", pattern = "Fig3_", full.names = TRUE)))
+do.call(file.remove, list(list.files("/results/", pattern = "Fig4_", full.names = TRUE)))
 
