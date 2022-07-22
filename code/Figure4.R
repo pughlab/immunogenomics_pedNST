@@ -43,7 +43,7 @@ datapath <- "/data/"
 ###############
 
 load(file = paste0(datapath, "common_snv_fusion.RData"))
-laod(file = paste0(datapath, "pedNST_TMB.RData"))
+load(file = paste0(datapath, "pedNST_TMB.RData"))
 
 mostfreq <- rowSums(!is.na(oncomat))
 topgenesalters <- names(sort(mostfreq, decreasing = T)[1:15])
