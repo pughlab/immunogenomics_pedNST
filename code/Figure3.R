@@ -68,7 +68,7 @@ pathways_hm = Heatmap(fc_mat_pathways_t,
                                                   title = "Fold change\n(Log2)")
 )
 
-pdf(paste0(plotpath, "Fig3_A.pdf"),
+pdf("/results/Fig3_A.pdf",
     width = 40, height = 10)
 draw(pathways_hm)
 decorate_heatmap_body("Log2_FC", {
