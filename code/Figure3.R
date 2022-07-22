@@ -82,6 +82,7 @@ dev.off()
 
 load(file = paste0(datapath,"metadata_IC.RData"))
 load(file = paste0(datapath, "proteomics.RData"))
+Hs.H <- read.gmt(paste0(datapath, "h.all.v7.1.symbols.gmt"))  
 
 # subset to those with matched RNAseq in pedNST
 metadata_IC_proteom <- metadata_IC[metadata_IC$sample_id %in% colnames(proteomics),]
@@ -90,7 +91,7 @@ metadata_IC_proteom$immune_cluster <- factor(metadata_IC_proteom$immune_cluster,
                                              levels =c("Immune Excluded", "Immune Neutral",
                                                        "Myeloid Predominant", "Pediatric Inflamed"))
 
-coag <- hallmark_IC_stats_ridge(proteom, metadata_IC_proteom, "HALLMARK_COAGULATION")
+coag <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_COAGULATION")
 label.df <- data.frame(x = c(1.2,1.2), y = c(2.3,1.3))
 coag <- coag + 
   geom_text(data = label.df,aes(x = x, y = y), label = c("*", "***"), size = 15) +
@@ -99,7 +100,7 @@ coag <- coag +
         axis.title.x = element_blank()) +
   scale_x_continuous(labels = scales::label_number(accuracy = 1))
 
-emt <- hallmark_IC_stats_ridge(proteom, metadata_IC_proteom, "HALLMARK_EPITHELIAL_MESENCHYMAL_TRANSITION")
+emt <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_EPITHELIAL_MESENCHYMAL_TRANSITION")
 label.df <- data.frame(x = c(1.2,1.2), y = c(1.3,2.3))
 emt <- emt + geom_text(data = label.df,aes(x = x, y = y), label = c("***", "**"), size = 15) +
   labs(title = "EMT\n(n = 27)") + 
@@ -107,7 +108,7 @@ emt <- emt + geom_text(data = label.df,aes(x = x, y = y), label = c("***", "**")
         axis.title.x = element_blank()) +
   scale_x_continuous(breaks = c(-1,0,1),labels = scales::label_number(accuracy = 1), limits = c(-1.5,1.5))
 
-angio <- hallmark_IC_stats_ridge(proteom, metadata_IC_proteom, "HALLMARK_ANGIOGENESIS")
+angio <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_ANGIOGENESIS")
 label.df <- data.frame(x = c(1.2,1.2), y = c(1.3,2.3))
 angio <- angio + geom_text(data = label.df,aes(x = x, y = y), label = c("***", "*"), size = 15) +
   labs(title = "Angiogenesis\n(n = 7)") + 
@@ -115,14 +116,14 @@ angio <- angio + geom_text(data = label.df,aes(x = x, y = y), label = c("***", "
         axis.title.x = element_blank()) +
   scale_x_continuous(breaks = c(-1,0,1),labels = scales::label_number(accuracy = 1))
 
-ifng <- hallmark_IC_stats_ridge(proteom, metadata_IC_proteom, "HALLMARK_INTERFERON_GAMMA_RESPONSE")
+ifng <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_INTERFERON_GAMMA_RESPONSE")
 label.df <- data.frame(x = c(1.2,1.2), y = c(1.3,2.3))
 ifng <- ifng + geom_text(data = label.df,aes(x = x, y = y), label = "***", size = 15) +
   labs(title = "IFN-gamma\n(n = 100)") + 
   theme(plot.margin = unit(c(1,0,0,0), "cm"), axis.title.x = element_blank()) +
   scale_x_continuous(breaks = c(-1,0,1),labels = scales::label_number(accuracy = 1))
 
-ifna <- hallmark_IC_stats_ridge(proteom,metadata_IC_proteom, "HALLMARK_INTERFERON_ALPHA_RESPONSE")
+ifna <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_INTERFERON_ALPHA_RESPONSE")
 label.df <- data.frame(x = c(1.2,1.2), y = c(1.3,2.3))
 ifna <- ifna + geom_text(data = label.df,aes(x = x, y = y), label = "***", size = 15) +
   labs(title = "IFN-alpha\n(n = 56)") + 
@@ -130,7 +131,7 @@ ifna <- ifna + geom_text(data = label.df,aes(x = x, y = y), label = "***", size 
         axis.title.x = element_blank()) +
   scale_x_continuous(breaks = c(-1,0,1),labels = scales::label_number(accuracy = 1))
 
-inflam <- hallmark_IC_stats_ridge(proteom,metadata_IC_proteom, "HALLMARK_INFLAMMATORY_RESPONSE")
+inflam <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_INFLAMMATORY_RESPONSE")
 label.df <- data.frame(x = c(1.2,1.2), y = c(1.3,2.3))
 inflam <- inflam + geom_text(data = label.df,aes(x = x, y = y), label = "***", size = 15) +
   labs(title = "Inflammatory\n(n = 54)") + 
@@ -138,7 +139,7 @@ inflam <- inflam + geom_text(data = label.df,aes(x = x, y = y), label = "***", s
         axis.title.x = element_blank()) +
   scale_x_continuous(breaks = c(-1,0,1),labels = scales::label_number(accuracy = 1), limits = c(-1.5,1.5))
 
-il6 <- hallmark_IC_stats_ridge(proteom,metadata_IC_proteom, "HALLMARK_IL6_JAK_STAT3_SIGNALING")
+il6 <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_IL6_JAK_STAT3_SIGNALING")
 label.df <- data.frame(x = c(1.2,1.2), y = c(1.3,2.3))
 il6 <- il6 + geom_text(data = label.df, aes(x = x, y = y), label = c("***", "**"), size = 15) +
   labs(title = "IL6/JAK/STAT3\n(n = 23)") + 
@@ -146,7 +147,7 @@ il6 <- il6 + geom_text(data = label.df, aes(x = x, y = y), label = c("***", "**"
         axis.title.x = element_blank()) +
   scale_x_continuous(breaks = c(-1,0,1), labels = scales::label_number(accuracy = 1), limits = c(-1.5,1.5))
 
-complement <- hallmark_IC_stats_ridge(proteom,metadata_IC_proteom, "HALLMARK_COMPLEMENT")
+complement <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_COMPLEMENT")
 label.df <- data.frame(x = c(1.2,1.2), y = c(1.3,2.3))
 complement <- complement + geom_text(data = label.df,aes(x = x, y = y), label = "***", size = 15) +
   labs(title = "Complement\n(n = 123)") + 
@@ -154,7 +155,7 @@ complement <- complement + geom_text(data = label.df,aes(x = x, y = y), label = 
         axis.title.x = element_blank()) +
   scale_x_continuous(breaks = c(-1,0,1),labels = scales::label_number(accuracy = 1), limits = c(-1.5,1.5))
 
-tnfa <- hallmark_IC_stats_ridge(proteom,metadata_IC_proteom, "HALLMARK_TNFA_SIGNALING_VIA_NFKB")
+tnfa <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_TNFA_SIGNALING_VIA_NFKB")
 label.df <- data.frame(x = c(1.2,1.2), y = c(1.3,2.3))
 tnfa <- tnfa + geom_text(data = label.df,aes(x = x, y = y), label = "***", size = 15) +
   labs(title = "TNFa\n(n = 51)") + 
@@ -162,7 +163,7 @@ tnfa <- tnfa + geom_text(data = label.df,aes(x = x, y = y), label = "***", size 
         axis.title.x = element_blank()) +
   scale_x_continuous(breaks = c(-1,0,1),labels = scales::label_number(accuracy = 1), limits = c(-1.5,1.5))
 
-allograft <- hallmark_IC_stats_ridge(proteom,metadata_IC_proteom, "HALLMARK_ALLOGRAFT_REJECTION")
+allograft <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_ALLOGRAFT_REJECTION")
 label.df <- data.frame(x = c(1,1), y = c(1.3,2.3))
 allograft <- allograft + geom_text(data = label.df,aes(x = x, y = y), label = "***", size = 15) +
   labs(title = "Allograft rejection\n(n = 72)") + 

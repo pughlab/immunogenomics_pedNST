@@ -4,6 +4,6 @@ mypackages <- c("dplyr", "reshape2", "tidyr",
                 "grid", "gridExtra", "gtable", "cowplot", 
                 "ComplexHeatmap", "circlize",
                 "survival", "survminer",
-                "plotflow")
+                "plotflow", "qusage")
 
 invisible(lapply(mypackages, library, character.only = TRUE))
