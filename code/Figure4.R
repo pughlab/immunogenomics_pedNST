@@ -12,7 +12,7 @@ source("/code/functions/plotting_functions.R")
 datapath <- "/data/"
 
 ###############
-# Figure 4-C
+# Figure 4A-C
 ###############
 
 load(file = paste0(datapath, "pedNST_TMB.RData"))
