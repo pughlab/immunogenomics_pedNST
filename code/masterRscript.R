@@ -7,4 +7,4 @@ source("/code/functions/survival_functions.R")
 source("/code/functions/plotting_functions.R")
 
 source("/code/Figure1.R")
-source("/code/Figure2.R")
+#source("/code/Figure2.R")
