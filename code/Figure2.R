@@ -2,12 +2,6 @@
 # Figure 2
 ###############
 
-source("/code/functions/dependencies.R")
-#source("/code/functions/ggplot2_theme.R")
-#source("/code/functions/color_schemes.R")
-#source("/code/functions/Heatmap_functions.R")
-source("/code/functions/survival_functions.R")
-
 datapath <- "/data/"
 
 ###############
@@ -43,7 +37,7 @@ freqtab <- metadata_race %>% group_by(immune_cluster,race) %>%
 
 fig2b <- stacked_plots(freqtab, "immune_cluster", "race") + labs(y = "Frequency")
 
-pdf(paste0(plotpath, "Fig2_B.pdf"),
+pdf("/results/Fig2_B.pdf",
     width = 12, height = 10, onefile = F)
 fig2b
 dev.off()
@@ -73,7 +67,7 @@ fig2c <- ggplot(data = metadata_age, aes(x = immune_cluster, y = age_at_diagnosi
   scale_color_manual(values = cluster_col) +
   labs(y = "Age at diagnosis (years)")
 
-pdf(paste0(plotpath, "Fig2_C.pdf"),
+pdf("/results/Fig2_C.pdf",
     width = 12, height = 10, onefile = F)
 fig2c
 dev.off()

@@ -2,12 +2,6 @@
 # Figure 1
 ###############
 
-source("/code/functions/dependencies.R")
-source("/code/functions/ggplot2_theme.R")
-source("/code/functions/color_schemes.R")
-source("/code/functions/Heatmap_functions.R")
-source("/code/functions/plotting_functions.R")
-
 datapath <- "/data/"
 
 ###############
