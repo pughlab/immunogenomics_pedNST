@@ -74,7 +74,8 @@ pdf(file = "/results/Fig4_G.pdf",
     useDingbats = FALSE)
 draw(C1 + C2 + C3 + C4 + right_ha, 
      gap = unit(c(0.3,0.3,0.3,1),"cm"),
-     annotation_legend_side =  "right", annotation_legend_list = list(lgd))
+     annotation_legend_side =  "right", 
+     annotation_legend_list = list(lgd))
 dev.off()  
 
 
