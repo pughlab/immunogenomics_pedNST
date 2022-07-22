@@ -86,23 +86,30 @@ cohorts_hm.fx <- function(cohorts_mat){
 
 # genesets for immune celltypes
 cells_hm.fx <- function(cells_mat){
-  
+  col_fun = colorRamp2(c(-3, 0, 3), c("blue", "white", "red"))
   cells_hm = Heatmap(cells_mat,
                      #titles and names   
                      name = "Cell-types z score",   
                      show_row_names = TRUE,
-                     show_column_names = FALSE,     
+                     show_column_names = FALSE,  
+                     col = col_fun,
                      #clusters and orders  
                      cluster_columns = TRUE,
                      cluster_rows = TRUE,
                      show_column_dend = TRUE,
                      #aesthestics
-                     column_names_gp = gpar(fontsize = 20),
-                     row_names_gp = gpar(fontsize = 20),
+                     column_names_gp = gpar(fontsize = 25),
+                     row_names_gp = gpar(fontsize = 25),
                      height = unit(nrow(cells_mat), "cm"),
-                     column_title_gp = gpar(fontsize = 20),
+                     column_title_gp = gpar(fontsize = 25),
                      column_title = NULL,
-                     row_title = NULL)
+                     row_title = NULL,
+                     show_heatmap_legend = TRUE,
+                     heatmap_legend_param = list(col_fun = col_fun, 
+                                                 at = c(-3,0,3),
+                                                 labels = c("<-3", "0", ">3"),
+                                                 title = "Cell-type\nscore")
+  )
   return(cells_hm)   
 }
 

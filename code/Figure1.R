@@ -180,27 +180,25 @@ cluster_ha = HeatmapAnnotation(clusters = anno_mark(at = c(50, 235, 566, 844), l
                                                     labels_gp = gpar(fontsize = 20), 
                                                     link_height = unit(0.5, "cm")))
 
-pdf("/results/Fig1_C.pdf",width = 18, height = 10)
-draw(cluster_ha %v% cluster_hm %v% cells_hm %v% cohorts_hm, gap = unit(0.5, "cm"))
-dev.off()
+fig1c <- cluster_ha %v% cluster_hm %v% cells_hm %v% cohorts_hm
 
-#Legends
-lgd_cohort = Legend(labels = names(cohort_col)[2:13], title = "Cohort",
+lgd_cohort = Legend(labels = names(cohort_col)[2:13], title = "", nrow = 1,
                     legend_gp = gpar(fill = cohort_col[2:13]))
-
-pdf(file = "/results/1C_legend_cohort.pdf",
-    width = 8,  height = 8, useDingbats = FALSE)
-draw(lgd_cohort)
-dev.off() 
 
 col_fun = colorRamp2(c(-3, 0, 3), c("blue", "white", "red"))
 celltype_lgd = Legend(col_fun = col_fun, 
-                      at = c(-3,0,3), labels = c("<3", "0", ">3"), title = "Cell-type\nscore")
+                      at = c(-3,0,3),
+                      labels = c("<-3", "0", ">3"),
+                      title = "Cell-type\nscore")
 
-pdf(file = "/results/1C_legend_heatmap.pdf",
-    width = 8, height = 8, useDingbats = FALSE)
-draw(celltype_lgd)
-dev.off()  
+
+pdf("/results/Fig1_C.pdf",width = 18, height = 10)
+
+draw(fig1c, annotation_legend_side =  "bottom", legend_grouping = "original",
+     annotation_legend_list = list(lgd_cohort))
+
+dev.off()
+
 
 ###############
 # Figure 1D
