@@ -64,8 +64,9 @@ right_ha = rowAnnotation(`% mutated` = anno_barplot(percmutations, border = FALS
 
 
 #legend
-lgd = Legend(labels = names(col), title = "Alteration",
-             legend_gp = gpar(fill = col))
+lgd = Legend(labels = names(col), title = "Alteration", 
+             legend_height = unit(6, "cm"), grid_width = unit(1, "cm"),
+             legend_gp = gpar(fill = col), labels_gp = gpar(font = 10))
 
 pdf(file = "/results/Fig4_G.pdf",
     width = 40, 
@@ -73,8 +74,7 @@ pdf(file = "/results/Fig4_G.pdf",
     useDingbats = FALSE)
 draw(C1 + C2 + C3 + C4 + right_ha, 
      gap = unit(c(0.3,0.3,0.3,1),"cm"),
-     annotation_legend_side =  "right", 
-     annotation_legend_list = list(lgd))
+     annotation_legend_side =  "right", annotation_legend_list = list(lgd))
 dev.off()  
 
 
