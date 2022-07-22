@@ -12,7 +12,7 @@ datapath <- "/data/"
 # Figure 3A
 ###############
 
-load(paste0(gitpath, "pathwaytable_qusage.RData"))
+load(paste0(datapath, "pathwaytable_qusage.RData"))
 
 # get fold change and fdr for pathways
 fc_tab <- pathwaytable_qusage[,c("pathway.name", "contrast","log.fold.change")]
