@@ -10,6 +10,7 @@ source("/code/functions/survival_functions.R")
 source("/code/functions/plotting_functions.R")
 
 datapath <- "/data/"
+plotpath <- "/results/"
 
 ###############
 # Figure 1A
@@ -28,7 +29,7 @@ fig1a <- ggplot(data = ped) + geom_bar(aes(y = cohort, fill = group)) + myaxis +
 theme(axis.title = element_blank(), axis.text.x = element_text(size = 25, angle = 0, hjust = 0.5), 
       legend.position = c(0.8,0.9), legend.title = element_blank()) + scale_fill_manual(values = group_col)
 
-pdf(file = "/results/Fig1_A.pdf",
+pdf(file = paste0(plotpath,"Fig1_A.pdf"),
     width = 10, height = 10, useDingbats = FALSE)
 fig1a
 dev.off()
@@ -140,7 +141,7 @@ fig1b <- ggplot() +
   scale_y_continuous(breaks = seq(0, 70, by = 10)) + 
   labs(y = "% Immune Reads") 
 
-pdf(file = "/results/Fig1_B.pdf",
+pdf(file = paste0(plotpath,"Fig1_B.pdf"),
     width = 20, height = 8, useDingbats = FALSE)
 fig1b
 dev.off()
@@ -185,7 +186,8 @@ fig1c <- cluster_ha %v% cluster_hm %v% cells_hm %v% cohorts_hm
 lgd_cohort = Legend(labels = names(cohort_col)[2:13], title = "", nrow = 1,
                     legend_gp = gpar(fill = cohort_col[2:13]))
 
-pdf("/results/Fig1_C.pdf",width = 18, height = 10)
+pdf(paste0(plotpath,"Fig1_C.pdf"),
+    width = 18, height = 10)
 
 draw(fig1c, annotation_legend_side =  "bottom", legend_grouping = "original",
      annotation_legend_list = list(lgd_cohort))
@@ -238,7 +240,8 @@ hm1D = Heatmap(cancer_IC_mat,
                     row_title = NULL,
                     show_heatmap_legend = TRUE)
 
-pdf("/results/Fig1_D.pdf", width = 10, height = 10)
+pdf(paste0(plotpath,"Fig1_D.pdf"),
+    width = 10, height = 10)
 draw(hm1D)
 dev.off()
 
@@ -267,7 +270,7 @@ heplot <- ggplot(data = HE_manifest,
   
   labs(y = "Average TIL score") + ggtitle(~underline("H&E TIL score (n = 356)"))
 
-pdf("/results/Fig1_E.pdf",
+pdf(paste0(plotpath,"Fig1_E.pdf"),
     width = 10, height = 12)
 print(heplot)
 dev.off()
@@ -302,7 +305,7 @@ allf <- plot_grid(atrtp_f, nblp_f, mbp_f, hggp_f, lggp_f, epnp_f, ncol = 6, nrow
 
 fig1f <- plot_grid(allc, allf, nrow = 2, align = "v")
 
-pdf(file = "/results/Fig1_F.pdf",
+pdf(file = paste0(plotpath,"Fig1_F.pdf"),
     width = 50, height = 15, useDingbats = FALSE)
 fig1f
 dev.off()
@@ -311,12 +314,12 @@ dev.off()
 # Compile in one file
 ###############
 
-setwd("/results")
+setwd(plotpath)
 
 plotflow:::mergePDF(
-  in.file = list.files(file.path("/results"), pattern = "Fig1_", full.names = TRUE),
+  in.file = list.files(file.path(plotpath), pattern = "Fig1_", full.names = TRUE),
   file="Figure1.pdf"
 )
 
-do.call(file.remove, list(list.files("/results/", pattern = "Fig1_", full.names = TRUE)))
+do.call(file.remove, list(list.files(plotpath, pattern = "Fig1_", full.names = TRUE)))
 

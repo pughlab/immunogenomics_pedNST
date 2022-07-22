@@ -7,6 +7,7 @@ source("/code/functions/color_schemes.R")
 source("/code/functions/survival_functions.R")
 
 datapath <- "/data/"
+plotpath <- "/results/"
 
 ###############
 # Figure 2A
@@ -22,7 +23,7 @@ freqtab <- metadata_gender %>% group_by(immune_cluster,gender) %>%
 
 fig2a <- stacked_plots(freqtab, "immune_cluster", "gender") + labs(y = "Frequency")
 
-pdf("/results/Fig2_A.pdf",
+pdf(paste0(plotpath,"Fig2_A.pdf"),
     width = 12, height = 10, onefile = F)
 fig2a
 dev.off()
@@ -41,7 +42,7 @@ freqtab <- metadata_race %>% group_by(immune_cluster,race) %>%
 
 fig2b <- stacked_plots(freqtab, "immune_cluster", "race") + labs(y = "Frequency")
 
-pdf("/results/Fig2_B.pdf",
+pdf(paste0(plotpath,"Fig2_B.pdf"),
     width = 12, height = 10, onefile = F)
 fig2b
 dev.off()
@@ -71,7 +72,7 @@ fig2c <- ggplot(data = metadata_age, aes(x = immune_cluster, y = age_at_diagnosi
   scale_color_manual(values = cluster_col) +
   labs(y = "Age at diagnosis (years)")
 
-pdf("/results/Fig2_C.pdf",
+pdf(paste0(plotpath,"Fig2_C.pdf"),
     width = 12, height = 10, onefile = F)
 fig2c
 dev.off()
@@ -89,7 +90,7 @@ cluster_names <- c("Pediatric Inflamed", "Myeloid Predominant", "Immune Neutral"
 sfit <- survfit(Surv(days_to_death, vital_status) ~ immune_cluster, data=metadata_IC)
 fig2d <- KM_plot(metadata_IC, sfit, cluster_col, "", "Overall survival", cluster_names)
 
-pdf("/results/Fig2_D.pdf",
+pdf(paste0(plotpath,"Fig2_D.pdf"),
     width = 10, height = 12, onefile = F)
 fig2d
 dev.off()
@@ -105,7 +106,7 @@ metadata_IC$recurrence <- as.numeric(as.character(metadata_IC$recurrence))
 sfit <- survfit(Surv(days_to_progress, recurrence)~ immune_cluster, data=metadata_IC)
 fig2e <- KM_plot(metadata_IC, sfit, cluster_col, "", "Progression-free survival", cluster_names)
 
-pdf("/results/Fig2_E.pdf",
+pdf(paste0(plotpath,"Fig2_E.pdf"),
     width = 10, height = 12, onefile = F)
 fig2e
 dev.off()
@@ -114,13 +115,13 @@ dev.off()
 # Compile in one file
 ###############
 
-setwd("/results")
+setwd(plotpath)
 
 plotflow:::mergePDF(
-  in.file = list.files(file.path("/results/"), pattern = "Fig2_", full.names = TRUE),
+  in.file = list.files(file.path(plotpath), pattern = "Fig2_", full.names = TRUE),
   file="Figure2.pdf"
 )
 
-do.call(file.remove, list(list.files("/results/", pattern = "Fig2_", full.names = TRUE)))
+do.call(file.remove, list(list.files(plotpath, pattern = "Fig2_", full.names = TRUE)))
 
 

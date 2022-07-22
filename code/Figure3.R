@@ -8,7 +8,7 @@ source("/code/functions/color_schemes.R")
 source("/code/functions/plotting_functions.R")
 
 datapath <- "/data/"
-
+plotpath <- "/results/"
 ###############
 # Figure 3A
 ###############
@@ -67,7 +67,7 @@ pathways_hm = Heatmap(fc_mat_pathways_t,
                                                   legend_height = unit(2, "cm"),
                                                   title = "Fold change\n(Log2)"))
 
-pdf("/results/Fig3_A.pdf",
+pdf(paste0(plotpath,"Fig3_A.pdf"),
     width = 40, height = 15)
 draw(pathways_hm)
 decorate_heatmap_body("Log2_FC", {
@@ -178,7 +178,7 @@ fig3b <- plot_grid(
 
 y.grob <- textGrob("Average protein z-score", gp=gpar(fontsize=30), rot=90)
 
-pdf("/results/Fig3_B.pdf",
+pdf(paste0(plotpath,"Fig3_B.pdf"),
     width = 30, height = 15, useDingbats = FALSE)
 fig3b
 dev.off()
@@ -216,7 +216,7 @@ C4_volcano <- volcano_DEG_plot(genetable, "C4-Others", 1.5, 0.1) +
 fig3c <- plot_grid(C1_volcano, C2_volcano, C3_volcano, C4_volcano,
                           ncol = 4, nrow =1, align = "h")
 
-pdf("/results/Fig3_C.pdf",
+pdf(paste0(plotpath,"Fig3_C.pdf"),
     width = 50, height = 15, useDingbats = FALSE)
 fig3c
 dev.off()
@@ -225,14 +225,14 @@ dev.off()
 # Compile in one file
 ###############
 
-setwd("/results")
+setwd(plotpath)
 
 plotflow:::mergePDF(
-  in.file = list.files(file.path("/results"), pattern = "Fig3_", full.names = TRUE),
+  in.file = list.files(file.path(plotpath), pattern = "Fig3_", full.names = TRUE),
   file="Figure3.pdf"
 )
 
-do.call(file.remove, list(list.files("/results/", pattern = "Fig3_", full.names = TRUE)))
+do.call(file.remove, list(list.files(plotpath, pattern = "Fig3_", full.names = TRUE)))
 
 
 

@@ -10,6 +10,7 @@ source("/code/functions/Oncoprint_functions.R")
 source("/code/functions/plotting_functions.R")
 
 datapath <- "/data/"
+plotpath <- "/results/"
 
 ###############
 # Figure 4A-C
@@ -43,7 +44,7 @@ fig4a <- ggplot(data = ped_tmb, aes(x = immune_cluster, y = snvpermb)) +
   labs(y = "SNV / Mb") +
   ggtitle(expression(~underline("pedNST (n = 763)")))
 
-pdf(file = "/results/Fig4_A.pdf",
+pdf(file = paste0(plotpath,"Fig4_A.pdf"),
     width = 10, height = 12, useDingbats = FALSE)
 fig4a
 dev.off()
@@ -70,7 +71,7 @@ fig4b <- ggplot(data = ped_tmb, aes(x = immune_cluster, y = mutpermb)) +
   ggtitle(expression(~underline("pedNST (n = 763)")))
 
 
-pdf(file = "/results/Fig4_B.pdf",
+pdf(file = paste0(plotpath,"Fig4_B.pdf"),
     width = 10, height = 12, useDingbats = FALSE)
 fig4b
 dev.off()
@@ -101,7 +102,7 @@ fig4c <- ggplot(data = hgg, aes(x = immune_cluster, y = mutpermb)) +
   labs(y = "SNV + Indel / Mb") +
   ggtitle(expression(~underline("pedHGG (n = 63)")))
 
-pdf(file = "/results/Fig4_C.pdf",
+pdf(file = paste0(plotpath,"Fig4_C.pdf"),
     width = 10, height = 12, useDingbats = FALSE)
 fig4c
 dev.off()
@@ -265,23 +266,6 @@ draw(ha %v% ha1 %v% my_hm, annotation_legend_list = lgd_cohort, annotation_legen
 
 dev.off() 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ###############
 # Figure 4E
 ###############
@@ -321,7 +305,7 @@ lgd = Legend(labels = names(col), title = "Alteration",
              grid_height = unit(6, "cm"), grid_width = unit(1, "cm"),
              legend_gp = gpar(fill = col), labels_gp = gpar(font = 25))
 
-pdf(file = "/results/Fig4_G.pdf",
+pdf(file = paste0(plotpath,"Fig4_G.pdf"),
     width = 40, 
     height = 17,
     useDingbats = FALSE)
@@ -332,19 +316,16 @@ draw(C1 + C2 + C3 + C4 + right_ha,
 dev.off()  
 
 
-
-
-
 ###############
 # Compile in one file
 ###############
 
-setwd("/results")
+setwd(plotpath)
 
 plotflow:::mergePDF(
-  in.file = list.files(file.path("/results"), pattern = "Fig4_", full.names = TRUE),
+  in.file = list.files(file.path(plotpath), pattern = "Fig4_", full.names = TRUE),
   file="Figure4.pdf"
 )
 
-do.call(file.remove, list(list.files("/results/", pattern = "Fig4_", full.names = TRUE)))
+do.call(file.remove, list(list.files(plotpath, pattern = "Fig4_", full.names = TRUE)))
 
