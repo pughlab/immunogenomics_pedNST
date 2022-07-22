@@ -43,7 +43,7 @@ fc_mat_pathways_t <- t(fc_mat_pathways)
 
 #Heatmap
 col_fun= colorRamp2(c(-0.6, 0, 0.6), c("blue", "white", "red"))
-pathways_hm = Heatmap(fc_mat_pathways,
+pathways_hm = Heatmap(fc_mat_pathways_t,
                       #titles and names   
                       name = "Log2_FC",   
                       show_row_names = TRUE,
@@ -54,10 +54,10 @@ pathways_hm = Heatmap(fc_mat_pathways,
                       show_column_dend = TRUE,
                       #aesthestics
                       col = col_fun,
-                      column_names_gp = gpar(fontsize = 10),
-                      row_names_gp = gpar(fontsize = 10),
-                      height = unit(29, "cm"), width = unit(4, "cm"),
-                      column_title_gp = gpar(fontsize = 10),
+                      column_names_gp = gpar(fontsize = 25),
+                      row_names_gp = gpar(fontsize = 25),
+                      height = unit(8, "cm"), width = unit(44, "cm"),
+                      column_title_gp = gpar(fontsize = 25),
                       column_title = NULL,
                       row_title = NULL,
                       column_names_rot = 45,
@@ -68,12 +68,12 @@ pathways_hm = Heatmap(fc_mat_pathways,
                                                   title = "Fold change\n(Log2)")
 )
 
-pdf("/results/Fig3_A.pdf",
-    width = 10, height = 25)
+pdf(paste0(plotpath, "Fig3_A.pdf"),
+    width = 40, height = 10)
 draw(pathways_hm)
 decorate_heatmap_body("Log2_FC", {
   grid.rect(x = 0, y = 1, just = c("left", "top"),
-            width = 1,height = 0.345, gp = gpar(col = "black", lwd = 5))
+            width = 0.45,height = 1, gp = gpar(col = "black", lwd = 5))
 })
 dev.off()
 
