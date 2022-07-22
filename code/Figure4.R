@@ -139,7 +139,7 @@ for( i in mypaths){
   ped_tmb_IC_pathway[[pathway_name]] <- mut_sum  
 }
 
-# make a matrix to hold fraction of samples with alterations in oncogenic pathways in immune clusters
+# make a clusters x pathways matrix to hold fraction of samples with alterations in oncogenic pathways in immune clusters
 pathway_mat <- matrix(nrow = 4, ncol = 11)
 rownames(pathway_mat) <- c("Pediatric Inflamed", "Myeloid Predominant", "Immune Neutral", "Immune Excluded")
 colnames(pathway_mat) <- c("wnt_48", "notch_51", "rtk_71", "pi3k_26", "cellcycle_10", "mmr_5",
@@ -247,8 +247,12 @@ my_hm = Heatmap(scale(pathway_mat[,colnames(cohort_mat)]),
                 width = unit(11,"cm"),
                 row_names_gp = gpar(fontsize = 20),
                 row_names_side = "left", 
-                column_labels = col_labels)
-
+                column_labels = col_labels,
+                show_heatmap_legend = TRUE,
+                heatmap_legend_param = list(col_fun = col_fun, 
+                                            title = "Mutated samples\n(z-score)", 
+                                            labels_gp = gpar(fontsize = 15), 
+                                            title_gp = gpar(fontsize = 15)))
 
 lgd_cohort = Legend(labels = names(mycol), title = "", nrow = 2, legend_gp = gpar(fill = mycol))
 
@@ -257,7 +261,7 @@ pdf(file = paste0(plotpath,"Fig4_D.pdf"),
     height = 10,
     useDingbats = FALSE)
 
-draw(ha %v% ha1 %v% my_hm , annotation_legend_list = lgd_cohort, annotation_legend_side = "bottom")
+draw(ha %v% ha1 %v% my_hm, annotation_legend_list = lgd_cohort, annotation_legend_side = "bottom")
 
 dev.off() 
 
