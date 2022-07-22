@@ -1,6 +1,3 @@
-library(circlize)
-library(ComplexHeatmap)
-
 col = c("Missense" = "#d53e4f", 
         "In frame Ins/Del" = "#66bd63",
         "Nonsense" = "#f46d43",
