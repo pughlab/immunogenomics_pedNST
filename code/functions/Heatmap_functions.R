@@ -47,7 +47,7 @@ cri_hm.fx <- function(class_vector_ordered){
 class_hm.fx <- function(class_vector_ordered){
   
   class_mat <- t(as.matrix(class_vector_ordered))
-  rownames(class_mat) <- "Cluster"
+  rownames(class_mat) <- "Immune cluster"
   class_hm = Heatmap(class_mat,
                      #titles and names
                      name = "Immune cluster",
@@ -60,14 +60,15 @@ class_hm.fx <- function(class_vector_ordered){
                      col = cluster_col,
                      column_names_gp = gpar(fontsize = 15),
                      height = unit(1, "cm"),
-                     row_names_gp = gpar(fontsize = 20))
+                     row_names_gp = gpar(fontsize = 25),
+                     show_heatmap_legend = FALSE)
   return(class_hm)
 }
 
 # Cohort
 cohorts_hm.fx <- function(cohorts_mat){
   
-  cohort_hm = Heatmap(mycohorts,
+  cohort_hm = Heatmap(cohorts_mat,
                       #titles and names
                       name = "Cohort",
                       show_row_names = TRUE,
@@ -79,7 +80,8 @@ cohorts_hm.fx <- function(cohorts_mat){
                       col = cohort_col,
                       column_names_gp = gpar(fontsize = 15),
                       height = unit(1, "cm"),
-                      row_names_gp = gpar(fontsize = 20))
+                      row_names_gp = gpar(fontsize = 25),
+                      show_heatmap_legend = FALSE)
   return(cohort_hm)   
 }
 

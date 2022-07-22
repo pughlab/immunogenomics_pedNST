@@ -185,13 +185,6 @@ fig1c <- cluster_ha %v% cluster_hm %v% cells_hm %v% cohorts_hm
 lgd_cohort = Legend(labels = names(cohort_col)[2:13], title = "", nrow = 1,
                     legend_gp = gpar(fill = cohort_col[2:13]))
 
-col_fun = colorRamp2(c(-3, 0, 3), c("blue", "white", "red"))
-celltype_lgd = Legend(col_fun = col_fun, 
-                      at = c(-3,0,3),
-                      labels = c("<-3", "0", ">3"),
-                      title = "Cell-type\nscore")
-
-
 pdf("/results/Fig1_C.pdf",width = 18, height = 10)
 
 draw(fig1c, annotation_legend_side =  "bottom", legend_grouping = "original",
