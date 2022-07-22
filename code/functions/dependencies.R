@@ -6,4 +6,4 @@ mypackages <- c("dplyr", "reshape2", "tidyr",
                 "survival", "survminer",
                 "plotflow", "qusage")
 
-invisible(lapply(mypackages, library, character.only = TRUE))
+suppressPackageStartupMessages(invisible(lapply(mypackages, library, character.only = TRUE)))
