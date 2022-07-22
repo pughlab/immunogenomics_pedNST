@@ -1,6 +1,6 @@
 
-mypackages <- c("dplyr", "reshape2", 
-                "ggplot2", "ggridges", "ggbeeswarm", "ggsignif",
+mypackages <- c("dplyr", "reshape2", "tidyr",
+                "ggplot2", "ggridges", "ggbeeswarm", "ggsignif", "ggrepel",
                 "grid", "gridExtra", "gtable", "cowplot", 
                 "ComplexHeatmap", "circlize",
                 "survival", "survminer",
