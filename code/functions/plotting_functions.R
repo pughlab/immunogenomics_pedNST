@@ -1,3 +1,7 @@
+library(ggplot2)
+library(ggridges)
+library(dplyr)
+
 #Ridge plot
 plot_ridge.fx <- function(mydf, var){  
   
@@ -6,65 +10,121 @@ plot_ridge.fx <- function(mydf, var){
     myplot +
     theme(axis.line = element_line(color = "black"),
           axis.text = element_text(size = 30, color = "black"),
-          axis.title = element_blank(), 
-          axis.text.x = element_blank(),
+          axis.title = element_text(size = 30), 
+          axis.title.y = element_blank(), 
           plot.title = element_text(size = 30, hjust = 0.5),
-          legend.position = "none") + coord_flip() + #flip axes
+          legend.position = "none") +
     
     scale_fill_manual(values = cluster_col) 
   
-  return(ridgeline.plot) 
+  return(ridgeline.plot)
+  
 }
 
-# ridgeplot for proteomics Fig3B
-hallmark_IC_stats_ridge <- function(proteinmat, metadata, hallmark){
+#density plot for tpm values
+densplot.fx <- function(dat, pheno){
+  groups_df <- as.data.frame(t(dat))  
+  matchsamples <- match(rownames(groups_df), rownames(pheno))
+  groups_df$group <- NA
+  groups_df$group <- pheno$group[matchsamples] 
+  print(table(groups_df$group))  
+  groups_df_m <- reshape2::melt(groups_df)    
+  densplot <- ggplot(data = groups_df_m) + geom_density(aes(value, group = group, color = group)) + 
+    myplot + myaxis  
   
-  Hs.H <- read.gmt("/data/h.all.v7.1.symbols.gmt")
-  protein_mat_pathway <- as.matrix(proteinmat[rownames(proteinmat) %in% Hs.H[[hallmark]], rownames(metadata)])
-  print(dim(protein_mat_pathway))
-  pathway_mean <- colMeans(protein_mat_pathway)
-  
-  metadata$pathway_mean <- pathway_mean
-  
-  print(pairwise.t.test(metadata$pathway_mean, metadata$immune_cluster, p.adjust = "bonferroni"))
-  
-  ridge_plot <- plot_ridge.fx(metadata, "pathway_mean")
-  return(ridge_plot)
+  return(densplot)  
 }
+
 
 
 # Stacked barplots for cancer subtypes
-subgroup_IC.fx <- function(metadata, tumour, color){
+subgroupcount_IC.fx <- function(metadata, tumour){
+  #Subset to tumour
   mytumour <- metadata[metadata$cohort == tumour,]
-  tumour_tab <- as.data.frame(table(mytumour$tumour_subtype, mytumour$immune_cluster),
-                              stringsAsFactors = T)
+  message(tumour)
+  # Remove ND subtypes
+  mytumour <- mytumour[!grepl("ND", mytumour$tumour_subtype),]
+  # Create tables   
+  subtype_tab <- as.data.frame(table(mytumour$tumour_subtype), stringsAsFactors = F)
+  # Remove ND subtypes
+  subtype_tab <- subtype_tab[!grepl("ND", subtype_tab$Var1),]
+  
+  tumour_tab <- mytumour %>% group_by(tumour_subtype,immune_cluster) %>% summarise(n = n()) %>% 
+    mutate(freq = n / sum(n))  
+  
+  #Count plot  
+  subtype_tab$Var1 <- factor(subtype_tab$Var1, levels = subtype_tab$Var1[order(subtype_tab$Freq, decreasing = T)])
+  
+  subtype_count_plot <- ggplot(subtype_tab,aes(x = Var1, y = Freq)) +
+    geom_bar(stat = "identity", width = 0.8) + myaxis + myplot +
+    theme(axis.title.x=element_blank(),
+          axis.text.x=element_blank(),
+          axis.text.y = element_text(size = 20, color = "black"),
+          axis.title.y = element_text(size = 20),
+          plot.title = element_text(size = 20, hjust = 0.5)) + 
+    labs(y = "Frequency")
+  
+  return(subtype_count_plot)
+}
 
-  if(length(which(tumour_tab$Var2 == "Pediatric inflamed")) == 0){
-    tumour_tab <- rbind(tumour_tab, NA)
-    tumour_tab[ is.na(tumour_tab$Var1),1:3] <- list(tumour_tab$Var1[1], "C1", 0)
-  }
+
+subgroupfreq_IC.fx <- function(metadata, tumour){
+  #Subset to tumour
+  mytumour <- metadata[metadata$cohort == tumour,]
+  message(tumour)
+  # Remove ND subtypes
+  mytumour <- mytumour[!grepl("ND", mytumour$tumour_subtype),]
+  # Create tables   
+  subtype_tab <- as.data.frame(table(mytumour$tumour_subtype), stringsAsFactors = F)
   
+  tumour_tab <- mytumour %>% group_by(tumour_subtype,immune_cluster) %>% summarise(n = n()) %>% 
+    mutate(freq = n / sum(n))
+  print(subtype_tab)
+  #Fisher test for each subtype and immune cluster
+  mysubtypes <- subtype_tab$Var1
+  myk <- c("Pediatric Inflamed", "Myeloid Predominant", "Immune Neutral", "Immune Excluded")
   
-  myplot <- ggplot(tumour_tab, aes(fill=Var1, y=Freq, x=Var2)) + 
+  for( type in mysubtypes){
+    message(type)
+    mytumour$subtypegroup <- NA
+    mytumour$subtypegroup[ mytumour$tumour_subtype ==  type] <- 0
+    mytumour$subtypegroup[ mytumour$tumour_subtype !=  type] <- 1
+    
+    for(k in myk){
+      message(k)
+      mytumour$immunegroup <- NA
+      mytumour$immunegroup[ mytumour$immune_cluster ==  k] <- 0
+      mytumour$immunegroup[ mytumour$immune_cluster !=  k] <- 1    
+      mytab <- table(mytumour$subtypegroup, mytumour$immunegroup , 
+                     dnn = c("tumour subtype", "immune cluster"))
+      print(mytab)
+      print(fisher.test(mytab, alternative = "greater"))
+    }
+  }    
+  
+  #Freq plot
+  tumour_tab$tumour_subtype <- factor(tumour_tab$tumour_subtype, levels = subtype_tab$Var1[order(subtype_tab$Freq, decreasing = T)])
+  
+  freq_plot <- ggplot(tumour_tab, aes(fill=immune_cluster, y=freq, x= tumour_subtype)) + 
     geom_bar(position="stack", stat="identity") +
-    scale_fill_brewer(palette = color) + 
-    theme(axis.title.y = element_text(size = 65),
+    scale_fill_manual(values = cluster_col) +
+    theme(axis.title.y = element_text(size = 20),
           axis.title.x = element_blank(),
           axis.line = element_line(color = "black"),
-          axis.text.x = element_text(size = 50, color = "black", angle = 45, hjust = 1),
-          axis.text.y = element_text(size = 50, color = "black")) +
+          axis.text.x = element_text(size = 20, color = "black", angle = 45, hjust = 1),
+          axis.text.y = element_text(size = 20, color = "black")) +
     theme(panel.grid.major = element_blank(),
           panel.grid.minor = element_blank(),
           panel.background = element_blank(),
           plot.background = element_rect(fill = "transparent", colour = NA),
-          plot.title = element_text(size = 50, hjust = 0.5)) +
-    theme(legend.position = "bottom", legend.direction="vertical",
-          legend.text = element_text(size = 50),
-          legend.key.height= unit(2, 'cm'),
-          legend.key.width= unit(2, 'cm'),
-          legend.title = element_blank()) + labs(y = "counts")
-  return(myplot)
+          plot.title = element_text(size = 20, hjust = 0.5)) +
+    theme(legend.position = "none") + labs(y = "Fraction")
+  
+  return(freq_plot)
+  
 }
+
+
 
 #to align plots (from stackoverflow)
 # Function to align plots (from stackoverflow) 
@@ -82,6 +142,7 @@ align_plots1 <- function (...) {
 
 
 #circle plots for repertoire analysis
+
 circlepack.reads.fx <- function(inputfile, sample_id){
   #inputfile is: all_clustered_IGH_12rm
   sample_df <- inputfile[inputfile$sample_id == sample_id,]
@@ -171,28 +232,4 @@ circlepack.reads.fx <- function(inputfile, sample_id){
 }
 
 
-#KM plot for survival
-KM_plot <- function(metadata, fit_model, col, title, ylab, legendlabs){
-  kmplot <- ggsurvplot(fit_model, data = metadata,
-                       palette = as.vector(col),conf.int=FALSE, 
-                       xlim = c(0,5000),break.x.by = 1000,
-                       #Risk table
-                       risk.table = TRUE,
-                       # pvalue
-                       pval = TRUE, pval.size = 10, pval.coord = c(200, 0.1),
-                       # legend
-                       legend.title="", font.legend = 25, legend.labs = legendlabs, legend = c(0.75, 0.9),
-                       # fonts
-                       font.main = 30, font.x = 30, font.y = 30, font.tickslab = 30, 
-                       # titles
-                       title = title, xlab = "Time (days)", ylab = ylab)
-  
-  kmplot$table <- ggrisktable(fit_model, data = metadata, 
-                              color = "strata", palette = as.vector(col),
-                              fontsize = 10, risk.table.title = "",
-                              xlim = c(0,5000),break.time.by = 1000,
-                              y.text = TRUE, ylab = "",  xlab = "",legend.labs = legendlabs,
-                              tables.theme = theme_cleantable(), font.tickslab = 20)
-  
-  return(kmplot)
-}
+

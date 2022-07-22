@@ -29,8 +29,8 @@ cohort_col <- c("PDX" = "#878787", #PDX
                 "EMPTY1" = "#FFFFFF", # some dummy colors
                 "EMPTY2" = "#FFFFFF")
 
-cluster_col <- c("Pediatric inflamed" = "#d7191c", "Myeloid-driven" = "#fdae61",
-                 "Pediatric cold" = "#abd9e9", "Immune excluded" =  "#2c7bb6")
+cluster_col <- c("Pediatric Inflamed" = "#d7191c", "Myeloid Predominant" = "#fdae61",
+                 "Immune Neutral" = "#abd9e9", "Immune Excluded" =  "#2c7bb6")
   
 
 cri_col <- c("Wound Healing" = "#EF424C", "IFN-gamma dominant" = "#F9EF66", 

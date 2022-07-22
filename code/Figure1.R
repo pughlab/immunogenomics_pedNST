@@ -285,23 +285,31 @@ dev.off()
 
 load(file = paste0(datapath,"metadata_IC.RData"))
 
-lggp <- subgroup_IC.fx(metadata_IC, "pedLGG", "Purples")
-hggp <- subgroup_IC.fx(metadata_IC, "pedHGG", "Oranges")
-atrtp <- subgroup_IC.fx(metadata_IC, "ATRT", "Greens")
-epnp <- subgroup_IC.fx(metadata_IC, "EPN", "Reds")
-mbp <- subgroup_IC.fx(metadata_IC, "MB", "Blues")
-nblp <- subgroup_IC.fx(metadata_IC, "NBL", "GnBu")
+lggp_c <- subgroupcount_IC.fx(metadata_IC, "pedLGG")
+lggp_f <- subgroupfreq_IC.fx(metadata_IC, "pedLGG")
 
-fig1f <- plot_grid(atrtp+ ggtitle(expression(~underline("ATRT"))),
-                epnp + ggtitle(expression(~underline("EPN"))),
-                hggp+ ggtitle(expression(~underline("pedHGG"))),
-                nblp + ggtitle(expression(~underline("NBL"))), 
-                mbp+ ggtitle(expression(~underline("MB"))), 
-                lggp+ ggtitle(expression(~underline("pedLGG"))),
-                nrow=1 ,
-                align="h")
+hggp_c <- subgroupcount_IC.fx(metadata_IC, "pedHGG")
+hggp_f <- subgroupfreq_IC.fx(metadata_IC, "pedHGG")
 
-pdf(file = "/results/Fig1_f.pdf",
+nblp_c <- subgroupcount_IC.fx(metadata_IC, "NBL")
+nblp_f <- subgroupfreq_IC.fx(metadata_IC, "NBL")
+
+atrtp_c <- subgroupcount_IC.fx(metadata_IC, "ATRT")
+atrtp_f <- subgroupfreq_IC.fx(metadata_IC, "ATRT")
+
+mbp_c <- subgroupcount_IC.fx(metadata_IC, "MB")
+mbp_f <- subgroupfreq_IC.fx(metadata_IC, "MB")
+
+epnp_c <- subgroupcount_IC.fx(metadata_IC, "EPN")
+epnp_f <- subgroupfreq_IC.fx(metadata_IC, "EPN")
+
+allc <- plot_grid(atrtp_c + ggtitle("ATRT"), nblp_c + ggtitle("NBL"), mbp_c + ggtitle("MB"),
+                  hggp_c + ggtitle("pedHGG"), lggp_c  + ggtitle("pedLGG"), epnp_c  + ggtitle("EPN"), ncol = 6, nrow =1, align = "h", label_size = 20)
+allf <- plot_grid(atrtp_f, nblp_f, mbp_f, hggp_f, lggp_f, epnp_f, ncol = 6, nrow = 1, align = "h", label_size = 20)
+
+fig1f <- plot_grid(allc, allf, nrow = 2, align = "v")
+
+pdf(file = "/results/Fig1_F.pdf",
     width = 50, height = 15, useDingbats = FALSE)
 fig1f
 dev.off()
