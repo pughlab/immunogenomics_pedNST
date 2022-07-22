@@ -168,6 +168,7 @@ names(pathwaycount) <- colnames(pathway_mat)
 #sort based on total n altered
 pathwaycount <- sort(pathwaycount, decreasing = T)
 
+# Heatmap annotation for total altered samples for oncogenic pathways
 ha = HeatmapAnnotation(`n altered` = anno_barplot(pathwaycount,
                                                           border = FALSE, height = unit(3,"cm"),
                                                           axis_param=list(gp = gpar(fontsize=20), labels_rot = 0)),
@@ -187,10 +188,10 @@ for(i in 1:ncol(cohort_mat)){
   mytab <- as.data.frame(table(tmp$cohort), stringsAsFactors = F)
   cohort_mat[ match(mytab$Var1, rownames(cohort_mat)),i] <- mytab$Freq
 }
-
 # If NA convert to 0
 cohort_mat[is.na(cohort_mat)] <- 0
-#convert to fractions of altered samples across cancer types
+
+#convert to fractions of altered samples in cancer types
 cohort_mat_frac <- t(apply(cohort_mat,2, function(x){x/sum(x)}))
 
 #color pallette same as before
@@ -210,6 +211,7 @@ mycol <- c("ETMR" = "#76afa9",
 # order based on total n altered
 cohort_mat_frac <- cohort_mat_frac[names(pathwaycount),]
 
+# Heatmap annotation for fraction of altered samples in cancer types
 ha1 = HeatmapAnnotation(`Fraction of altered\nbycancer type` = anno_barplot(cohort_mat_frac, 
                                                                    gp = gpar(fill = mycol[ colnames(cohort_mat_frac)]),
                                                                    border = FALSE, height = unit(3,"cm"),
