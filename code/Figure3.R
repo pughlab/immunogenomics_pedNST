@@ -2,26 +2,7 @@
 # Figure 3
 ###############
 
-library(ggplot2)
-library(ggridges)
-library(cowplot)
-library(gridExtra)
-library(grid)
-library(tidyr)
-library(ComplexHeatmap)
-library(circlize)
-library(qusage)
-
-# library(dplyr)
-# library(reshape2)
-# library(ggridges)
-# library(ggbeeswarm)
-# library(ggsignif)
-# library(cowplot)
-# library(gridExtra)
-# library(gtable)
-# library(grid)
-
+source("/code/functions/dependencies.R")
 source("/code/functions/ggplot2_theme.R")
 source("/code/functions/color_schemes.R")
 source("/code/functions/Heatmap_functions.R")
@@ -190,6 +171,19 @@ pdf("/results/Fig3B.pdf",
 grid.arrange(arrangeGrob(myplot, left = y.grob))
 dev.off()
 
+
+###############
+# Compile in one file
+###############
+
+setwd("/results")
+
+plotflow:::mergePDF(
+  in.file = list.files(file.path("/results"), pattern = "Fig3_", full.names = TRUE),
+  file="Figure3.pdf"
+)
+
+do.call(file.remove, list(list.files("/results/", pattern = "Fig3_", full.names = TRUE)))
 
 
 
