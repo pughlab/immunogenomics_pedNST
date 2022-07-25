@@ -12,7 +12,7 @@ CBTN raw RNA and WGS data, variant and fusion calls are available upon request a
 
 Gene expression matrices, clinical metadata, T- and B- clonotype files, HLA types, predicted neopeptides, variant and fusion datasets and deconvolution outputs are available upon free registration at https://cavatica.sbgenomics.com/u/pughlab/immpedcan. 
 
-All processed data can be found in `/data/` or as supplemental tables for the manuscript. Main figures are reproducible via CodeOcean capsule: xxxxx
+All processed data can be found in `/data/` or as supplemental tables for the manuscript. 
 
 
 # Contact
