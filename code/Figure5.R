@@ -10,6 +10,7 @@ source("/code/functions/Oncoprint_functions.R")
 source("/code/functions/plotting_functions.R")
 
 datapath <- "/data/"
+plotpath <- "/results/"
 
 
 ###############
