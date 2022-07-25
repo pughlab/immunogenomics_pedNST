@@ -12,7 +12,6 @@ source("/code/functions/plotting_functions.R")
 datapath <- "/data/"
 plotpath <- "/results/"
 
-
 ###############
 # Figure 4A-C
 ###############
@@ -217,7 +216,7 @@ cohort_mat_frac <- cohort_mat_frac[names(pathwaycount),]
 ha1 = HeatmapAnnotation(`Fraction of altered\nbycancer type` = anno_barplot(cohort_mat_frac, 
                                                                    gp = gpar(fill = mycol[ colnames(cohort_mat_frac)]),
                                                                    border = FALSE, height = unit(3,"cm"),
-                                                                   axis_param=list(gp = gpar(fontsize=20), labels_rot = 0)),
+                                                                   axis_param = list(gp = gpar(fontsize=20), labels_rot = 0)),
                         annotation_name_side = "left", annotation_name_rot = 0,
                         annotation_name_gp = gpar(fontsize = 20))
 
@@ -303,7 +302,7 @@ right_ha = rowAnnotation(`% mutated` = anno_barplot(percmutations, border = FALS
 
 #legend
 lgd = Legend(labels = names(col), title = "Alteration", 
-             grid_height = unit(6, "cm"), grid_width = unit(1, "cm"),
+             grid_height = unit(12, "cm"), grid_width = unit(1, "cm"),
              legend_gp = gpar(fill = col), labels_gp = gpar(font = 25))
 
 pdf(file = paste0(plotpath,"Fig4_G.pdf"),
