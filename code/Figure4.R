@@ -300,9 +300,9 @@ right_ha = rowAnnotation(`% mutated` = anno_barplot(percmutations, border = FALS
                          annotation_name_gp = gpar(fontsize = 50))
 
 #legend
-lgd = Legend(labels = names(col), title = "Alteration", 
+lgd = Legend(labels = names(col), title = "", 
              grid_height = unit(1, "cm"), grid_width = unit(1, "cm"),
-             legend_gp = gpar(fill = col), labels_gp = gpar(fontsize = 35))
+             legend_gp = gpar(fill = col), labels_gp = gpar(fontsize = 30))
 
 pdf(file = paste0(plotpath,"Fig4_G.pdf"),
     width = 40, 
