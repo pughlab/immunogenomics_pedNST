@@ -157,7 +157,7 @@ for(k in 1:nrow(pathway_mat)){
     pathway_mat[k,p] <- freqtab$perc[2]
   }}    
 
-# for each pathwya, add total number of samples with alterations across pedNST
+# for each pathway, add total number of samples with alterations across pedNST
 pathwaycount <- vector()
 for(i in 1:ncol(pathway_mat)){
   mypathway <- colnames(pathway_mat)[i]
@@ -233,7 +233,6 @@ col_fun = colorRamp2(c(-1.5, 0, 1.5), c("blue", "white", "red"))
 my_hm = Heatmap(scale(pathway_mat[,colnames(cohort_mat)]),
                 #titles and names
                 name = "% mutated samples (z-score)",
-                show_heatmap_legend = FALSE,   
                 col = col_fun, 
                 show_row_names = TRUE,
                 show_column_names = TRUE,    
