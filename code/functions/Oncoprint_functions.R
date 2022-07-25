@@ -42,7 +42,7 @@ IC_oncoprint <- function(IC, dta, mat,showrownames){
                              show_heatmap_legend = FALSE,
                              show_column_names = FALSE,
                              show_row_names = showrownames,
-                             row_names_gp = gpar(fontsize = 50),
+                             row_names_gp = gpar(fontsize = 50, fontface = "italic"),
                              remove_empty_rows = FALSE,
                              show_pct = FALSE,
                              right_annotation = NULL, 
