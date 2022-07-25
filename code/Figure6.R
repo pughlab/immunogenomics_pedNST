@@ -1,5 +1,5 @@
 ###############
-# Figure 5
+# Figure 6
 ###############
 
 source("/code/functions/dependencies.R")
@@ -10,10 +10,11 @@ source("/code/functions/Oncoprint_functions.R")
 source("/code/functions/plotting_functions.R")
 
 datapath <- "/data/"
+plotpath <- "/results/"
 
 
 ###############
-# Figure 5A
+# Figure 6A
 ###############
 
 
@@ -26,8 +27,7 @@ datapath <- "/data/"
 setwd(plotpath)
 
 plotflow:::mergePDF(
-  in.file = list.files(file.path(plotpath), pattern = "Fig5_", full.names = TRUE),
-  file="Figure5.pdf"
+  in.file = list.files(file.path(plotpath), pattern = "Fig6_", full.names = TRUE),
+  file="Figure6.pdf"
 )
-
-do.call(file.remove, list(list.files(plotpath, pattern = "Fig5_", full.names = TRUE)))
+do.call(file.remove, list(list.files(plotpath, pattern = "Fig6_", full.names = TRUE)))
