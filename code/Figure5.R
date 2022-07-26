@@ -191,7 +191,9 @@ fig5d <- ggplot(data = mytab_melted, aes(x = variable, y = value, fill = immune_
   geom_boxplot(outlier.color = NA, position = "dodge") + 
   myplot + myaxis + 
   theme(axis.title.x = element_blank(), axis.title.y = element_text(size = 45),
-        legend.title = element_blank(), axis.text.y = element_text(size = 45), axis.text.x = element_text(size = 45),
+        legend.title = element_blank(), axis.text.y = element_text(size = 45), 
+        axis.text.x = element_text(size = 45),
+        legend.position = "none",
         plot.title = element_text(hjust = 0.5, size = 45),
         plot.margin = margin(1,0.5,1.5,0.5, "cm")) +
   scale_fill_manual(values = cluster_col) +
@@ -201,12 +203,14 @@ fig5d <- ggplot(data = mytab_melted, aes(x = variable, y = value, fill = immune_
   ggtitle(~underline("PedNST (n = 742)")) + 
   labs(y = "Isotype fraction") + coord_cartesian(ylim = c(0,0.75))
 
+#plot legend in two rows
+lgd <- get_legend(fig5d + theme(legend.position = "bottom") +  guides(fill=guide_legend(nrow=2, byrow=TRUE))) 
+
 pdf(file = paste0(plotpath,"Fig5_D.pdf"),
     width = 14, 
     height = 10,
     useDingbats = FALSE)
-grid.draw(get_legend(fig5d + theme(legend.position = "bottom") + 
-                       guides(fill=guide_legend(nrow=2, byrow=TRUE)))) 
+plot_grid(fig5d, lgd)
 
 dev.off()
 
