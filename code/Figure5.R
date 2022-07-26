@@ -59,7 +59,7 @@ fig5b <- ggplot(data = metadata_TRB, aes(y = estimated_Shannon, x = Reads, label
   theme(legend.position = "none") +
   theme(plot.title = element_text(hjust = 0.5, size = 45),
         axis.title = element_text(size = 45),
-        plot.margin = margin(1,2.5,1.5,1, "cm"),
+        plot.margin = margin(1,2.5,1.5,0.5, "cm"),
         axis.line = element_line(color = "black"),
         axis.text.x = element_text(size = 45, color = "black"),
         axis.text.y = element_text(size = 45, color = "black")) +
