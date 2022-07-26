@@ -234,7 +234,7 @@ giniplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = gini)) +
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
         plot.background = element_rect(fill = "transparent", colour = NA),
-        plot.margin = margin(1,1,1,4, "cm"),
+        plot.margin = margin(1,1,1,2.5, "cm"),
         plot.title = element_text(size = 40, hjust = 0.5)) +
   theme(legend.position = "none") +
   scale_color_manual(values = cluster_col) +
@@ -262,6 +262,7 @@ giniplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = gini)) +
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
         plot.background = element_rect(fill = "transparent", colour = NA),
+        plot.margin = margin(1,2.5,1,1, "cm"),
         plot.title = element_text(size = 40, hjust = 0.5)) +
   theme(legend.position = "none") +
   scale_color_manual(values = cluster_col) +
