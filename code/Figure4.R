@@ -381,7 +381,6 @@ draw(C1 + C2 + C3 + C4 + right_ha,
      annotation_legend_list = list(lgd))
 dev.off()  
 
-
 ###############
 # Compile in one file
 ###############

@@ -58,14 +58,19 @@ fig6a = Heatmap(t(median_mat),
                 height = unit(ncol(median_mat)*2, "cm"),
                 column_title_gp = gpar(fontsize = 25),
                 column_title = NULL,
-                row_title = NULL,
-                heatmap_legend_param = list(col_fun = col_fun, 
-                                            at = c(-1, 0, 1), 
-                                            title = "Median\nz-score"))
+                row_title = NULL)
+
+
+col_fun = colorRamp2(c(-1, 0, 1), c("blue", "white", "red"))
+lgd = Legend(col_fun = col_fun, 
+             at = c(-1,0,1), title = "Median\nz-score",
+             grid_height = unit(1, "cm"), grid_width = unit(1, "cm"),
+             labels_gp = gpar(fontsize = 30))
 
 pdf(paste0(plotpath, "Fig6_A.pdf"),
     width = 40, height = 20)
-draw(fig6a, heatmap_legend_side = "bottom")
+draw(fig6a,annotation_legend_side =  "bottom", 
+     annotation_legend_list = list(lgd))
 dev.off()
 
 ###############
