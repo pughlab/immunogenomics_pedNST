@@ -1,4 +1,4 @@
-# hash:sha256:3803c5cb7a8ad2a94bf60cc3c7ea2688b86ef157900b8d077c98cd8a3b5221bb
+# hash:sha256:418d1516974447b882479f0092d34d0ccebbc153aa59cf98c300acbf1aa721f6
 FROM registry.codeocean.com/codeocean/r-studio:1.4.1106-r4.0.5-ubuntu18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -7,14 +7,14 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential=12.4ubuntu1 \
         cmake=3.10.2-1ubuntu2.18.04.2 \
-        fftw3 \
-        fftw3-dev \
+        fftw3=3.3.7-1 \
+        fftw3-dev=3.3.7-1 \
         ghostscript=9.26~dfsg+0-0ubuntu0.18.04.16 \
         libnlopt-dev=2.4.2+dfsg-4 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN Rscript -e 'remotes::install_version("BiocManager", "1.30.18")' \
-    && Rscript -e 'remotes::install_version("broom")' \
+    && Rscript -e 'remotes::install_version("broom", "1.0.0")' \
     && Rscript -e 'remotes::install_version("circlize", "0.4.13")' \
     && Rscript -e 'remotes::install_version("cowplot", "1.1.1")' \
     && Rscript -e 'remotes::install_version("fftw", "1.0-6.1")' \
