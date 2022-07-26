@@ -192,7 +192,8 @@ fig5d <- ggplot(data = mytab_melted, aes(x = variable, y = value, fill = immune_
   myplot + myaxis + 
   theme(axis.title.x = element_blank(), axis.title.y = element_text(size = 45),
         legend.title = element_blank(), axis.text.y = element_text(size = 45), axis.text.x = element_text(size = 45),
-        plot.title = element_text(hjust = 0.5, size = 45)) +
+        plot.title = element_text(hjust = 0.5, size = 45),
+        plot.margin = margin(1,1,1.5,1.5, "cm")) +
   scale_fill_manual(values = cluster_col) +
   geom_signif(annotation="*",y_position= 0.55, xmin= 0.9, xmax=1.1, textsize = 10, vjust = 0.5) + # for IGHG1
   geom_signif(annotation="*",y_position= 0.65, xmin= 0.9, xmax=1.3, textsize = 10, vjust = 0.5) +# for IGHG1
@@ -202,7 +203,7 @@ fig5d <- ggplot(data = mytab_melted, aes(x = variable, y = value, fill = immune_
 
 
 pdf(file = paste0(plotpath,"Fig5_D.pdf"),
-    width = 12, 
+    width = 14, 
     height = 10,
     useDingbats = FALSE)
 fig5d + theme(legend.position = "bottom")
