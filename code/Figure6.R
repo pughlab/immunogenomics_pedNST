@@ -65,7 +65,7 @@ fig6a = Heatmap(t(median_mat),
 
 pdf(paste0(plotpath, "Fig6_A.pdf"),
     width = 40, height = 20)
-draw(fig6a, legend_grouping = "original")
+draw(fig6a)
 dev.off()
 
 ###############
@@ -117,9 +117,9 @@ names(Tcellsgroups) <- Tcellclusters
 Tcellsgroups <- factor(Tcellsgroups, levels = c("Naive","NME1+","ISG+", "Tm", "Tem","Treg","Tfh/h","Tex","Others"))
 
 # T-cell group heatmap annotation
-Tha <- HeatmapAnnotation(`` = anno_block(labels = c("TG1", "TG2","TG3", "TG4", "TG5"),
+Tha <- HeatmapAnnotation(`T-cell group` = anno_block(labels = c("TG1", "TG2","TG3", "TG4", "TG5"),
                                                      labels_gp = gpar(fontsize = 15),
-                                                     show_name = T, height = unit(1,"cm")))
+                                                     show_name = FALSE, height = unit(1,"cm")))
 
 #Heatmap
 col_fun = colorRamp2(c(-2, 0, 2), c("blue", "white", "red"))
