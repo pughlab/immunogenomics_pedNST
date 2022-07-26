@@ -117,7 +117,9 @@ cns <- metadata_TRB[ metadata_TRB$cohort != "NBL",]
 
 # make color transparent if number of data point are <=2
 mytab <- table(cns$immune_cluster) 
-cluster_col[ names(cluster_col) %in% names(mytab)[ mytab <= 2] ] <- "transparent"
+
+clustcol <- cluster_col
+clustcol[ names(clustcol) %in% names(mytab)[ mytab <= 2] ] <- "transparent"
 
 trbplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = estimated_Shannon)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 2, alpha = 0.7, shape = 16) + 
@@ -133,7 +135,7 @@ trbplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = estimated_Shannon)
         plot.background = element_rect(fill = "transparent", colour = NA),
         plot.title = element_text(size = 40, hjust = 0.5)) +
   theme(legend.position = "none") +
-  scale_color_manual(values = cluster_col) +
+  scale_color_manual(values = clustcol) +
   scale_y_continuous(trans = "log10", 
                      labels = scales::label_number(accuracy = 1)) + annotation_logticks(sides = "l") +
   labs(y = paste0("Estimated\nShannon diversity")) +
