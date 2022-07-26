@@ -1,4 +1,4 @@
-# hash:sha256:dfa472790980b10325ef81dfd653d20f765844259deb39ec281e6927403a6099
+# hash:sha256:a467b91d03341096fcaef6e8c1a5f64da0d9d84c06267c5b5a3ac3e9786bb838
 FROM registry.codeocean.com/codeocean/r-studio:1.4.1106-r4.0.5-ubuntu18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -7,9 +7,9 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential=12.4ubuntu1 \
         cmake=3.10.2-1ubuntu2.18.04.2 \
-        curl \
-        fftw3 \
-        fftw3-dev \
+        curl=7.58.0-2ubuntu3.19 \
+        fftw3=3.3.7-1 \
+        fftw3-dev=3.3.7-1 \
         ghostscript=9.26~dfsg+0-0ubuntu0.18.04.16 \
         libnlopt-dev=2.4.2+dfsg-4 \
     && rm -rf /var/lib/apt/lists/*
