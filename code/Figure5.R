@@ -218,7 +218,7 @@ dev.off()
 # Figure 5E
 ###############
 
-load(file = paste0(gitpath, "metadata_IGrep.RData"))
+load(file = paste0(datapath, "metadata_IGrep.RData"))
 
 #nbl
 nbl <- metadata_igrep[ metadata_igrep$cohort == "NBL",]
