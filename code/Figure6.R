@@ -29,7 +29,7 @@ immunereg_genmat <- as.matrix(immunereg_genmat)
 #scale
 immunereg_genmat_z <- t(scale(t(immunereg_genmat)))
 # median of each gene in z-score in each immune cluster
-for( g in rownames(mygen_mat)){
+for( g in rownames(immunereg_genmat)){
   median_mat[g,1] <- median(immunereg_genmat_z[g, metadata_IC$sample_id[metadata_IC$immune_cluster == "Pediatric Inflamed"]])
   median_mat[g,2] <- median(immunereg_genmat_z[g, metadata_IC$sample_id[metadata_IC$immune_cluster == "Myeloid Predominant"]])    
   median_mat[g,3] <- median(immunereg_genmat_z[g, metadata_IC$sample_id[metadata_IC$immune_cluster == "Immune Neutral"]])
@@ -68,13 +68,12 @@ pdf(paste0(plotpath, "Fig6_A.pdf"),
 draw(fig6a)
 dev.off()
 
-
 ###############
 # Figure 6B
 ###############
 
-load(file = paste0(gitpath, "metadata_inflamed.RData"))
-laod(file = paste0(gitpath, "gsea_Tcellgroups_norm.RData"))
+load(file = paste0(datapath, "metadata_inflamed.RData"))
+laod(file = paste0(datapath, "gsea_Tcellgroups_norm.RData"))
 
 # list the included T-cell signatures 
 Tcellclusters <- c('CD4.c01(Tn)','CD4.c03(ADSL+ Tn)','CD4.c04(IL7R- Tn)', 'CD8.c01(Tn)', #Naive
@@ -155,23 +154,6 @@ pdf(file = paste0(plotpath, "Fig6_B.pdf"),
     width = 12, height = 18)
 Tcellscells_hm %v% cohorts_hm
 dev.off()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ###############
