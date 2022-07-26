@@ -160,6 +160,55 @@ dev.off()
 # Figure 5D
 ###############
 
+load(file = paste0(gitpath, "metadata_IGH.RData"))
+
+alligs <- c("IGHA1", "IGHA2", "IGHG1", "IGHG2", "IGHG3", "IGHG4", "IGHD", "IGHE", "IGHM")
+
+mytab <- metadata_IC_igh[,c("immune_cluster","TotalIsotypes", alligs)]
+
+# remove rare IGHs
+mytab$IGHD <- NULL
+mytab$IGHE <- NULL
+
+# replace NA with 0
+mytab[is.na(mytab)] <- 0
+
+#convert to fractions
+mytab[,3:9] <- mytab[,3:9]/mytab$TotalIsotypes
+
+#melt and order
+mytab_melted <- melt(mytab[,c(1,3:9)])
+
+mytab_melted$variable <- factor(mytab_melted$variable,
+                                levels = c("IGHG1", "IGHG2", "IGHG3", "IGHG4", 
+                                           "IGHA1", "IGHA2", "IGHM"))
+
+pairwise.t.test(mytab$IGHG1, mytab$immune_cluster, "none", paired=FALSE, pool.sd=TRUE)
+pairwise.t.test(mytab$IGHG3, mytab$immune_cluster, "none", paired=FALSE, pool.sd=TRUE)
+
+fig5d <- ggplot(data = mytab_melted, aes(x = variable, y = value, fill = immune_cluster)) + 
+  geom_boxplot(outlier.color = NA, position = "dodge") + 
+  myplot + myaxis + 
+  theme(axis.title.x = element_blank(), axis.title.y = element_text(size = 45),
+        legend.title = element_blank(), axis.text.y = element_text(size = 45), axis.text.x = element_text(size = 45),
+        plot.title = element_text(hjust = 0.5, size = 45)) +
+  scale_fill_manual(values = cluster_col) +
+  geom_signif(annotation="*",y_position= 0.55, xmin= 0.9, xmax=1.1, textsize = 10, vjust = 0.5) + # for IGHG1
+  geom_signif(annotation="*",y_position= 0.65, xmin= 0.9, xmax=1.3, textsize = 10, vjust = 0.5) +# for IGHG1
+  geom_signif(annotation="*",y_position= 0.3, xmin= 2.9, xmax=3.3, textsize = 10, vjust = 0.5) +# for IGHG3
+  ggtitle(~underline("PedNST (n = 742)")) + 
+  labs(y = "Isotype fraction") + coord_cartesian(ylim = c(0,0.75))
+
+
+pdf(file = paste0(plotpath,"Fig5_D.pdf"),
+    width = 12, 
+    height = 10,
+    useDingbats = FALSE)
+fig5d + theme(legend.position = "bottom")
+dev.off()
+
+
+
 ###############
 # Figure 5E
 ###############
