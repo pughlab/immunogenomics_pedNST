@@ -1,4 +1,4 @@
-# hash:sha256:418d1516974447b882479f0092d34d0ccebbc153aa59cf98c300acbf1aa721f6
+# hash:sha256:b9deab54b5b2582c87ff68f30d43ec04109c0a61d93e8482156701c899c675ea
 FROM registry.codeocean.com/codeocean/r-studio:1.4.1106-r4.0.5-ubuntu18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -7,6 +7,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential=12.4ubuntu1 \
         cmake=3.10.2-1ubuntu2.18.04.2 \
+        curl \
         fftw3=3.3.7-1 \
         fftw3-dev=3.3.7-1 \
         ghostscript=9.26~dfsg+0-0ubuntu0.18.04.16 \
@@ -42,6 +43,13 @@ RUN Rscript -e 'options(warn=2); BiocManager::install(c( \
         "ComplexHeatmap", \
         "qusage" \
     ))' # Original versions: 2.10.0 2.28.0
+
+RUN mkdir /.code-server \
+	&& cd /.code-server \
+	&& curl -L "https://github.com/coder/code-server/releases/download/v4.0.2/code-server-4.0.2-linux-amd64.tar.gz" -o code-server.tar.gz \
+	&& tar -xvf code-server.tar.gz \
+	&& rm code-server.tar.gz \
+	&& ln -s /.code-server/code-server-4.0.2-linux-amd64/bin/code-server  /usr/bin/code-server
 
 COPY postInstall /
 RUN /postInstall
