@@ -22,7 +22,7 @@ shan_trb <- TCRcap_rnaplot.fx(TRB_CapTCR_RNAseq, "estimated_Shannon_RNAseq", "ob
 
 #add title
 fig5a <- shan_trb + ggtitle(~underline("TRB diversity inference")) + 
-  theme(plot.margin = margin(1,0,1.5,0, "cm"))
+  theme(plot.margin = margin(1,0.2,1.5,0.2, "cm"))
 
 pdf(file = paste0(plotpath,"Fig5_A.pdf"),
     width = 10, height = 10, useDingbats = FALSE)
