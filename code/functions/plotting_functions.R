@@ -1,7 +1,3 @@
-library(ggplot2)
-library(ggridges)
-library(dplyr)
-
 #Ridge plot
 plot_ridge.fx <- function(mydf, var){  
   
@@ -247,7 +243,6 @@ circlepack.reads.fx <- function(inputfile, sample_id){
     myedge <- rbind(myclusters, octamer_cdr3)   
   }
   
-  
   #vertix df  
   
   # get cdr3 and reads    
@@ -295,5 +290,27 @@ circlepack.reads.fx <- function(inputfile, sample_id){
   dev.off()
 }
 
-
+# Scatter plot with linear regression comparing estimated div from RNA-seq and observed div from CapTCR-seq
+TCRcap_rnaplot.fx <- function(dta, met_rna, met_cap, labels, x,y){
+  
+  lmreg <- lm(log10(eval(as.name(met_rna))) ~ log10(eval(as.name(met_cap))), data = cap_rna)
+  print(broom::glance(lmreg))
+  reg <- broom::glance(lmreg)
+  cap_rna_plot <- ggplot(data = dta, aes(y = eval(as.name(met_rna)), x = eval(as.name(met_cap)))) + 
+    geom_point(size = 5, aes(color = group)) +
+    geom_smooth(method = "lm", se = FALSE) + myplot +
+    scale_y_continuous(trans = "log10") + 
+    scale_x_continuous(trans = "log10") +
+    annotation_logticks(sides = "bl") +
+    theme(legend.position = "none", legend.title = element_blank()) +
+    theme(axis.title = element_text(size = 45),
+          axis.line = element_line(color = "black"),
+          axis.text.x = element_text(size = 45, color = "black"),
+          axis.text.y = element_text(size = 45, color = "black"),
+          plot.title = element_text(hjust = 0.5, size = 45)) +
+    labs(y = paste0("Estimated ", labels, "\n(RNAseq)"), x = paste0(labels, "\n(CapTCR-seq)")) +
+    annotate("text", x=x, y=y, label= paste("R^2 = ", round(reg$r.squared,2)), size = 15) 
+  
+  return(cap_rna_plot)
+}
 
