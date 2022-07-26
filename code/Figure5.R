@@ -210,7 +210,7 @@ pdf(file = paste0(plotpath,"Fig5_D.pdf"),
     width = 14, 
     height = 10,
     useDingbats = FALSE)
-plot_grid(fig5d, lgd, nrow=2, ncol =1)
+plot_grid(fig5d, lgd, nrow=2, ncol =1, rel_heights = c(3,0.4))
 
 dev.off()
 
