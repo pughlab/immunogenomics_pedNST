@@ -21,7 +21,7 @@ load(file = paste0(datapath, "TRB_CapTCR_RNAseq.RData"))
 shan_trb <- TCRcap_rnaplot.fx(TRB_CapTCR_RNAseq, "estimated_Shannon_RNAseq", "observed_Shannon_TCRCap", "Shannon diversity", 40,3)
 
 #add title
-fig5a <- shan_trb + ggtitle(~underline("TRB diversity inference"))
+fig5a <- shan_trb + ggtitle(~underline("TRB diversity inference")) + theme(plot.margin = margin(1,1,1.5,2.5, "cm"))
 
 pdf(file = paste0(plotpath,"Fig5_A.pdf"),
     width = 10, height = 10, useDingbats = FALSE)
@@ -58,6 +58,7 @@ fig5b <- ggplot(data = metadata_TRB, aes(y = estimated_Shannon, x = Reads, label
   theme(legend.position = "none") +
   theme(plot.title = element_text(hjust = 0.5, size = 45),
         axis.title = element_text(size = 45),
+        plot.margin = margin(1,1,1.5,2.5, "cm"),
         axis.line = element_line(color = "black"),
         axis.text.x = element_text(size = 45, color = "black"),
         axis.text.y = element_text(size = 45, color = "black")) +
@@ -193,7 +194,7 @@ fig5d <- ggplot(data = mytab_melted, aes(x = variable, y = value, fill = immune_
   theme(axis.title.x = element_blank(), axis.title.y = element_text(size = 45),
         legend.title = element_blank(), axis.text.y = element_text(size = 45), axis.text.x = element_text(size = 45),
         plot.title = element_text(hjust = 0.5, size = 45),
-        plot.margin = margin(1,1,1.5,1.5, "cm")) +
+        plot.margin = margin(1,1,1.5,2.5, "cm")) +
   scale_fill_manual(values = cluster_col) +
   geom_signif(annotation="*",y_position= 0.55, xmin= 0.9, xmax=1.1, textsize = 10, vjust = 0.5) + # for IGHG1
   geom_signif(annotation="*",y_position= 0.65, xmin= 0.9, xmax=1.3, textsize = 10, vjust = 0.5) +# for IGHG1
