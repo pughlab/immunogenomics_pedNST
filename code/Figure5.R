@@ -207,7 +207,7 @@ fig5d <- ggplot(data = mytab_melted, aes(x = variable, y = value, fill = immune_
 lgd <- get_legend(fig5d + theme(legend.position = "bottom") +  guides(fill=guide_legend(nrow=2, byrow=TRUE))) 
 
 pdf(file = paste0(plotpath,"Fig5_D.pdf"),
-    width = 14, 
+    width = 12, 
     height = 10,
     useDingbats = FALSE)
 plot_grid(fig5d, lgd, nrow=2, ncol =1, rel_heights = c(3,0.4))
