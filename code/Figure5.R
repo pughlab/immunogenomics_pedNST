@@ -79,10 +79,12 @@ dev.off()
 
 load(file = paste0(datapath, "metadata_TRB.RData"))
 
-trbplot_nbl <- ggplot(data = metadata_RB[ metadata_TRB$cohort == "NBL",], 
-                      aes(x = immune_cluster, y = estimated_Shannon)) + 
+# nbl
+nbl <- metadata_TRB[ metadata_TRB$cohort == "NBL",]
+
+trbplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = estimated_Shannon)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
-  geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
+  geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5, aes(color = immune_cluster)) +
   theme(axis.title.y = element_text(size = 40),
         axis.title.x = element_blank(),
         axis.line = element_line(color = "black"),
@@ -110,8 +112,14 @@ trbplot_nbl <- ggplot(data = metadata_RB[ metadata_TRB$cohort == "NBL",],
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
   ggtitle(expression(~underline("NBL (n = 116)")))
 
-trbplot_cns <- ggplot(data = metadata_TRB[ metadata_TRB$cohort != "NBL",], 
-                      aes(x = immune_cluster, y = estimated_Shannon)) + 
+# cns
+cns <- metadata_TRB[ metadata_TRB$cohort != "NBL",]
+
+# make color transparent if number of data point are <=2
+mytab <- table(cns$immune_cluster) 
+cluster_col[ names(cluster_col) %in% names(mytab)[ mytab <= 2] ] <- "transparent"
+
+trbplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = estimated_Shannon)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 2, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
   theme(axis.title.y = element_text(size = 40),

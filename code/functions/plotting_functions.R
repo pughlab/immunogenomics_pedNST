@@ -293,7 +293,7 @@ circlepack.reads.fx <- function(inputfile, sample_id){
 # Scatter plot with linear regression comparing estimated div from RNA-seq and observed div from CapTCR-seq
 TCRcap_rnaplot.fx <- function(dta, met_rna, met_cap, labels, x,y){
   
-  lmreg <- lm(log10(eval(as.name(met_rna))) ~ log10(eval(as.name(met_cap))), data = cap_rna)
+  lmreg <- lm(log10(eval(as.name(met_rna))) ~ log10(eval(as.name(met_cap))), data = dta)
   print(broom::glance(lmreg))
   reg <- broom::glance(lmreg)
   cap_rna_plot <- ggplot(data = dta, aes(y = eval(as.name(met_rna)), x = eval(as.name(met_cap)))) + 
