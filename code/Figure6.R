@@ -73,7 +73,7 @@ dev.off()
 ###############
 
 load(file = paste0(datapath, "metadata_inflamed.RData"))
-laod(file = paste0(datapath, "gsea_Tcellgroups_norm.RData"))
+load(file = paste0(datapath, "gsea_Tcellgroups_norm.RData"))
 
 # list the included T-cell signatures 
 Tcellclusters <- c('CD4.c01(Tn)','CD4.c03(ADSL+ Tn)','CD4.c04(IL7R- Tn)', 'CD8.c01(Tn)', #Naive
