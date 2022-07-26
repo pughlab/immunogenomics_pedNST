@@ -160,11 +160,11 @@ dev.off()
 # Figure 5D
 ###############
 
-load(file = paste0(gitpath, "metadata_IGH.RData"))
+load(file = paste0(datapath, "metadata_IGH.RData"))
 
 alligs <- c("IGHA1", "IGHA2", "IGHG1", "IGHG2", "IGHG3", "IGHG4", "IGHD", "IGHE", "IGHM")
 
-mytab <- metadata_IC_igh[,c("immune_cluster","TotalIsotypes", alligs)]
+mytab <- metadata_igh[,c("immune_cluster","TotalIsotypes", alligs)]
 
 # remove rare IGHs
 mytab$IGHD <- NULL
@@ -180,8 +180,7 @@ mytab[,3:9] <- mytab[,3:9]/mytab$TotalIsotypes
 mytab_melted <- melt(mytab[,c(1,3:9)])
 
 mytab_melted$variable <- factor(mytab_melted$variable,
-                                levels = c("IGHG1", "IGHG2", "IGHG3", "IGHG4", 
-                                           "IGHA1", "IGHA2", "IGHM"))
+                                levels = c("IGHG1", "IGHG2", "IGHG3", "IGHG4", "IGHA1", "IGHA2", "IGHM"))
 
 pairwise.t.test(mytab$IGHG1, mytab$immune_cluster, "none", paired=FALSE, pool.sd=TRUE)
 pairwise.t.test(mytab$IGHG3, mytab$immune_cluster, "none", paired=FALSE, pool.sd=TRUE)
