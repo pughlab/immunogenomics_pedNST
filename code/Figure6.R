@@ -63,9 +63,8 @@ fig6a = Heatmap(t(median_mat),
 
 col_fun = colorRamp2(c(-1, 0, 1), c("blue", "white", "red"))
 lgd = Legend(col_fun = col_fun, 
-             at = c(-1,0,1), 
              title = "Median\nz-score", title_gp = gpar(fontsize = 15),
-             grid_height = unit(2, "cm"), grid_width = unit(1, "cm"),
+             grid_height = unit(2, "cm"),
              labels_gp = gpar(fontsize = 15))
 
 pdf(paste0(plotpath, "Fig6_A.pdf"),
