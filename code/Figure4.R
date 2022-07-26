@@ -307,6 +307,10 @@ load(file = paste0(datapath, "pedNST_strongpeptides.RData"))
 
 hgg <- metadata_SB[ metadata_SB$cohort == "pedHGG",]
 
+# make color transparent if number of data point are <=2
+mytab <- table(hgg$immune_cluster) 
+cluster_col[ names(cluster_col) %in% names(mytab)[ mytab <= 2] ] <- "transparent"
+
 fig4f <- ggplot(data = hgg, aes(x = immune_cluster, y = binders)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5, aes(color = immune_cluster)) +
