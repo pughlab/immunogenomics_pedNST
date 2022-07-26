@@ -70,9 +70,7 @@ pdf(file = paste0(plotpath,"Fig5_B.pdf"),
     width = 10, 
     height = 10,
     useDingbats = FALSE)
-
 fig5b
-
 dev.off()
 
 ###############
@@ -203,12 +201,13 @@ fig5d <- ggplot(data = mytab_melted, aes(x = variable, y = value, fill = immune_
   ggtitle(~underline("PedNST (n = 742)")) + 
   labs(y = "Isotype fraction") + coord_cartesian(ylim = c(0,0.75))
 
-
 pdf(file = paste0(plotpath,"Fig5_D.pdf"),
     width = 14, 
     height = 10,
     useDingbats = FALSE)
-fig5d + theme(legend.position = "bottom")
+grid.draw(get_legend(fig5d + theme(legend.position = "bottom") + 
+                       guides(fill=guide_legend(nrow=2, byrow=TRUE)))) 
+
 dev.off()
 
 
