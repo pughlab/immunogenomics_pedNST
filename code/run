@@ -6,3 +6,4 @@ set -ex
 #Rscript Figure2.R "$@"
 #Rscript Figure3.R "$@"
 Rscript Figure4.R "$@"
+Rscript Figure5.R "$@"
