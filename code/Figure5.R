@@ -214,11 +214,71 @@ plot_grid(fig5d, lgd, nrow=2, ncol =1, rel_heights = c(3,0.4))
 
 dev.off()
 
-
-
 ###############
 # Figure 5E
 ###############
+
+load(file = paste0(gitpath, "metadata_IGrep.RData"))
+
+#nbl
+nbl <- metadata_igrep[ metadata_igrep$cohort == "NBL",]
+giniplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = gini)) + 
+  geom_beeswarm(color = "grey", size = 5, cex = 3, alpha = 0.7, shape = 16) + 
+  geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
+  theme(axis.title.y = element_text(size = 40),
+        axis.title.x = element_blank(),
+        axis.line = element_line(color = "black"),
+        axis.text.x = element_text(size = 40,angle = 45, hjust = 1, color = "black"),
+        axis.text.y = element_text(size = 40, color = "black")) +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        plot.background = element_rect(fill = "transparent", colour = NA),
+        plot.title = element_text(size = 40, hjust = 0.5)) +
+  theme(legend.position = "none") +
+  scale_color_manual(values = cluster_col) +
+  labs(y = paste0("gini index (Ig)")) +
+  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Neutral")), y_position = 1.1,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Excluded")), y_position = 1.2,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Excluded")), y_position = 1,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  ggtitle(expression(~underline("NBL (n = 113)")))
+
+#cns
+cns <- metadata_igrep[ metadata_igrep$cohort != "NBL",]
+
+giniplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = gini)) + 
+  geom_beeswarm(color = "grey", size = 5, cex = 2, alpha = 0.7, shape = 16) + 
+  geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
+  theme(axis.title.y = element_blank(),
+        axis.title.x = element_blank(),
+        axis.line = element_line(color = "black"),
+        axis.text.x = element_text(size = 40,angle = 45, hjust = 1, color = "black"),
+        axis.text.y = element_text(size = 40, color = "black")) +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        plot.background = element_rect(fill = "transparent", colour = NA),
+        plot.title = element_text(size = 40, hjust = 0.5)) +
+  theme(legend.position = "none") +
+  scale_color_manual(values = cluster_col) +
+  labs(y = paste0("gini index (Ig)")) +
+  geom_signif(comparisons = list(c("Pediatric Inflamed", "Myeloid Predominant")), y_position = 1,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Neutral")), y_position = 1.1,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Excluded")), y_position = 1.2,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  ggtitle(expression(~underline("pedCNS (n = 248)")))
+
+pdf(file = paste0(plotpath,"Fig5_E.pdf"),
+    width = 14, 
+    height = 10,
+    useDingbats = FALSE)
+plot_grid(giniplot_nbl, giniplot_cns, nrow = 1, align = "h", ncol = 2)
+dev.off()
 
 ###############
 # Compile in one file
