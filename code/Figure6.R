@@ -170,6 +170,77 @@ dev.off()
 # Figure 6D
 ###############
 
+load(file = paste0(datapath, "metadata_myeloid.RData"))
+load(file = paste0(datapath, "gsea_myeloidgroups_norm.RData"))
+
+# order with MG and cohorts
+metadata_myeloid <- metadata_myeloid[order(metadata_myeloid$Myeloidgroups, metadata_myeloid$cohort),]
+
+# TG cluster membership for myeloid samples
+myMcluster <- as.character(metadata_myeloid$Myeloidgroups)
+names(myMcluster) <- rownames(metadata_myeloid)
+class_mat <- t(as.matrix(myMcluster))
+rownames(class_mat) <- "Cluster"
+
+#cohort track
+mycohort <- metadata_myeloid$cohort
+names(mycohort) <- rownames(metadata_myeloid)
+mycohorts <- t(as.matrix(mycohort))
+rownames(mycohorts) <- "Cohort"
+cohorts_hm <- cohorts_hm.fx(mycohorts)
+
+#Order
+myeloid_cells_mat <- gsea_myeloidgroups_norm[,rownames(metadata_myeloid)]
+
+#Some reordering for heatmap
+myeloid_cells_mat <- myeloid_cells_mat[c('hM01_Mast.TPSAB1',
+                                         'hM04_cDC1.BATF3','hM03_cDC2.CD1C','hM02_pDC.LILRA4',
+                                         'hM06_Mono.CD16',
+                                         'hM09_Macro.PLTP','hM10_Macro.IL1B',
+                                         'hM12_TAM.C1QC','hM13_TAM.SPP1'),]
+
+#Group signatures
+Myeloidgroups <- c("Mast", rep("DC", 3), "Mono", rep("Mac", 2), rep("TAM", 2))
+names(Myeloidgroups) <- rownames(myeloid_cells_mat)
+
+Myeloidgroups <- factor(Myeloidgroups, levels = c("Mast","DC","Mono","Mac","TAM"))
+
+
+Mha <- HeatmapAnnotation(`Myeloid group` = anno_block(labels = c("MG1", "MG2","MG3", "MG4", "MG5"),
+                                                      labels_gp = gpar(fontsize = 15),
+                                                      show_name = FALSE, height = unit(1,"cm")))                                         
+
+col_fun = colorRamp2(c(-2, 0, 2), c("blue", "white", "red"))
+Myeloid_hm <- Heatmap(myeloid_cells_mat,
+                      #titles and names   
+                      name = "Cell-types z-score",   
+                      show_row_names = TRUE,
+                      show_column_names = TRUE,  
+                      col = col_fun,
+                      #clusters and orders  
+                      cluster_columns = FALSE,
+                      cluster_rows = FALSE,
+                      show_column_dend = FALSE,
+                      #aesthestics
+                      column_names_gp = gpar(fontsize = 5),
+                      row_names_gp = gpar(fontsize = 20),
+                      row_names_max_width = unit(8,"cm"),                      
+                      height = unit(9, "cm"),
+                      column_title_gp = gpar(fontsize = 20),
+                      row_title_gp = gpar(fontsize = 20),
+                      show_heatmap_legend = FALSE,
+                      row_title_rot = 90,
+                      column_split = myMcluster, 
+                      column_title = "Myeloid-driven (n = 279)",                  
+                      row_split = Myeloidgroups, 
+                      cluster_row_slices = FALSE,
+                      top_annotation = Mha)
+
+pdf(file = paste0(plotpath, "Fig6_D.pdf"),
+    width = 10, height = 10)
+Myeloid_hm %v% cohorts_hm
+dev.off()
+
 ###############
 # Figure 6E
 ###############
