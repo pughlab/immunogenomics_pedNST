@@ -205,7 +205,6 @@ names(Myeloidgroups) <- rownames(myeloid_cells_mat)
 
 Myeloidgroups <- factor(Myeloidgroups, levels = c("Mast","DC","Mono","Mac","TAM"))
 
-
 Mha <- HeatmapAnnotation(`Myeloid group` = anno_block(labels = c("MG1", "MG2","MG3", "MG4", "MG5"),
                                                       labels_gp = gpar(fontsize = 15),
                                                       show_name = FALSE, height = unit(1,"cm")))                                         
@@ -228,13 +227,17 @@ Myeloid_hm <- Heatmap(myeloid_cells_mat,
                       height = unit(9, "cm"),
                       column_title_gp = gpar(fontsize = 20),
                       row_title_gp = gpar(fontsize = 20),
-                      show_heatmap_legend = FALSE,
+                      show_heatmap_legend = TRUE,
                       row_title_rot = 90,
                       column_split = myMcluster, 
                       column_title = "Myeloid-driven (n = 279)",                  
                       row_split = Myeloidgroups, 
                       cluster_row_slices = FALSE,
-                      top_annotation = Mha)
+                      top_annotation = Mha,
+                      heatmap_legend_param = list(col_fun = col_fun, 
+                                                  at = c(-2, 0, 2),
+                                                  labels = c("<-2", "0", ">2"),
+                                                  title = "Cell-type\nz-score"))
 
 pdf(file = paste0(plotpath, "Fig6_D.pdf"),
     width = 10, height = 10)
