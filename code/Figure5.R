@@ -51,9 +51,9 @@ fig5b <- ggplot(data = metadata_TRB, aes(y = estimated_Shannon, x = Reads, label
   scale_color_manual(values = c("Outlier_down" = "#74add1", "Outlier_up" = "#d73027", "none" = "black")) +
   geom_smooth(method = "lm", se = FALSE) + myplot +
   scale_y_continuous(trans = "log10") + scale_x_continuous(trans = "log10") + annotation_logticks(sides = "bl") +
-  geom_text_repel(data = subset(metadata_IC_TRB, outliergroup == "Outlier_down"), segment.size = 0.2,
+  geom_text_repel(data = subset(metadata_TRB, outliergroup == "Outlier_down"), segment.size = 0.2,
                   box.padding = 0.5, direction = "x", hjust = 1,nudge_x  = 1, min.segment.length = 0, size = 8) +
-  geom_text_repel(data = subset(metadata_IC_TRB, outliergroup == "Outlier_up"), segment.size = 0.2,
+  geom_text_repel(data = subset(metadata_TRB, outliergroup == "Outlier_up"), segment.size = 0.2,
                   box.padding = 0.5,  direction = "x", hjust = 1, nudge_y  = 1, min.segment.length = 0, size = 8) +
   theme(legend.position = "none") +
   theme(plot.title = element_text(hjust = 0.5, size = 45),
