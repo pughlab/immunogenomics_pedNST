@@ -122,7 +122,7 @@ cluster_col[ names(cluster_col) %in% names(mytab)[ mytab <= 2] ] <- "transparent
 trbplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = estimated_Shannon)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 2, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
-  theme(axis.title.y = element_text(size = 40),
+  theme(axis.title.y = element_blank(),
         axis.title.x = element_blank(),
         axis.line = element_line(color = "black"),
         axis.text.x = element_text(size = 40,angle = 45, hjust = 1, color = "black"),
