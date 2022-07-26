@@ -12,13 +12,149 @@ source("/code/functions/plotting_functions.R")
 datapath <- "/data/"
 plotpath <- "/results/"
 
-
 ###############
 # Figure 5A
 ###############
 
+load(file = paste0(datapath, "TRB_CapTCR_RNAseq.RData"))
 
+shan_trb <- TCRcap_rnaplot.fx(TRB_CapTCR_RNAseq, "estimated_Shannon_RNAseq", "observed_Shannon_TCRCap", "Shannon diversity", 40,3)
 
+#add title
+fig5a <- shan_trb + ggtitle(~underline("TRB diversity inference"))
+
+pdf(file = paste0(plotpath,"Fig5_A.pdf"),
+    width = 10, height = 10, useDingbats = FALSE)
+fig5a
+dev.off()
+
+###############
+# Figure 5B
+###############
+
+load(file = paste0(datapath, "metadata_TRB.RData"))
+
+# linear regression
+regression_trb <- lm(log10(estimated_Shannon)~ log10(Reads), data = metadata_TRB)
+summary(regression_trb)
+
+#add residuals
+metadata_TRB$residuals <- residuals(regression_trb)
+
+# define outliers as more than abs(sd) for residuals
+metadata_TRB$outliergroup <- "none"
+metadata_TRB$outliergroup[ metadata_TRB$residuals <= -2*sd(metadata_TRB$residuals)] <- "Outlier_down"
+metadata_TRB$outliergroup[ metadata_TRB$residuals >= 2*sd(metadata_TRB$residuals)] <- "Outlier_up"
+
+fig5b <- ggplot(data = metadata_TRB, aes(y = estimated_Shannon, x = Reads, label = cohort)) + 
+  geom_point(aes(color = outliergroup), size = 5) +
+  scale_color_manual(values = c("Outlier_down" = "#74add1", "Outlier_up" = "#d73027", "none" = "black")) +
+  geom_smooth(method = "lm", se = FALSE) + myplot +
+  scale_y_continuous(trans = "log10") + scale_x_continuous(trans = "log10") + annotation_logticks(sides = "bl") +
+  geom_text_repel(data = subset(metadata_IC_TRB, outliergroup == "Outlier_down"), segment.size = 0.2,
+                  box.padding = 0.5, direction = "x", hjust = 1,nudge_x  = 1, min.segment.length = 0, size = 8) +
+  geom_text_repel(data = subset(metadata_IC_TRB, outliergroup == "Outlier_up"), segment.size = 0.2,
+                  box.padding = 0.5,  direction = "x", hjust = 1, nudge_y  = 1, min.segment.length = 0, size = 8) +
+  theme(legend.position = "none") +
+  theme(plot.title = element_text(hjust = 0.5, size = 45),
+        axis.title = element_text(size = 45),
+        axis.line = element_line(color = "black"),
+        axis.text.x = element_text(size = 45, color = "black"),
+        axis.text.y = element_text(size = 45, color = "black")) +
+  labs(y = "Estimated Shannon diversity", x = "TCRb reads") +
+  ggtitle(~underline("pedNST (n = 361)"))
+
+pdf(file = paste0(plotpath,"Fig5_B.pdf"),
+    width = 10, 
+    height = 10,
+    useDingbats = FALSE)
+
+fig5b
+
+dev.off()
+
+###############
+# Figure 5C
+###############
+
+load(file = paste0(datapath, "metadata_TRB.RData"))
+
+trbplot_nbl <- ggplot(data = metadata_RB[ metadata_TRB$cohort == "NBL",], 
+                      aes(x = immune_cluster, y = estimated_Shannon)) + 
+  geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
+  geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
+  theme(axis.title.y = element_text(size = 40),
+        axis.title.x = element_blank(),
+        axis.line = element_line(color = "black"),
+        axis.text.x = element_text(size = 40,angle = 45, hjust = 1, color = "black"),
+        axis.text.y = element_text(size = 40, color = "black")) +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        plot.background = element_rect(fill = "transparent", colour = NA),
+        plot.title = element_text(size = 40, hjust = 0.5)) +
+  theme(legend.position = "none") +
+  scale_color_manual(values = cluster_col) +
+  scale_y_continuous(trans = "log10", 
+                     labels = scales::label_number(accuracy = 1)) + annotation_logticks(sides = "l") +
+  labs(y = paste0("Estimated\nShannon diversity")) +
+  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Excluded")), y_position = 5.5,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Neutral")), y_position = 4.5,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Neutral")), y_position = 4,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Excluded")), y_position = 5,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  geom_signif(comparisons = list(c("Immune Neutral", "Immune Excluded")), y_position = 4,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  ggtitle(expression(~underline("NBL (n = 116)")))
+
+trbplot_cns <- ggplot(data = metadata_TRB[ metadata_TRB$cohort != "NBL",], 
+                      aes(x = immune_cluster, y = estimated_Shannon)) + 
+  geom_beeswarm(color = "grey", size = 5, cex = 2, alpha = 0.7, shape = 16) + 
+  geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
+  theme(axis.title.y = element_text(size = 40),
+        axis.title.x = element_blank(),
+        axis.line = element_line(color = "black"),
+        axis.text.x = element_text(size = 40,angle = 45, hjust = 1, color = "black"),
+        axis.text.y = element_text(size = 40, color = "black")) +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        plot.background = element_rect(fill = "transparent", colour = NA),
+        plot.title = element_text(size = 40, hjust = 0.5)) +
+  theme(legend.position = "none") +
+  scale_color_manual(values = cluster_col) +
+  scale_y_continuous(trans = "log10", 
+                     labels = scales::label_number(accuracy = 1)) + annotation_logticks(sides = "l") +
+  labs(y = paste0("Estimated\nShannon diversity")) +
+  geom_signif(comparisons = list(c("Pediatric Inflamed", "Myeloid Predominant")), y_position = 4.3,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Neutral")), y_position = 5.5,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Neutral")), y_position = 4.8,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  ggtitle(expression(~underline("pedCNS (n = 245)")))
+
+fig5c <- plot_grid(trbplot_nbl, trbplot_cns, nrow = 1, align = "h", ncol = 2)
+
+pdf(file = paste0(plotpath,"Fig5_C.pdf"),
+    width = 14, 
+    height = 10,
+    useDingbats = FALSE)
+
+fig5c
+
+dev.off()
+
+###############
+# Figure 5D
+###############
+
+###############
+# Figure 5E
+###############
 
 ###############
 # Compile in one file
