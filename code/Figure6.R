@@ -65,7 +65,7 @@ fig6a = Heatmap(t(median_mat),
 
 pdf(paste0(plotpath, "Fig6_A.pdf"),
     width = 40, height = 20)
-draw(fig6a)
+draw(fig6a, heatmap_legend_side = "bottom")
 dev.off()
 
 ###############
