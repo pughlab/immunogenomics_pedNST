@@ -168,7 +168,7 @@ plot_tcells <- ggplot(data = trb_inflamed, aes(x = grp, y = `T cells`)) +
         axis.text.y = element_text(size = 30)) +
   theme(plot.title = element_text(size = 30, hjust = 0.5)) +
   theme(legend.position = "none",
-        plot.margin = margin(0.2, 0.2, 0.2, 2, "cm")) +
+        plot.margin = margin(0.2, 0.2, 0.2, 3, "cm")) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 6.2,
               map_signif_level=TRUE, textsize = 10, test = "t.test", vjust = 0.5) +
   expand_limits(y = 0) +
@@ -182,7 +182,7 @@ plot_dc <- ggplot(data = trb_inflamed, aes(x = grp, y = `Dendritic cells`)) +
         axis.title.x = element_blank(),
         axis.text.x = element_text(size = 30),
         axis.text.y = element_text(size = 30)) +
-  theme(plot.title = element_blank(), legend.position = "none", plot.margin = margin(0.2, 0.2, 0.2, 2, "cm")) +
+  theme(plot.title = element_blank(), legend.position = "none", plot.margin = margin(0.2, 0.2, 0.2, 3, "cm")) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 4,
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
   expand_limits(y = 0) + scale_y_continuous(expand = c(0.1, 0)) +
@@ -205,7 +205,7 @@ plot_tcells_mp <- ggplot(data = trb_myeloid, aes(x = grp, y = `T cells`)) +
         axis.text.x = element_blank(),
         axis.text.y = element_text(size = 30, color = "black")) +
   theme(plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none",
-        plot.margin = margin(0.2, 2, 0.2, 0.2, "cm")) +
+        plot.margin = margin(0.2, 2.2, 0.2, 0.2, "cm")) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 1.8,
               map_signif_level=TRUE, textsize = 10, test = "t.test", vjust = 0.5) +
   labs(y = paste0("T cells")) + ggtitle("Myeloid Predominant\n(n = 82)")
@@ -217,13 +217,13 @@ plot_mono_mp <- ggplot(data = trb_myeloid, aes(x = grp, y = Monocytes)) +
         axis.title.x = element_blank(),
         axis.text.x = element_text(size = 30),
         axis.text.y = element_text(size = 30)) +
-  theme(plot.title = element_blank(),legend.position = "none", plot.margin = margin(0.2, 2, 0.2, 0.2, "cm")) +
+  theme(plot.title = element_blank(),legend.position = "none", plot.margin = margin(0.2, 2.2, 0.2, 0.2, "cm")) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 3.9,
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
   scale_y_continuous(expand = c(0.1, 0)) + labs(y = paste0("Monocytes")) 
 
 pdf(file = paste0(plotpath,"Fig5_D.pdf"),
-    width = 8, height = 14, useDingbats = FALSE, onefile = FALSE)
+    width = 10, height = 20, useDingbats = FALSE, onefile = FALSE)
 grid.draw(ggarrange(plots=list(plot_tcells, plot_tcells_mp,
                                plot_dc, plot_mono_mp)))
 dev.off()
