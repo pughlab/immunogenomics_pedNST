@@ -42,6 +42,7 @@ colnames(fc_mat_pathways) <- gsub("[.]", " ", colnames(fc_mat_pathways))
 
 fc_mat_pathways_t <- t(fc_mat_pathways)
 
+ht_opt$HEATMAP_LEGEND_PADDING = unit(1,"cm")
 #Heatmap
 col_fun= colorRamp2(c(-0.6, 0, 0.6), c("blue", "white", "red"))
 pathways_hm = Heatmap(fc_mat_pathways_t,
@@ -61,17 +62,16 @@ pathways_hm = Heatmap(fc_mat_pathways_t,
                       column_title = NULL,
                       row_title = NULL,
                       column_names_rot = 45,
-                      show_heatmap_legend = FALSE)
-
-col_fun= colorRamp2(c(-0.6, 0, 0.6), c("blue", "white", "red"))
-lgd = Legend(col_fun = col_fun, 
-             at = c(-0.6, 0, 0.6), 
-             title = "Fold change\n(Log2)", title_gp = gpar(fontsize = 20),
-             grid_height = unit(4, "cm"),
-             labels_gp = gpar(fontsize = 20))
+                      show_heatmap_legend = TRUE,
+                      heatmap_legend_param = list(col_fun = col_fun,
+                                                  at = c(-0.6, 0, 0.6),
+                                                  legend.height = unit(4, "cm"),
+                                                  title_gp = gpar(fontsize = 20),
+                                                  title = "Fold change (Log2)",
+                                                  labels_gp = gpar(fontsize = 20)))
 
 pdf(paste0(plotpath,"Fig3_A.pdf"), width = 30, height = 10)
-draw(pathways_hm, annotation_legend_side =  "right",  annotation_legend_list = list(lgd))
+draw(pathways_hm)
 decorate_heatmap_body("Log2_FC", {
   grid.rect(x = 0, y = 1, just = c("left", "top"),
             width = 0.45,height = 1, gp = gpar(col = "black", lwd = 5))
@@ -246,7 +246,7 @@ for( g in rownames(immunereg_genmat)){
   median_mat[g,4] <- median(immunereg_genmat_z[g, metadata_IC$sample_id[metadata_IC$immune_cluster == "Immune Excluded"]])
 }
 
-ht_opt$HEATMAP_LEGEND_PADDING = unit(10,"cm")
+ht_opt$HEATMAP_LEGEND_PADDING = unit(1,"cm")
 #Heatmap
 col_fun = colorRamp2(c(-1, 0, 1), c("blue", "white", "red"))
 fig3d = Heatmap(t(median_mat),
@@ -276,16 +276,8 @@ fig3d = Heatmap(t(median_mat),
                                             title = "Median z-score",
                                             labels_gp = gpar(fontsize = 20)))
 
-
-col_fun = colorRamp2(c(-1, 0, 1), c("blue", "white", "red"))
-lgd = Legend(col_fun = col_fun, 
-             at = c(-1,0,1), 
-             title = "Median\nz-score", title_gp = gpar(fontsize = 20),
-             grid_height = unit(4, "cm"), #grid_width = unit(1, "cm"),
-             labels_gp = gpar(fontsize = 20))
-
 pdf(paste0(plotpath, "Fig3_D.pdf"), width = 30, height = 8)
-draw(fig3d, annotation_legend_side =  "right",  annotation_legend_list = list(lgd))
+draw(fig3d)
 dev.off()
 
 ###############
