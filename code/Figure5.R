@@ -22,7 +22,7 @@ shan_trb <- TCRcap_rnaplot.fx(TRB_CapTCR_RNAseq, "estimated_Shannon_RNAseq", "ob
 
 #add title
 fig5a <- shan_trb + ggtitle(~underline("TRB diversity inference")) + 
-  theme(plot.margin = margin(1, 0.2, 1.5, 0.2, "cm"))
+  theme(plot.margin = margin(0.2, 1, 1, 0.2, "cm"))
 
 pdf(file = paste0(plotpath,"Fig5_A.pdf"),
     width = 10, height = 10, useDingbats = FALSE)
@@ -36,7 +36,7 @@ dev.off()
 load(file = paste0(datapath, "metadata_TRB.RData"))
 
 # linear regression
-regression_trb <- lm(log10(estimated_Shannon)~ log10(Reads), data = metadata_TRB)
+regression_trb <- lm(log10(estimated_Shannon) ~ log10(Reads), data = metadata_TRB)
 summary(regression_trb)
 
 #add residuals
@@ -59,7 +59,7 @@ fig5b <- ggplot(data = metadata_TRB, aes(y = estimated_Shannon, x = Reads, label
   theme(legend.position = "none") +
   theme(plot.title = element_text(hjust = 0.5, size = 45),
         axis.title = element_text(size = 45),
-        plot.margin = margin(1, 2.5, 1.5, 0.5, "cm"),
+        plot.margin = margin(0.2, 0.2, 0.2, 0.2, "cm"),
         axis.line = element_line(color = "black"),
         axis.text.x = element_text(size = 45, color = "black"),
         axis.text.y = element_text(size = 45, color = "black")) +
@@ -110,7 +110,8 @@ trbplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = estimated_Shannon)
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Immune Neutral", "Immune Excluded")), y_position = 4,
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
-  ggtitle(expression(~underline("NBL (n = 116)")))
+  ggtitle(expression(~underline("NBL (n = 116)"))) +
+  scale_y_continuous(expand = c(0.1, 0))
 
 # cns
 cns <- metadata_TRB[ metadata_TRB$cohort != "NBL",]
@@ -145,17 +146,13 @@ trbplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = estimated_Shannon)
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Neutral")), y_position = 4.8,
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
-  ggtitle(expression(~underline("pedCNS (n = 245)")))
+  ggtitle(expression(~underline("pedCNS (n = 245)"))) +
+  scale_y_continuous(expand = c(0.1, 0))
 
 fig5c <- plot_grid(trbplot_nbl, trbplot_cns, nrow = 1, align = "h", ncol = 2)
 
-pdf(file = paste0(plotpath,"Fig5_C.pdf"),
-    width = 14, 
-    height = 10,
-    useDingbats = FALSE)
-
+pdf(file = paste0(plotpath,"Fig5_C.pdf"), width = 14, height = 10, useDingbats = FALSE)
 fig5c
-
 dev.off()
 
 ###############
@@ -206,7 +203,7 @@ fig5e <- ggplot(data = mytab_melted, aes(x = variable, y = value, fill = immune_
   geom_signif(annotation="*",y_position= 0.65, xmin= 0.9, xmax=1.3, textsize = 10, vjust = 0.5) +# for IGHG1
   geom_signif(annotation="*",y_position= 0.3, xmin= 2.9, xmax=3.3, textsize = 10, vjust = 0.5) +# for IGHG3
   ggtitle(~underline("PedNST (n = 742)")) + 
-  labs(y = "Isotype fraction") + coord_cartesian(ylim = c(0,0.75))
+  labs(y = "Isotype fraction") #+ coord_cartesian(ylim = c(0,0.75))
 
 #plot legend in two rows
 lgd <- get_legend(fig5e + theme(legend.position = "bottom") +  guides(fill=guide_legend(nrow=2, byrow=TRUE))) 
@@ -279,7 +276,8 @@ giniplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = gini)) +
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Excluded")), y_position = 1.2,
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
-  ggtitle(expression(~underline("pedCNS (n = 248)")))
+  ggtitle(expression(~underline("pedCNS (n = 248)"))) +
+  scale_y_continuous(expand = c(0.1, 0))
 
 pdf(file = paste0(plotpath,"Fig5_F.pdf"),
     width = 14, 
