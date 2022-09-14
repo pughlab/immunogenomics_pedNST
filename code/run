@@ -4,7 +4,7 @@ set -ex
 # This is the master script for the capsule. When you click "Reproducible Run", the code in this file will execute.
 #Rscript Figure1.R "$@"
 #Rscript Figure2.R "$@"
-Rscript Figure3.R "$@"
+#Rscript Figure3.R "$@"
 Rscript Figure4.R "$@"
 #Rscript Figure5.R "$@"
 #Rscript Figure6.R "$@"
