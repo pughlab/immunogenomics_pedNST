@@ -158,7 +158,7 @@ trb_inflamed$grp[ trb_inflamed$residuals <= quantile(trb_inflamed$residuals, 0.2
 
 trb_inflamed <- trb_inflamed[ !is.na(trb_inflamed$grp),]
 
-plot_tcells <- ggplot(data = trb_inflamed, aes(x = grp, y = T_cells)) + 
+plot_tcells <- ggplot(data = trb_inflamed, aes(x = grp, y = `T cells`)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA)  +
   theme(axis.title.y = element_text(size = 50),
@@ -175,7 +175,7 @@ plot_tcells <- ggplot(data = trb_inflamed, aes(x = grp, y = T_cells)) +
   labs(y = paste0("T cells")) +
   ggtitle("Pediatric Inflamed\n(n = 42)")
 
-plot_dc <- ggplot(data = trb_inflamed, aes(x = grp, y = DC)) + 
+plot_dc <- ggplot(data = trb_inflamed, aes(x = grp, y = `Dendritic cells`)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA)  +
   theme(axis.title.y = element_text(size = 50),
