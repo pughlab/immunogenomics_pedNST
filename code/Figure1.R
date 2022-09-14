@@ -258,7 +258,7 @@ heplot <- ggplot(data = HE_manifest,
   myaxis + myplot +
   scale_color_manual(values = cohort_col) +
   theme(legend.position = "none", 
-        plot.margin = unit(c(0,0,1,0), "cm"),
+        plot.margin = unit(c(0.2,0.2,0.2,2), "cm"),
         axis.title.x = element_blank(),
         axis.title.y = element_text(size = 40),
         axis.text.x = element_text(size = 40),
