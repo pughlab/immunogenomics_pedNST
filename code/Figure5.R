@@ -306,21 +306,26 @@ dev.off()
 
 load(file = paste0(datapath, "metadata_IGrep.RData"))
 
+#merge metadata and TRB with gini index
 tcr_bcr <- merge(metadata_igrep, metadata_TRB, by = "sample_id")
 rownames(tcr_bcr) <- tcr_bcr$sample_id
 
+#subset to pediatric inflamed and group based on residuals
 vars_inflamed <- tcr_bcr[ tcr_bcr$immune_cluster.x == "Pediatric Inflamed",]
 vars_inflamed$grp <- NA
 vars_inflamed$grp[ vars_inflamed$residuals >= quantile(vars_inflamed$residuals, 0.75)] <- "Residuals >= 75%"
 vars_inflamed$grp[ vars_inflamed$residuals <= quantile(vars_inflamed$residuals, 0.25)] <- "Residuals <= 25%"
 
+#load IGH genes - batch corrected log2 tpms
 load(file = paste0(datapath,"IG_genes.RData"))
 vars_inflamed_genes <- cbind(vars_inflamed, ig_genes[ vars_inflamed$sample_id,])
 
+#get median of expression for IGHG3 for each cancer type
 mymed <- lapply(unique(vars_inflamed_genes$cohort.x), function(x){
   median(vars_inflamed_genes$IGHG3[ vars_inflamed_genes$cohort.x == x])})
 names(mymed) <- unique(vars_inflamed_genes$cohort.x)
 
+#for each sample, center value for IGHG3 to median expression for the corresponding cancer type
 myscaledgene <- vector(mode="numeric", length=nrow(vars_inflamed_genes))
 names(myscaledgene) <- rownames(vars_inflamed_genes)
 for(j in 1:nrow(vars_inflamed_genes)){
@@ -329,10 +334,12 @@ for(j in 1:nrow(vars_inflamed_genes)){
 
 vars_inflamed_genes$IGHG3s <- myscaledgene[ rownames(vars_inflamed_genes)]
 
+#get median of expression for IGHG1 for each cancer type
 mymed <- lapply(unique(vars_inflamed_genes$cohort.x), function(x){
   median(vars_inflamed_genes$IGHG1[ vars_inflamed_genes$cohort.x == x])})
 names(mymed) <- unique(vars_inflamed_genes$cohort.x)
 
+#for each sample, center value for IGHG1 to median expression for the corresponding cancer type
 myscaledgene <- vector(mode="numeric", length=nrow(vars_inflamed_genes))
 names(myscaledgene) <- rownames(vars_inflamed_genes)
 for(j in 1:nrow(vars_inflamed_genes)){
@@ -343,7 +350,8 @@ vars_inflamed_genes$IGHG1s <- myscaledgene[ rownames(vars_inflamed_genes)]
 
 vars_inflamed_genes <- vars_inflamed_genes[ !is.na(vars_inflamed_genes$grp),]
 
-plot_gini <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = gini)) + 
+#plots
+plot_gini_pi <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = gini)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA)  + myplot + myaxis +
   theme(axis.title.y = element_text(size = 30),
@@ -358,7 +366,7 @@ plot_gini <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = gini)) +
   labs(y = paste0("gini index (Ig)")) +
   ggtitle("Pediatric Inflamed\n(n = 36)")
 
-plot_ighg3 <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = IGHG3s)) + 
+plot_ighg3_pi <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = IGHG3s)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA)  + myplot + myaxis + 
   theme(axis.title.y = element_text(size = 30),
@@ -372,7 +380,7 @@ plot_ighg3 <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = IGHG3s)) +
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
   labs(y = paste0("IGHG3")) 
 
-plot_ighg1 <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = IGHG1s)) + 
+plot_ighg1_pi <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = IGHG1s)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA)  + myplot + myaxis +
   theme(axis.title.y = element_text(size = 30),
@@ -386,12 +394,103 @@ plot_ighg1 <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = IGHG1s)) +
   scale_y_continuous(expand = c(0.1, 0)) +
   labs(y = paste0("IGHG1")) 
 
+#Myeloid predominant
+#subset to myeloid predominant and group based on residuals
+vars_myeloid <- tcr_bcr[ tcr_bcr$immune_cluster.x == "Myeloid Predominant",]
+
+vars_myeloid$grp <- NA
+vars_myeloid$grp[ vars_myeloid$residuals >= quantile(vars_myeloid$residuals, 0.75)] <- "Residuals >= 75%"
+vars_myeloid$grp[ vars_myeloid$residuals <= quantile(vars_myeloid$residuals, 0.25)] <- "Residuals <= 25%"
+
+#add genes
+vars_myeloid_genes <- cbind(vars_myeloid, ig_genes[ vars_myeloid$sample_id,])
+
+#get median of expression for IGHG3 for each cancer type
+mymed <- lapply(unique(vars_myeloid_genes$cohort.x), function(x){
+  median(vars_myeloid_genes$IGHG3[ vars_myeloid_genes$cohort.x == x])})
+names(mymed) <- unique(vars_myeloid_genes$cohort.x)
+
+#for each sample, center value for IGHG3 to median expression for the corresponding cancer type
+myscaledgene <- vector(mode="numeric", length=nrow(vars_myeloid_genes))
+names(myscaledgene) <- rownames(vars_myeloid_genes)
+for(j in 1:nrow(vars_myeloid_genes)){
+  myscaledgene[j] <-  vars_myeloid_genes$IGHG3[j]-unlist(mymed[vars_myeloid_genes$cohort.x[j]])   
+}
+
+vars_myeloid_genes$IGHG3s <- myscaledgene[ rownames(vars_myeloid_genes)]
+
+#get median of expression for IGHG1 for each cancer type
+mymed <- lapply(unique(vars_myeloid_genes$cohort.x), function(x){
+  median(vars_myeloid_genes$IGHG1[ vars_myeloid_genes$cohort.x == x])})
+names(mymed) <- unique(vars_myeloid_genes$cohort.x)
+
+#for each sample, center value for IGHG1 to median expression for the corresponding cancer type
+myscaledgene <- vector(mode="numeric", length=nrow(vars_myeloid_genes))
+names(myscaledgene) <- rownames(vars_myeloid_genes)
+for(j in 1:nrow(vars_myeloid_genes)){
+  myscaledgene[j] <-  vars_myeloid_genes$IGHG1[j]-unlist(mymed[vars_myeloid_genes$cohort.x[j]])   
+}
+
+vars_myeloid_genes$IGHG1s <- myscaledgene[ rownames(vars_myeloid_genes)]
+
+vars_myeloid_genes <- vars_myeloid_genes[ !is.na(vars_myeloid_genes$grp),]
+
+#plots
+plot_gini_mp <- ggplot(data = vars_myeloid_genes, aes(x = grp, y = gini)) + 
+  geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
+  geom_boxplot(outlier.shape = NA, fill = NA)  +
+  theme(axis.title.y = element_text(size = 30),
+        axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_text(size = 30)) +
+  theme(plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none",
+        plot.margin = margin(1,10, 1, 60)) +
+  scale_y_continuous(expand = c(0.1, 0)) +
+  geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 1.0,
+              map_signif_level=TRUE, textsize = 10, test = "t.test", vjust = 0.5) +
+  labs(y = paste0("gini index (Ig)")) +
+  ggtitle("Myeloid Predominant\n(n = 67)")
+
+plot_ighg3_mp <- ggplot(data = vars_myeloid_genes, aes(x = grp, y = IGHG3s)) + 
+  geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
+  geom_boxplot(outlier.shape = NA, fill = NA)  + myploy + myaxis +
+  theme(axis.title.y = element_text(size = 30),
+        axis.title.x = element_blank(),
+        axis.text.x = element_text(size = 30),
+        axis.text.y = element_text(size = 30)) +
+  theme(plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none",
+        plot.margin = margin(1,10,1,60)) +
+  geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 6,
+              map_signif_level=TRUE, textsize = 10, test = "t.test", vjust = 0.5) +
+  expand_limits(y = 0) + scale_y_continuous(expand = c(0.1, 0)) +
+  labs(y = paste0("IGHG3")) 
+
+plot_ighg1_mp <- ggplot(data = vars_myeloid_genes, aes(x = grp, y = IGHG1s)) + 
+  geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
+  geom_boxplot(outlier.shape = NA, fill = NA)  + myplot + myaxis +
+  theme(axis.title.y = element_text(size = 30),
+        axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_text(size = 30)) +
+  theme(plot.title = element_blank(), legend.position = "none",
+        plot.margin = margin(1,10,1,60)) +
+  geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 6,
+              map_signif_level=TRUE, textsize = 10, test = "t.test", vjust = 0.5) +
+  expand_limits(y = 0) +
+  scale_y_continuous(expand = c(0.1, 0)) +
+  labs(y = paste0("IGHG1")) 
+
 pdf(file = paste0(plotpath,"Fig5_G.pdf"),
     width = 8, height = 18, useDingbats = FALSE)
 
-grid.draw(ggarrange(plots=list(plot_gini, plot_ighg1, plot_ighg3)))
+grid.draw(ggarrange(plots=list(plot_gini_pi, plot_gini_mp,
+                               plot_ighg1_pi, plot_ighg1_mp,
+                               plot_ighg3_pi, plot_ighg3_mp),
+                    nrow = 3, ncol = 2))
 
 dev.off()
+
+
 
 
 ###############
