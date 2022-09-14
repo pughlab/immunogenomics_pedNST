@@ -25,18 +25,18 @@ ped_tmb$indelpermb[ped_tmb$indelpermb == 0] <- 0.001
 
 # Fig4A
 fig4a <- ggplot(data = ped_tmb, aes(x = immune_cluster, y = snvpermb)) + 
-  geom_beeswarm(color = "grey", size = 5, cex = 0.7, alpha = 0.7, shape = 16) + 
+  geom_beeswarm(color = "grey", size = 3, cex = 0.7, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
-  theme(axis.title.y = element_text(size = 45),
+  theme(axis.title.y = element_text(size = 35),
         axis.title.x = element_blank(),
         axis.line = element_line(color = "black"),
-        axis.text.x = element_text(size = 45,angle = 45, hjust = 1, color = "black"),
-        axis.text.y = element_text(size = 45, color = "black")) +
+        axis.text.x = element_text(size = 35,angle = 45, hjust = 1, color = "black"),
+        axis.text.y = element_text(size = 35, color = "black")) +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
         plot.background = element_rect(fill = "transparent", colour = NA),
-        plot.title = element_text(size = 45, hjust = 0.5)) +
+        plot.title = element_text(size = 35, hjust = 0.5)) +
   theme(legend.position = "none") +
   scale_color_manual(values = cluster_col) +
   scale_y_continuous(trans = "log10", breaks = c(0.01,0.1, 1,10,100),
@@ -51,18 +51,18 @@ dev.off()
 
 # Fig4B
 fig4b <- ggplot(data = ped_tmb, aes(x = immune_cluster, y = mutpermb)) + 
-  geom_beeswarm(color = "grey", size = 5, cex = 0.7, alpha = 0.7, shape = 16) + 
+  geom_beeswarm(color = "grey", size = 3, cex = 0.7, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
-  theme(axis.title.y = element_text(size = 45),
+  theme(axis.title.y = element_text(size = 35),
         axis.title.x = element_blank(),
         axis.line = element_line(color = "black"),
-        axis.text.x = element_text(size = 45,angle = 45, hjust = 1, color = "black"),
-        axis.text.y = element_text(size = 45, color = "black")) +
+        axis.text.x = element_text(size = 35,angle = 45, hjust = 1, color = "black"),
+        axis.text.y = element_text(size = 35, color = "black")) +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
         plot.background = element_rect(fill = "transparent", colour = NA),
-        plot.title = element_text(size = 45, hjust = 0.5)) +
+        plot.title = element_text(size = 35, hjust = 0.5)) +
   theme(legend.position = "none") +
   scale_color_manual(values = cluster_col) +
   scale_y_continuous(trans = "log10", breaks = c(0.01,0.1, 1,10,100),
@@ -79,18 +79,18 @@ dev.off()
 # Fig4C
 hgg <- ped_tmb[ped_tmb$cohort == "pedHGG",]
 fig4c <- ggplot(data = hgg, aes(x = immune_cluster, y = mutpermb)) + 
-  geom_beeswarm(color = "grey", size = 5, cex = 3, alpha = 0.7, shape = 16) + 
+  geom_beeswarm(color = "grey", size = 3, cex = 3, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
-  theme(axis.title.y = element_text(size = 45),
+  theme(axis.title.y = element_text(size = 35),
         axis.title.x = element_blank(),
         axis.line = element_line(color = "black"),
-        axis.text.x = element_text(size = 45, angle = 45, hjust = 1, color = "black"),
-        axis.text.y = element_text(size = 45, color = "black")) +
+        axis.text.x = element_text(size = 35, angle = 45, hjust = 1, color = "black"),
+        axis.text.y = element_text(size = 35, color = "black")) +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
         plot.background = element_rect(fill = "transparent", colour = NA),
-        plot.title = element_text(size = 45, hjust = 0.5)) +
+        plot.title = element_text(size = 35, hjust = 0.5)) +
   theme(legend.position = "none") +
   scale_color_manual(values = cluster_col) +
   scale_y_continuous(trans = "log10", breaks = c(0.01,0.1, 1,10,100),
@@ -116,18 +116,18 @@ load(file = paste0(datapath, "pedNST_strongpeptides.RData"))
 #Fig4D
 # column binders shows number of strong binding peptides by Mupexi with the BA rank of <= 0.5%
 fig4d <- ggplot(data = metadata_SB, aes(x = immune_cluster, y = binders)) + 
-  geom_beeswarm(color = "grey", size = 5, cex = 1, alpha = 0.7, shape = 16) + 
+  geom_beeswarm(color = "grey", size = 3, cex = 1, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
-  theme(axis.title.y = element_text(size = 45),
+  theme(axis.title.y = element_text(size = 35),
         axis.title.x = element_blank(),
         axis.line = element_line(color = "black"),
-        axis.text.x = element_text(size = 45,angle = 45, hjust = 1, color = "black"),
-        axis.text.y = element_text(size = 45, color = "black")) +
+        axis.text.x = element_text(size = 35,angle = 45, hjust = 1, color = "black"),
+        axis.text.y = element_text(size = 35, color = "black")) +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
         plot.background = element_rect(fill = "transparent", colour = NA),
-        plot.title = element_text(size = 45, hjust = 0.5)) +
+        plot.title = element_text(size = 35, hjust = 0.5)) +
   theme(legend.position = "none") +
   scale_color_manual(values = cluster_col) +
   scale_y_continuous(trans = "log10", 
@@ -152,18 +152,18 @@ mytab <- table(hgg$immune_cluster)
 cluster_col[ names(cluster_col) %in% names(mytab)[ mytab <= 2] ] <- "transparent"
 
 fig4e <- ggplot(data = hgg, aes(x = immune_cluster, y = binders)) + 
-  geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
+  geom_beeswarm(color = "grey", size = 3, cex = 4, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5, aes(color = immune_cluster)) +
-  theme(axis.title.y = element_text(size = 45),
+  theme(axis.title.y = element_text(size = 35),
         axis.title.x = element_blank(),
         axis.line = element_line(color = "black"),
-        axis.text.x = element_text(size = 45,angle = 45, hjust = 1, color = "black"),
-        axis.text.y = element_text(size = 45, color = "black")) +
+        axis.text.x = element_text(size = 35,angle = 45, hjust = 1, color = "black"),
+        axis.text.y = element_text(size = 35, color = "black")) +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
         plot.background = element_rect(fill = "transparent", colour = NA),
-        plot.title = element_text(size = 45, hjust = 0.5)) +
+        plot.title = element_text(size = 35, hjust = 0.5)) +
   theme(legend.position = "none") +
   scale_color_manual(values = cluster_col) +
   scale_y_continuous(trans = "log10", 
@@ -303,7 +303,8 @@ col_labels = structure(c("RTK (71)", "PI3K (26)", "Wnt (48)", "Notch (51)", "HIP
                        names = names(pathwaycount))
 
 #order with cohort_mat
-pathway_mat <- pathway_mat[,colnames(cohort_mat)]
+pathway_mat <- pathway_mat[,colnames(cohort_mat_frac)]
+
 # heatmap for fraction of mutated samples in each immune cluster (z score)
 col_fun = colorRamp2(c(-1.5, 0, 1.5), c("blue", "white", "red"))
 my_hm = Heatmap(scale(pathway_mat), #scale
