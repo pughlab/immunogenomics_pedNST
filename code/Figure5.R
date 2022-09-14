@@ -278,7 +278,7 @@ cns <- metadata_igrep[ metadata_igrep$cohort != "NBL",]
 
 giniplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = gini)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 2, alpha = 0.7, shape = 16) + 
-  geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
+  geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5, aes(color = immune_cluster)) +
   myplot + myaxis + 
   theme(axis.title.y = element_blank(),
         axis.title.x = element_blank(),
