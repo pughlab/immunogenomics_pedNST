@@ -200,7 +200,7 @@ fig5e <- ggplot(data = mytab_melted, aes(x = variable, y = value, fill = immune_
         axis.text.x = element_text(size = 45),
         legend.position = "none",
         plot.title = element_text(hjust = 0.5, size = 45),
-        plot.margin = margin(1,0.5,1.5,0.5, "cm")) +
+        plot.margin = margin(10,0.5,1.5,0.5, "cm")) +
   scale_fill_manual(values = cluster_col) +
   geom_signif(annotation="*",y_position= 0.55, xmin= 0.9, xmax=1.1, textsize = 10, vjust = 0.5) + # for IGHG1
   geom_signif(annotation="*",y_position= 0.65, xmin= 0.9, xmax=1.3, textsize = 10, vjust = 0.5) +# for IGHG1
