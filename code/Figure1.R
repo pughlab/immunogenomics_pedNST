@@ -27,7 +27,8 @@ ped$group <- factor(ped$group, levels = c("CBTN", "ICGC", "TARGET", "PDX (ITCC)"
 
 fig1a <- ggplot(data = ped) + geom_bar(aes(y = cohort, fill = group)) + myaxis + myplot +
 theme(axis.title = element_blank(), axis.text.x = element_text(size = 25, angle = 0, hjust = 0.5), 
-      legend.position = c(0.8,0.9), legend.title = element_blank()) + scale_fill_manual(values = group_col)
+      legend.position = c(0.8,0.9), legend.title = element_blank(), plot.margin = margin(1,1,1,1, "cm")) + 
+  scale_fill_manual(values = group_col)
 
 pdf(file = paste0(plotpath,"Fig1_A.pdf"),
     width = 10, height = 10, useDingbats = FALSE)
@@ -231,11 +232,11 @@ hm1D = Heatmap(cancer_IC_mat,
                     row_names_side = "left",
                     col = col_fun,
                     column_names_rot = 45,
-                    column_names_gp = gpar(fontsize = 20),
-                    row_names_gp = gpar(fontsize = 20),
+                    column_names_gp = gpar(fontsize = 10),
+                    row_names_gp = gpar(fontsize = 10),
                     height = unit(nrow(cancer_IC_mat), "cm"),
                     width = unit(ncol(cancer_IC_mat), "cm"),
-                    column_title_gp = gpar(fontsize = 20),
+                    column_title_gp = gpar(fontsize = 10),
                     column_title = NULL,
                     row_title = NULL,
                     show_heatmap_legend = TRUE)
@@ -260,14 +261,14 @@ heplot <- ggplot(data = HE_manifest,
   theme(legend.position = "none", 
         plot.margin = unit(c(0.2,0.2,0.2,2), "cm"),
         axis.title.x = element_blank(),
-        axis.title.y = element_text(size = 40),
-        axis.text.x = element_text(size = 40),
-        axis.text.y = element_text(size = 40),
-        plot.title = element_text(size = 40, hjust = 0.5)) + 
+        axis.title.y = element_text(size = 30),
+        axis.text.x = element_text(size = 30),
+        axis.text.y = element_text(size = 30),
+        plot.title = element_text(size = 30, hjust = 0.5)) + 
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Myeloid Predominant")), y_position = 0.4,
-              map_signif_level=TRUE, textsize = 15, test = "wilcox.test", vjust = 0.5) +
+              map_signif_level=TRUE, textsize = 10, test = "wilcox.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Excluded")), y_position = 0.45,
-              map_signif_level=TRUE, textsize = 15, test = "wilcox.test", vjust = 0.5) +
+              map_signif_level=TRUE, textsize = 10, test = "wilcox.test", vjust = 0.5) +
   
   labs(y = "Average TIL score") + ggtitle(~underline("H&E TIL score (n = 355)"))
 

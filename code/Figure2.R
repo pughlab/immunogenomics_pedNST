@@ -57,18 +57,18 @@ metadata_age <- metadata_IC[!is.na(metadata_IC$age_at_diagnosis),]
 
 fig2c <- ggplot(data = metadata_age, aes(x = immune_cluster, y = age_at_diagnosis)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 0.7) + 
-  geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
-  theme(axis.title.y = element_text(size = 45),
+  geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5, aes(color = immune_cluster)) +
+  theme(axis.title.y = element_text(size = 30),
         axis.title.x = element_blank(),
         axis.line = element_line(color = "black"),
-        axis.text.x = element_text(size = 45,angle = 45, hjust = 1, color = "black"),
-        axis.text.y = element_text(size = 45, color = "black")) +
+        axis.text.x = element_text(size = 30, angle = 45, hjust = 1, color = "black"),
+        axis.text.y = element_text(size = 30, color = "black")) +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
         plot.margin = unit(c(0.2,0.2,0.2,2), "cm"),
         plot.background = element_rect(fill = "transparent", colour = NA),
-        plot.title = element_text(size = 45)) +
+        plot.title = element_text(size = 30)) +
   theme(legend.position = "none") +
   scale_color_manual(values = cluster_col) +
   labs(y = "Age at diagnosis (years)")

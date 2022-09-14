@@ -8,7 +8,7 @@ plot_ridge.fx <- function(mydf, var){
     theme(axis.line = element_line(color = "black"),
           axis.text = element_text(size = 30, color = "black"),
           axis.title = element_blank(), 
-          plot.title = element_text(size = 30, hjust = 0.5),
+          plot.title = element_text(size = 15, hjust = 0.5),
           legend.position = "none") + #coord_flip() + #flip axes
     scale_fill_manual(values = cluster_col) + scale_y_discrete(expand = c(0.1,0))
   
