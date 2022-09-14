@@ -25,7 +25,7 @@ fig2a <- stacked_plots(freqtab, "immune_cluster", "gender") + labs(y = "Frequenc
 
 pdf(paste0(plotpath,"Fig2_A.pdf"),
     width = 12, height = 10, onefile = F)
-fig2a
+fig2a + theme(plot.margin = unit(c(0.2,0.2,0.2,2), "cm"))
 dev.off()
 
 ###############
@@ -44,7 +44,7 @@ fig2b <- stacked_plots(freqtab, "immune_cluster", "race") + labs(y = "Frequency"
 
 pdf(paste0(plotpath,"Fig2_B.pdf"),
     width = 12, height = 10, onefile = F)
-fig2b
+fig2b + theme(plot.margin = unit(c(0.2,0.2,0.2,2), "cm"))
 dev.off()
 
 ###############
@@ -66,6 +66,7 @@ fig2c <- ggplot(data = metadata_age, aes(x = immune_cluster, y = age_at_diagnosi
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
+        plot.margin = unit(c(0.2,0.2,0.2,2), "cm"),
         plot.background = element_rect(fill = "transparent", colour = NA),
         plot.title = element_text(size = 45)) +
   theme(legend.position = "none") +
