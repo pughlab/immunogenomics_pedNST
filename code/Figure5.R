@@ -168,7 +168,7 @@ plot_tcells <- ggplot(data = trb_inflamed, aes(x = grp, y = `T cells`)) +
         axis.text.y = element_text(size = 30)) +
   theme(plot.title = element_text(size = 30, hjust = 0.5)) +
   theme(legend.position = "none",
-        plot.margin = margin(1, 10, 1, 60)) +
+        plot.margin = margin(1, 1, 1, 10, "cm")) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 6.2,
               map_signif_level=TRUE, textsize = 10, test = "t.test", vjust = 0.5) +
   expand_limits(y = 0) +
@@ -182,7 +182,7 @@ plot_dc <- ggplot(data = trb_inflamed, aes(x = grp, y = `Dendritic cells`)) +
         axis.title.x = element_blank(),
         axis.text.x = element_text(size = 30),
         axis.text.y = element_text(size = 30)) +
-  theme(plot.title = element_blank(), legend.position = "none", plot.margin = margin(1, 10, 1, 60)) +
+  theme(plot.title = element_blank(), legend.position = "none", plot.margin = margin(1, 1, 1, 10, "cm")) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 4,
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
   expand_limits(y = 0) + scale_y_continuous(expand = c(0.1, 0)) +
@@ -395,7 +395,7 @@ plot_gini_pi <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = gini)) +
         axis.text.x = element_blank(),
         axis.text.y = element_text(size = 30, color = "black")) +
   theme(plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none",
-        plot.margin = margin(1, 10, 1, 60)) +
+        plot.margin = margin(1, 10, 1, 60, "cm")) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 1.0,
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
   scale_y_continuous(breaks = c(0.0, 0.25, 0.5, 0.75, 1), expand = c(0.1, 0)) + expand_limits(y = 0) + 
