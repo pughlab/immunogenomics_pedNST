@@ -160,28 +160,27 @@ trb_inflamed <- trb_inflamed[ !is.na(trb_inflamed$grp),]
 
 plot_tcells <- ggplot(data = trb_inflamed, aes(x = grp, y = `T cells`)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
-  geom_boxplot(outlier.shape = NA, fill = NA)  +
-  theme(axis.title.y = element_text(size = 50),
+  geom_boxplot(outlier.shape = NA, fill = NA)  + myplot + myaxis +
+  theme(axis.title.y = element_text(size = 30),
         axis.title.x = element_blank(),
         axis.text.x = element_blank(),
-        axis.text.y = element_text(size = 50)) +
-  theme(plot.title = element_text(size = 50, hjust = 0.5)) +
+        axis.text.y = element_text(size = 30)) +
+  theme(plot.title = element_text(size = 30, hjust = 0.5)) +
   theme(legend.position = "none",
         plot.margin = margin(1, 10, 1, 60)) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 6.2,
               map_signif_level=TRUE, textsize = 10, test = "t.test", vjust = 0.5) +
-  #scale_x_discrete(expand = c(0.4, 0)) + scale_y_continuous(expand = c(0.1, 0)) +
   expand_limits(y = 0) +
   labs(y = paste0("T cells")) +
   ggtitle("Pediatric Inflamed\n(n = 42)")
 
 plot_dc <- ggplot(data = trb_inflamed, aes(x = grp, y = `Dendritic cells`)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
-  geom_boxplot(outlier.shape = NA, fill = NA)  +
-  theme(axis.title.y = element_text(size = 50),
+  geom_boxplot(outlier.shape = NA, fill = NA)  + myplot + myaxis +
+  theme(axis.title.y = element_text(size = 30),
         axis.title.x = element_blank(),
-        axis.text.x = element_text(size = 50),
-        axis.text.y = element_text(size = 50)) +
+        axis.text.x = element_text(size = 30),
+        axis.text.y = element_text(size = 30)) +
   theme(plot.title = element_blank(), legend.position = "none", plot.margin = margin(1, 10, 1, 60)) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 4,
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
@@ -189,7 +188,7 @@ plot_dc <- ggplot(data = trb_inflamed, aes(x = grp, y = `Dendritic cells`)) +
   labs(y = paste0("Dendritic cells")) 
 
 pdf(file = paste0(plotpath,"Fig5_D.pdf"),
-    width = 8, height = 14, useDingbats = FALSE)
+    width = 8, height = 14, useDingbats = FALSE, onefile = FALSE)
 grid.draw(ggarrange(plots=list(plot_tcells, plot_dc)))
 dev.off()
 
@@ -297,10 +296,7 @@ giniplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = gini)) +
   ggtitle(expression(~underline("pedCNS (n = 248)"))) +
   scale_y_continuous(expand = c(0.1, 0))
 
-pdf(file = paste0(plotpath,"Fig5_F.pdf"),
-    width = 14, 
-    height = 10,
-    useDingbats = FALSE)
+pdf(file = paste0(plotpath,"Fig5_F.pdf"), width = 14, height = 10, useDingbats = FALSE)
 plot_grid(giniplot_nbl, giniplot_cns, nrow = 1, align = "h", ncol = 2)
 dev.off()
 
@@ -350,12 +346,12 @@ vars_inflamed_genes <- vars_inflamed_genes[ !is.na(vars_inflamed_genes$grp),]
 plot_gini <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = gini)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA)  + myplot + myaxis +
-  theme(axis.title.y = element_text(size = 40),
+  theme(axis.title.y = element_text(size = 30),
         axis.title.x = element_blank(),
         axis.text.x = element_blank(),
-        axis.text.y = element_text(size = 40, color = "black")) +
-  theme(plot.title = element_text(size = 40, hjust = 0.5), legend.position = "none",
-        plot.margin = margin(1,10,1,60)) +
+        axis.text.y = element_text(size = 30, color = "black")) +
+  theme(plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none",
+        plot.margin = margin(1, 10, 1, 60)) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 1.0,
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
   scale_y_continuous(breaks = c(0.0, 0.25, 0.5, 0.75, 1), expand = c(0.1, 0)) + expand_limits(y = 0) + 
@@ -365,11 +361,11 @@ plot_gini <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = gini)) +
 plot_ighg3 <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = IGHG3s)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA)  + myplot + myaxis + 
-  theme(axis.title.y = element_text(size = 40),
+  theme(axis.title.y = element_text(size = 30),
         axis.title.x = element_blank(),
-        axis.text.x = element_text(size = 40),
-        axis.text.y = element_text(size = 40)) +
-  theme(plot.title = element_text(size = 40, hjust = 0.5),
+        axis.text.x = element_text(size = 30),
+        axis.text.y = element_text(size = 30)) +
+  theme(plot.title = element_text(size = 30, hjust = 0.5),
   legend.position = "none", plot.margin = margin(1, 10, 1, 60)) +
   expand_limits(y = 0) + scale_y_continuous(expand = c(0.1, 0)) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 3.3,
@@ -379,10 +375,10 @@ plot_ighg3 <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = IGHG3s)) +
 plot_ighg1 <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = IGHG1s)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA)  + myplot + myaxis +
-  theme(axis.title.y = element_text(size = 40),
+  theme(axis.title.y = element_text(size = 30),
         axis.title.x = element_blank(),
         axis.text.x = element_blank(),
-        axis.text.y = element_text(size = 40, color = "black")) +
+        axis.text.y = element_text(size = 30, color = "black")) +
   theme(plot.title = element_blank(), legend.position = "none", plot.margin = margin(1, 10, 1, 60)) +
   expand_limits(y = 0) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 4.2,
