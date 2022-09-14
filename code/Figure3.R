@@ -70,7 +70,7 @@ pathways_hm = Heatmap(fc_mat_pathways_t,
                                                   title = "Fold change (Log2)",
                                                   labels_gp = gpar(fontsize = 20)))
 
-pdf(paste0(plotpath,"Fig3_A.pdf"), width = 25, height = 8)
+pdf(paste0(plotpath,"Fig3_A.pdf"), width = 30, height = 10)
 draw(pathways_hm)
 decorate_heatmap_body("Log2_FC", {
   grid.rect(x = 0, y = 1, just = c("left", "top"),
