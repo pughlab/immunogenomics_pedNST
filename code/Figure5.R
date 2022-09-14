@@ -101,15 +101,15 @@ trbplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = estimated_Shannon)
                      labels = scales::label_number(accuracy = 1)) + annotation_logticks(sides = "l") +
   labs(y = paste0("Estimated\nShannon diversity")) +
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Excluded")), y_position = 5.5,
-              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Neutral")), y_position = 4.5,
-              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Neutral")), y_position = 4,
-              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Excluded")), y_position = 5,
-              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Immune Neutral", "Immune Excluded")), y_position = 4,
-              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   ggtitle(expression(~underline("NBL (n = 116)"))) 
 
 # cns
@@ -140,11 +140,11 @@ trbplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = estimated_Shannon)
                      labels = scales::label_number(accuracy = 1)) + annotation_logticks(sides = "l") +
   labs(y = paste0("Estimated\nShannon diversity")) +
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Myeloid Predominant")), y_position = 4.3,
-              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Neutral")), y_position = 5.5,
-              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Neutral")), y_position = 4.8,
-              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   ggtitle(expression(~underline("pedCNS (n = 245)"))) 
 
 fig5c <- plot_grid(trbplot_nbl, trbplot_cns, nrow = 1, align = "h", ncol = 2)
@@ -236,11 +236,11 @@ giniplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = gini)) +
   scale_color_manual(values = cluster_col) +
   labs(y = paste0("gini index (Ig)")) +
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Neutral")), y_position = 1.1,
-              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Excluded")), y_position = 1.2,
-              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Excluded")), y_position = 1,
-              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   ggtitle(expression(~underline("NBL (n = 113)"))) +
   scale_y_continuous(expand = c(0.1, 0))
 
@@ -265,11 +265,11 @@ giniplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = gini)) +
   scale_color_manual(values = cluster_col) +
   labs(y = paste0("gini index (Ig)")) +
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Myeloid Predominant")), y_position = 1,
-              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Neutral")), y_position = 1.1,
-              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Excluded")), y_position = 1.2,
-              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   ggtitle(expression(~underline("pedCNS (n = 248)"))) +
   scale_y_continuous(expand = c(0.1, 0))
 
