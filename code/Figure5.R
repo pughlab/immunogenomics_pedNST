@@ -147,7 +147,8 @@ load( file = paste0(datapath, "geneset_cc_normalized.RData"))
 mygenesets <- as.data.frame(t(geneset_cc_norm))
 mygenesets$sample_id <- rownames(mygenesets)
 metadata_TRB_genesets <- merge(metadata_TRB, mygenesets, by = "sample_id")
-print(colnames(metadata_TRB_genesets))
+
+#pediatric inflamed
 trb_inflamed <- metadata_TRB_genesets[ metadata_TRB_genesets$immune_cluster == "Pediatric Inflamed",]
 
 summary(trb_inflamed$residuals)
@@ -187,9 +188,44 @@ plot_dc <- ggplot(data = trb_inflamed, aes(x = grp, y = `Dendritic cells`)) +
   expand_limits(y = 0) + scale_y_continuous(expand = c(0.1, 0)) +
   labs(y = paste0("Dendritic cells")) 
 
+#Myeloid predominant
+trb_myeloid <- metadata_IC_TRB_genesets[ metadata_IC_TRB_genesets$immune_cluster == "Myeloid Predominant",]
+
+trb_myeloid$grp <- NA
+trb_myeloid$grp[ trb_myeloid$residuals >= quantile(trb_myeloid$residuals,0.75)] <- "Residuals >= 75%"
+trb_myeloid$grp[ trb_myeloid$residuals <= quantile(trb_myeloid$residuals,0.25)] <- "Residuals <= 25%"
+
+trb_myeloid <- trb_myeloid[ !is.na(trb_myeloid$grp),]
+
+plot_tcells_mp <- ggplot(data = trb_myeloid, aes(x = grp, y = `T cells`)) + 
+  geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
+  geom_boxplot(outlier.shape = NA, fill = NA)  + myplot + myaxis + 
+  theme(axis.title.y = element_text(size = 30),
+        axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_text(size = 30, color = "black")) +
+  theme(plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none",
+        plot.margin = margin(1, 10, 1, 60)) +
+  geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 1.8,
+              map_signif_level=TRUE, textsize = 10, test = "t.test", vjust = 0.5) +
+  labs(y = paste0("T cells")) + ggtitle("Myeloid Predominant\n(n = 82)")
+
+plot_mono_mp <- ggplot(data = trb_myeloid, aes(x = grp, y = Monocytes)) + 
+  geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
+  geom_boxplot(outlier.shape = NA, fill = NA)  + myplot + myaxis +
+  theme(axis.title.y = element_text(size = 30),
+        axis.title.x = element_blank(),
+        axis.text.x = element_text(size = 30),
+        axis.text.y = element_text(size = 30)) +
+  theme(plot.title = element_blank(),legend.position = "none", plot.margin = margin(1, 10, 1, 60)) +
+  geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 3.9,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  scale_y_continuous(expand = c(0.1, 0)) + labs(y = paste0("Monocytes")) 
+
 pdf(file = paste0(plotpath,"Fig5_D.pdf"),
     width = 8, height = 14, useDingbats = FALSE, onefile = FALSE)
-grid.draw(ggarrange(plots=list(plot_tcells, plot_dc)))
+grid.draw(ggarrange(plots=list(plot_tcells, plot_tcells_mp,
+                               plot_dc, plot_mono_mp)))
 dev.off()
 
 ###############
@@ -438,7 +474,7 @@ vars_myeloid_genes <- vars_myeloid_genes[ !is.na(vars_myeloid_genes$grp),]
 #plots
 plot_gini_mp <- ggplot(data = vars_myeloid_genes, aes(x = grp, y = gini)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
-  geom_boxplot(outlier.shape = NA, fill = NA)  +
+  geom_boxplot(outlier.shape = NA, fill = NA)  + myplot + myaxis +
   theme(axis.title.y = element_text(size = 30),
         axis.title.x = element_blank(),
         axis.text.x = element_blank(),
@@ -476,18 +512,14 @@ plot_ighg1_mp <- ggplot(data = vars_myeloid_genes, aes(x = grp, y = IGHG1s)) +
         plot.margin = margin(1,10,1,60)) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 6,
               map_signif_level=TRUE, textsize = 10, test = "t.test", vjust = 0.5) +
-  expand_limits(y = 0) +
-  scale_y_continuous(expand = c(0.1, 0)) +
-  labs(y = paste0("IGHG1")) 
+  expand_limits(y = 0) + scale_y_continuous(expand = c(0.1, 0)) + labs(y = paste0("IGHG1")) 
 
-pdf(file = paste0(plotpath,"Fig5_G.pdf"),
-    width = 15, height = 30, useDingbats = FALSE)
+pdf(file = paste0(plotpath,"Fig5_G.pdf"), width = 15, height = 30, useDingbats = FALSE)
 
 grid.draw(ggarrange(plots=list(plot_gini_pi, plot_gini_mp,
                                plot_ighg1_pi, plot_ighg1_mp,
                                plot_ighg3_pi, plot_ighg3_mp),
                     nrow = 3, ncol = 2))
-
 dev.off()
 
 
