@@ -66,9 +66,9 @@ pathways_hm = Heatmap(fc_mat_pathways_t,
                       heatmap_legend_param = list(col_fun = col_fun,
                                                   at = c(-0.6, 0, 0.6),
                                                   legend.height = unit(4, "cm"),
-                                                  title_gp = gpar(fontsize = 20),
+                                                  title_gp = gpar(fontsize = 18),
                                                   title = "Fold change (Log2)",
-                                                  labels_gp = gpar(fontsize = 20)))
+                                                  labels_gp = gpar(fontsize = 18)))
 
 pdf(paste0(plotpath,"Fig3_A.pdf"), width = 30, height = 10)
 draw(pathways_hm)
@@ -272,11 +272,11 @@ fig3d = Heatmap(t(median_mat),
                 heatmap_legend_param = list(col_fun = col_fun,
                                             at = c(-1, 0, 1),
                                             legend.height = unit(4, "cm"),
-                                            title_gp = gpar(fontsize = 20),
+                                            title_gp = gpar(fontsize = 18),
                                             title = "Median z-score",
-                                            labels_gp = gpar(fontsize = 20)))
+                                            labels_gp = gpar(fontsize = 18)))
 
-pdf(paste0(plotpath, "Fig3_D.pdf"), width = 30, height = 8)
+pdf(paste0(plotpath, "Fig3_D.pdf"), width = 30, height = 10)
 draw(fig3d)
 dev.off()
 

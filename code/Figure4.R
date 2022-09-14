@@ -288,7 +288,7 @@ mycol <- c("ETMR" = "#76afa9",
 cohort_mat_frac <- cohort_mat_frac[names(pathwaycount),]
 
 # Heatmap annotation for fraction of altered samples in cancer types
-ha1 = HeatmapAnnotation(`Fraction of altered` = anno_barplot(cohort_mat_frac, 
+ha1 = HeatmapAnnotation(`Tumour type` = anno_barplot(cohort_mat_frac, 
                                                              gp = gpar(fill = mycol[ colnames(cohort_mat_frac)]),
                                                              border = FALSE, height = unit(3,"cm"),
                                                              axis_param = list(gp = gpar(fontsize=20), labels_rot = 0)),
@@ -302,10 +302,11 @@ col_labels = structure(c("RTK (71)", "PI3K (26)", "Wnt (48)", "Notch (51)", "HIP
                          "TGFb (7)", "NRF2 (3)"),
                        names = names(pathwaycount))
 
-
+#order with cohort_mat
+pathway_mat <- pathway_mat[,colnames(cohort_mat)]
 # heatmap for fraction of mutated samples in each immune cluster (z score)
 col_fun = colorRamp2(c(-1.5, 0, 1.5), c("blue", "white", "red"))
-my_hm = Heatmap(scale(pathway_mat[,colnames(cohort_mat)]),
+my_hm = Heatmap(scale(pathway_mat), #scale
                 #titles and names
                 name = "% mutated samples (z-score)",
                 col = col_fun, 
