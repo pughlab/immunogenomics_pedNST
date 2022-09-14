@@ -168,7 +168,7 @@ plot_tcells <- ggplot(data = trb_inflamed, aes(x = grp, y = `T cells`)) +
         axis.text.y = element_text(size = 30)) +
   theme(plot.title = element_text(size = 30, hjust = 0.5)) +
   theme(legend.position = "none",
-        plot.margin = margin(1, 1, 1, 10, "cm")) +
+        plot.margin = margin(0.2, 0.2, 0.2, 2, "cm")) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 6.2,
               map_signif_level=TRUE, textsize = 10, test = "t.test", vjust = 0.5) +
   expand_limits(y = 0) +
@@ -182,7 +182,7 @@ plot_dc <- ggplot(data = trb_inflamed, aes(x = grp, y = `Dendritic cells`)) +
         axis.title.x = element_blank(),
         axis.text.x = element_text(size = 30),
         axis.text.y = element_text(size = 30)) +
-  theme(plot.title = element_blank(), legend.position = "none", plot.margin = margin(1, 1, 1, 10, "cm")) +
+  theme(plot.title = element_blank(), legend.position = "none", plot.margin = margin(0.2, 0.2, 0.2, 2, "cm")) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 4,
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
   expand_limits(y = 0) + scale_y_continuous(expand = c(0.1, 0)) +
@@ -205,7 +205,7 @@ plot_tcells_mp <- ggplot(data = trb_myeloid, aes(x = grp, y = `T cells`)) +
         axis.text.x = element_blank(),
         axis.text.y = element_text(size = 30, color = "black")) +
   theme(plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none",
-        plot.margin = margin(1, 10, 1, 60)) +
+        plot.margin = margin(0.2, 2, 0.2, 0.2, "cm")) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 1.8,
               map_signif_level=TRUE, textsize = 10, test = "t.test", vjust = 0.5) +
   labs(y = paste0("T cells")) + ggtitle("Myeloid Predominant\n(n = 82)")
@@ -217,7 +217,7 @@ plot_mono_mp <- ggplot(data = trb_myeloid, aes(x = grp, y = Monocytes)) +
         axis.title.x = element_blank(),
         axis.text.x = element_text(size = 30),
         axis.text.y = element_text(size = 30)) +
-  theme(plot.title = element_blank(),legend.position = "none", plot.margin = margin(1, 10, 1, 60)) +
+  theme(plot.title = element_blank(),legend.position = "none", plot.margin = margin(0.2, 2, 0.2, 0.2, "cm")) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 3.9,
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
   scale_y_continuous(expand = c(0.1, 0)) + labs(y = paste0("Monocytes")) 
@@ -395,7 +395,7 @@ plot_gini_pi <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = gini)) +
         axis.text.x = element_blank(),
         axis.text.y = element_text(size = 30, color = "black")) +
   theme(plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none",
-        plot.margin = margin(1, 10, 1, 60, "cm")) +
+        plot.margin = margin(0.2, 0.2, 0.2, 2, "cm")) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 1.0,
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
   scale_y_continuous(breaks = c(0.0, 0.25, 0.5, 0.75, 1), expand = c(0.1, 0)) + expand_limits(y = 0) + 
@@ -410,7 +410,7 @@ plot_ighg3_pi <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = IGHG3s)) +
         axis.text.x = element_text(size = 30),
         axis.text.y = element_text(size = 30)) +
   theme(plot.title = element_text(size = 30, hjust = 0.5),
-  legend.position = "none", plot.margin = margin(1, 10, 1, 60)) +
+  legend.position = "none", plot.margin = margin(0.2, 0.2, 0.2, 2, "cm")) +
   expand_limits(y = 0) + scale_y_continuous(expand = c(0.1, 0)) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 3.3,
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
@@ -423,7 +423,8 @@ plot_ighg1_pi <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = IGHG1s)) +
         axis.title.x = element_blank(),
         axis.text.x = element_blank(),
         axis.text.y = element_text(size = 30, color = "black")) +
-  theme(plot.title = element_blank(), legend.position = "none", plot.margin = margin(1, 10, 1, 60)) +
+  theme(plot.title = element_blank(), legend.position = "none", 
+        plot.margin = margin(0.2, 0.2, 0.2, 2, "cm")) +
   expand_limits(y = 0) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 4.2,
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
@@ -480,7 +481,7 @@ plot_gini_mp <- ggplot(data = vars_myeloid_genes, aes(x = grp, y = gini)) +
         axis.text.x = element_blank(),
         axis.text.y = element_text(size = 30)) +
   theme(plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none",
-        plot.margin = margin(1,10, 1, 60)) +
+        plot.margin = margin(0.2, 0.2, 0.2, 2, "cm")) +
   scale_y_continuous(expand = c(0.1, 0)) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 1.0,
               map_signif_level=TRUE, textsize = 10, test = "t.test", vjust = 0.5) +
@@ -495,7 +496,7 @@ plot_ighg3_mp <- ggplot(data = vars_myeloid_genes, aes(x = grp, y = IGHG3s)) +
         axis.text.x = element_text(size = 30),
         axis.text.y = element_text(size = 30)) +
   theme(plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none",
-        plot.margin = margin(1,10,1,60)) +
+        plot.margin = margin(0.2, 0.2, 0.2, 2, "cm")) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 6,
               map_signif_level=TRUE, textsize = 10, test = "t.test", vjust = 0.5) +
   expand_limits(y = 0) + scale_y_continuous(expand = c(0.1, 0)) +
@@ -509,7 +510,7 @@ plot_ighg1_mp <- ggplot(data = vars_myeloid_genes, aes(x = grp, y = IGHG1s)) +
         axis.text.x = element_blank(),
         axis.text.y = element_text(size = 30)) +
   theme(plot.title = element_blank(), legend.position = "none",
-        plot.margin = margin(1,10,1,60)) +
+        plot.margin = margin(0.2, 0.2, 0.2, 2, "cm")) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 6,
               map_signif_level=TRUE, textsize = 10, test = "t.test", vjust = 0.5) +
   expand_limits(y = 0) + scale_y_continuous(expand = c(0.1, 0)) + labs(y = paste0("IGHG1")) 
