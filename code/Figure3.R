@@ -67,7 +67,7 @@ col_fun= colorRamp2(c(-0.6, 0, 0.6), c("blue", "white", "red"))
 lgd = Legend(col_fun = col_fun, 
              at = c(-0.6, 0, 0.6), 
              title = "Fold change\n(Log2)", title_gp = gpar(fontsize = 20),
-             grid_height = unit(4, "cm"), grid_width = unit(1, "cm"),
+             grid_height = unit(4, "cm"), #grid_width = unit(1, "cm"),
              labels_gp = gpar(fontsize = 20))
 
 pdf(paste0(plotpath,"Fig3_A.pdf"), width = 30, height = 10)
@@ -274,7 +274,7 @@ col_fun = colorRamp2(c(-1, 0, 1), c("blue", "white", "red"))
 lgd = Legend(col_fun = col_fun, 
              at = c(-1,0,1), 
              title = "Median\nz-score", title_gp = gpar(fontsize = 20),
-             grid_height = unit(4, "cm"), grid_width = unit(1, "cm"),
+             grid_height = unit(4, "cm"), #grid_width = unit(1, "cm"),
              labels_gp = gpar(fontsize = 20))
 
 pdf(paste0(plotpath, "Fig3_D.pdf"), width = 30, height = 10)
