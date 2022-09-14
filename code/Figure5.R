@@ -239,7 +239,7 @@ giniplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = gini)) +
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
         plot.background = element_rect(fill = "transparent", colour = NA),
-        plot.margin = margin(10,1,1,2.5, "cm"),
+        plot.margin = margin(1,1,1,2.5, "cm"),
         plot.title = element_text(size = 40, hjust = 0.5)) +
   theme(legend.position = "none") +
   scale_color_manual(values = cluster_col) +
@@ -250,7 +250,8 @@ giniplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = gini)) +
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Excluded")), y_position = 1,
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
-  ggtitle(expression(~underline("NBL (n = 113)")))
+  ggtitle(expression(~underline("NBL (n = 113)"))) +
+  scale_y_continuous(expand = c(0.1, 0))
 
 #cns
 cns <- metadata_igrep[ metadata_igrep$cohort != "NBL",]
