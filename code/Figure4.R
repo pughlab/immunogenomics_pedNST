@@ -67,7 +67,7 @@ fig4b <- ggplot(data = ped_tmb, aes(x = immune_cluster, y = mutpermb)) +
   scale_color_manual(values = cluster_col) +
   scale_y_continuous(trans = "log10", breaks = c(0.01,0.1, 1,10,100),
                      labels = scales::label_number(accuracy = 0.01)) + annotation_logticks(sides = "l") +
-  labs(y = "SNV + Indel / Mb") +
+  labs(y = "SNV + InDel / Mb") +
   ggtitle(expression(~underline("pedNST (n = 763)")))
 
 
@@ -99,7 +99,7 @@ fig4c <- ggplot(data = hgg, aes(x = immune_cluster, y = mutpermb)) +
               map_signif_level=TRUE, textsize = 20, test = "wilcox.test", vjust = 0.5, y_position = 3) +
   geom_signif(comparisons = list(c("Immune Neutral", "Immune Excluded")), 
               map_signif_level=TRUE, textsize = 20, test = "wilcox.test", vjust = 0.5, y_position = 2.6) +
-  labs(y = "SNV + Indel / Mb") +
+  labs(y = "SNV + InDel / Mb") +
   ggtitle(expression(~underline("pedHGG (n = 63)")))
 
 pdf(file = paste0(plotpath,"Fig4_C.pdf"),
@@ -108,7 +108,82 @@ fig4c
 dev.off()
 
 ###############
-# Figure 4D
+# Figure 4D-E
+###############
+
+load(file = paste0(datapath, "pedNST_strongpeptides.RData"))
+
+#Fig4D
+# column binders shows number of strong binding peptides by Mupexi with the BA rank of <= 0.5%
+fig4d <- ggplot(data = metadata_SB, aes(x = immune_cluster, y = binders)) + 
+  geom_beeswarm(color = "grey", size = 5, cex = 1, alpha = 0.7, shape = 16) + 
+  geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
+  theme(axis.title.y = element_text(size = 45),
+        axis.title.x = element_blank(),
+        axis.line = element_line(color = "black"),
+        axis.text.x = element_text(size = 45,angle = 45, hjust = 1, color = "black"),
+        axis.text.y = element_text(size = 45, color = "black")) +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        plot.background = element_rect(fill = "transparent", colour = NA),
+        plot.title = element_text(size = 45, hjust = 0.5)) +
+  theme(legend.position = "none") +
+  scale_color_manual(values = cluster_col) +
+  scale_y_continuous(trans = "log10", 
+                     labels = scales::label_number(accuracy = 1)) + annotation_logticks(sides = "l") +
+  labs(y = paste0("Strong binding peptides")) +
+  ggtitle(expression(~underline("pedNST (n = 459)")))
+
+pdf(file = paste0(plotpath,"Fig4_D.pdf"),
+    width = 10, 
+    height = 12,
+    useDingbats = FALSE)
+fig4d
+dev.off()
+
+load(file = paste0(datapath, "pedNST_strongpeptides.RData"))
+
+#Fig4E
+hgg <- metadata_SB[ metadata_SB$cohort == "pedHGG",]
+
+# make color transparent if number of data point are <=2
+mytab <- table(hgg$immune_cluster) 
+cluster_col[ names(cluster_col) %in% names(mytab)[ mytab <= 2] ] <- "transparent"
+
+fig4e <- ggplot(data = hgg, aes(x = immune_cluster, y = binders)) + 
+  geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
+  geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5, aes(color = immune_cluster)) +
+  theme(axis.title.y = element_text(size = 45),
+        axis.title.x = element_blank(),
+        axis.line = element_line(color = "black"),
+        axis.text.x = element_text(size = 45,angle = 45, hjust = 1, color = "black"),
+        axis.text.y = element_text(size = 45, color = "black")) +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        plot.background = element_rect(fill = "transparent", colour = NA),
+        plot.title = element_text(size = 45, hjust = 0.5)) +
+  theme(legend.position = "none") +
+  scale_color_manual(values = cluster_col) +
+  scale_y_continuous(trans = "log10", 
+                     labels = scales::label_number(accuracy = 0.01)) + annotation_logticks(sides = "l") +
+  labs(y = paste0("Strong binding peptides")) +
+  geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Neutral")), y_position = 3.1,
+              map_signif_level=TRUE, textsize = 20, test = "wilcox.test", vjust = 0.5) +
+  geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Excluded")), y_position = 3.5,
+              map_signif_level=TRUE, textsize = 20, test = "wilcox.test", vjust = 0.5) +
+  ggtitle(expression(~underline("pedHGG (n = 35)")))  
+
+pdf(file = paste0(plotpath,"Fig4_E.pdf"),
+    width = 10, 
+    height = 12,
+    useDingbats = FALSE)
+fig4e
+dev.off()
+
+###############
+# Figure 4F
 ###############
 
 load(file = paste0(datapath, "pedNST_TMB.RData"))
@@ -256,7 +331,7 @@ my_hm = Heatmap(scale(pathway_mat[,colnames(cohort_mat)]),
 
 lgd_cohort = Legend(labels = names(mycol), title = "", nrow = 2, legend_gp = gpar(fill = mycol))
 
-pdf(file = paste0(plotpath,"Fig4_D.pdf"),
+pdf(file = paste0(plotpath,"Fig4_F.pdf"),
     width = 12, 
     height = 10,
     useDingbats = FALSE)
@@ -265,82 +340,6 @@ draw(ha %v% ha1 %v% my_hm, annotation_legend_list = lgd_cohort, annotation_legen
 
 dev.off() 
 
-###############
-# Figure 4E
-###############
-
-load(file = paste0(datapath, "pedNST_strongpeptides.RData"))
-
-# column binders shows number of strong binding peptides by Mupexi with the BA rank of <= 0.5%
-fig4e <- ggplot(data = metadata_SB, aes(x = immune_cluster, y = binders)) + 
-  geom_beeswarm(color = "grey", size = 5, cex = 1, alpha = 0.7, shape = 16) + 
-  geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
-  theme(axis.title.y = element_text(size = 45),
-        axis.title.x = element_blank(),
-        axis.line = element_line(color = "black"),
-        axis.text.x = element_text(size = 45,angle = 45, hjust = 1, color = "black"),
-        axis.text.y = element_text(size = 45, color = "black")) +
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        plot.background = element_rect(fill = "transparent", colour = NA),
-        plot.title = element_text(size = 45, hjust = 0.5)) +
-  theme(legend.position = "none") +
-  scale_color_manual(values = cluster_col) +
-  scale_y_continuous(trans = "log10", 
-                     labels = scales::label_number(accuracy = 1)) + annotation_logticks(sides = "l") +
-  labs(y = paste0("Strong binding peptides")) +
-  ggtitle(expression(~underline("pedNST (n = 459)")))
-
-pdf(file = paste0(plotpath,"Fig4_E.pdf"),
-    width = 10, 
-    height = 12,
-    useDingbats = FALSE)
-fig4e
-dev.off()
-
-###############
-# Figure 4F
-###############
-
-load(file = paste0(datapath, "pedNST_strongpeptides.RData"))
-
-hgg <- metadata_SB[ metadata_SB$cohort == "pedHGG",]
-
-# make color transparent if number of data point are <=2
-mytab <- table(hgg$immune_cluster) 
-cluster_col[ names(cluster_col) %in% names(mytab)[ mytab <= 2] ] <- "transparent"
-
-fig4f <- ggplot(data = hgg, aes(x = immune_cluster, y = binders)) + 
-  geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
-  geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5, aes(color = immune_cluster)) +
-  theme(axis.title.y = element_text(size = 45),
-        axis.title.x = element_blank(),
-        axis.line = element_line(color = "black"),
-        axis.text.x = element_text(size = 45,angle = 45, hjust = 1, color = "black"),
-        axis.text.y = element_text(size = 45, color = "black")) +
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        plot.background = element_rect(fill = "transparent", colour = NA),
-        plot.title = element_text(size = 45, hjust = 0.5)) +
-  theme(legend.position = "none") +
-  scale_color_manual(values = cluster_col) +
-  scale_y_continuous(trans = "log10", 
-                     labels = scales::label_number(accuracy = 0.01)) + annotation_logticks(sides = "l") +
-  labs(y = paste0("Strong binding peptides")) +
-  geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Neutral")), y_position = 3.1,
-              map_signif_level=TRUE, textsize = 20, test = "wilcox.test", vjust = 0.5) +
-  geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Excluded")), y_position = 3.5,
-              map_signif_level=TRUE, textsize = 20, test = "wilcox.test", vjust = 0.5) +
-  ggtitle(expression(~underline("pedHGG (n = 35)")))  
-
-pdf(file = paste0(plotpath,"Fig4_F.pdf"),
-    width = 10, 
-    height = 12,
-    useDingbats = FALSE)
-fig4f
-dev.off()
 
 ###############
 # Figure 4G
