@@ -110,8 +110,7 @@ trbplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = estimated_Shannon)
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Immune Neutral", "Immune Excluded")), y_position = 4,
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
-  ggtitle(expression(~underline("NBL (n = 116)"))) +
-  scale_y_continuous(expand = c(1, 0))
+  ggtitle(expression(~underline("NBL (n = 116)"))) 
 
 # cns
 cns <- metadata_TRB[ metadata_TRB$cohort != "NBL",]
@@ -146,8 +145,7 @@ trbplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = estimated_Shannon)
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Neutral")), y_position = 4.8,
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
-  ggtitle(expression(~underline("pedCNS (n = 245)"))) +
-  scale_y_continuous(expand = c(0.1, 0))
+  ggtitle(expression(~underline("pedCNS (n = 245)"))) 
 
 fig5c <- plot_grid(trbplot_nbl, trbplot_cns, nrow = 1, align = "h", ncol = 2)
 
@@ -208,12 +206,8 @@ fig5e <- ggplot(data = mytab_melted, aes(x = variable, y = value, fill = immune_
 #plot legend in two rows
 lgd <- get_legend(fig5e + theme(legend.position = "bottom") +  guides(fill=guide_legend(nrow=2, byrow=TRUE))) 
 
-pdf(file = paste0(plotpath,"Fig5_E.pdf"),
-    width = 12, 
-    height = 10,
-    useDingbats = FALSE)
+pdf(file = paste0(plotpath,"Fig5_E.pdf"), width = 12, height = 10, useDingbats = FALSE)
 plot_grid(fig5e, lgd, nrow=2, ncol =1, rel_heights = c(3,0.4))
-
 dev.off()
 
 ###############
