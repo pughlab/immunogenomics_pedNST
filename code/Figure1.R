@@ -258,6 +258,7 @@ heplot <- ggplot(data = HE_manifest,
   myaxis + myplot +
   scale_color_manual(values = cohort_col) +
   theme(legend.position = "none", 
+        plot.margin = unit(c(0,0,1,0), "cm"),
         axis.title.x = element_blank(),
         axis.title.y = element_text(size = 40),
         axis.text.x = element_text(size = 40),
@@ -306,7 +307,7 @@ allf <- plot_grid(atrtp_f, nblp_f, mbp_f, hggp_f, lggp_f, epnp_f, ncol = 6, nrow
 fig1f <- plot_grid(allc, allf, nrow = 2, align = "v")
 
 pdf(file = paste0(plotpath,"Fig1_F.pdf"),
-    width = 50, height = 15, useDingbats = FALSE)
+    width = 30, height = 10, useDingbats = FALSE)
 fig1f
 dev.off()
 
