@@ -68,7 +68,7 @@ pathways_hm = Heatmap(fc_mat_pathways_t,
                                                   legend_height = unit(2, "cm"),
                                                   title = "Fold change\n(Log2)"))
 
-pdf(paste0(plotpath,"Fig3_A.pdf"), width = 30, height = 15)
+pdf(paste0(plotpath,"Fig3_A.pdf"), width = 30, height = 10)
 draw(pathways_hm)
 decorate_heatmap_body("Log2_FC", {
   grid.rect(x = 0, y = 1, just = c("left", "top"),
@@ -275,7 +275,7 @@ lgd = Legend(col_fun = col_fun,
              grid_height = unit(2, "cm"),
              labels_gp = gpar(fontsize = 15))
 
-pdf(paste0(plotpath, "Fig3_D.pdf"), width = 30, height = 15)
+pdf(paste0(plotpath, "Fig3_D.pdf"), width = 30, height = 10)
 draw(fig3d, annotation_legend_side =  "bottom",  annotation_legend_list = list(lgd))
 dev.off()
 
