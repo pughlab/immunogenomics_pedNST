@@ -50,17 +50,17 @@ metadata_TRB$outliergroup[ metadata_TRB$residuals >= 2*sd(metadata_TRB$residuals
 fig5b <- ggplot(data = metadata_TRB, aes(y = estimated_Shannon, x = Reads, label = cohort)) + 
   geom_point(aes(color = outliergroup), size = 5) +
   scale_color_manual(values = c("Outlier_down" = "#74add1", "Outlier_up" = "#d73027", "none" = "black")) +
-  geom_smooth(method = "lm", se = FALSE) + myplot +
-  scale_y_continuous(trans = "log10") + scale_x_continuous(trans = "log10") + annotation_logticks(sides = "bl") +
+  geom_smooth(method = "lm", se = FALSE) + myplot + myaxis + 
+  scale_y_continuous(trans = "log10") + scale_x_continuous(trans = "log10") + 
+  annotation_logticks(sides = "bl") +
   geom_text_repel(data = subset(metadata_TRB, outliergroup == "Outlier_down"), segment.size = 0.2,
                   box.padding = 0.5, direction = "x", hjust = 1,nudge_x  = 1, min.segment.length = 0, size = 6) +
   geom_text_repel(data = subset(metadata_TRB, outliergroup == "Outlier_up"), segment.size = 0.2,
                   box.padding = 0.5,  direction = "x", hjust = 1, nudge_y  = 1, min.segment.length = 0, size = 6) +
-  theme(legend.position = "none") +
-  theme(plot.title = element_text(hjust = 0.5, size = 30),
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = 0.5, size = 30),
         axis.title = element_text(size = 30),
         plot.margin = margin(0.2, 2, 0.2, 0.2, "cm"),
-        axis.line = element_line(color = "black"),
         axis.text.x = element_text(size = 30, color = "black"),
         axis.text.y = element_text(size = 30, color = "black")) +
   labs(y = "Estimated Shannon diversity", x = "TCRb reads") +
@@ -82,21 +82,16 @@ nbl <- metadata_TRB[ metadata_TRB$cohort == "NBL",]
 trbplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = estimated_Shannon)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5, aes(color = immune_cluster)) +
+  myaxis + myplot +
   theme(axis.title.y = element_text(size = 30),
         axis.title.x = element_blank(),
-        axis.line = element_line(color = "black"),
-        axis.text.x = element_text(size = 30, angle = 45, hjust = 1, color = "black"),
-        axis.text.y = element_text(size = 30, color = "black")) +
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        plot.background = element_rect(fill = "transparent", colour = NA),
-        plot.title = element_text(size = 30, hjust = 0.5)) +
-  theme(legend.position = "none") +
+        axis.text.x = element_text(size = 30),
+        axis.text.y = element_text(size = 30)) +
+  theme(plot.title = element_text(size = 30, hjust = 0.5),
+        legend.position = "none") +
   scale_color_manual(values = cluster_col) +
   scale_y_continuous(trans = "log10", 
                      labels = scales::label_number(accuracy = 1)) + annotation_logticks(sides = "l") +
-  labs(y = paste0("Estimated\nShannon diversity")) +
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Excluded")), y_position = 5.5,
               map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Neutral")), y_position = 4.5,
@@ -107,6 +102,7 @@ trbplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = estimated_Shannon)
               map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Immune Neutral", "Immune Excluded")), y_position = 4,
               map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
+  labs(y = paste0("Estimated\nShannon diversity")) +
   ggtitle(expression(~underline("NBL (n = 116)"))) 
 
 # cns
@@ -121,17 +117,12 @@ clustcol[ names(clustcol) %in% names(mytab)[ mytab <= 2] ] <- "transparent"
 trbplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = estimated_Shannon)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 2, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5, aes(color = immune_cluster)) +
+  myaxis + myplot +
   theme(axis.title.y = element_blank(),
         axis.title.x = element_blank(),
-        axis.line = element_line(color = "black"),
-        axis.text.x = element_text(size = 30, angle = 45, hjust = 1, color = "black"),
-        axis.text.y = element_text(size = 30, color = "black")) +
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        plot.background = element_rect(fill = "transparent", colour = NA),
-        plot.title = element_text(size = 30, hjust = 0.5)) +
-  theme(legend.position = "none") +
+        axis.text.x = element_text(size = 30),
+        axis.text.y = element_text(size = 30)) +
+  theme(plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none") +
   scale_color_manual(values = clustcol) +
   scale_y_continuous(trans = "log10", 
                      labels = scales::label_number(accuracy = 1)) + annotation_logticks(sides = "l") +
@@ -192,7 +183,7 @@ fig5e <- ggplot(data = mytab_melted, aes(x = variable, y = value, fill = immune_
         axis.text.x = element_text(size = 30),
         legend.position = "none",
         plot.title = element_text(hjust = 0.5, size = 30),
-        plot.margin = margin(1,0.5,1.5,0.5, "cm")) +
+        plot.margin = margin(1, 0.5, 1.5 0.5, "cm")) +
   scale_fill_manual(values = cluster_col) +
   geom_signif(annotation="*",y_position= 0.55, xmin= 0.9, xmax=1.1, textsize = 10, vjust = 0.5) + 
   geom_signif(annotation="**",y_position= 0.3, xmin= 2.9, xmax=3.1, textsize = 10, vjust = 0.5) +
@@ -217,18 +208,13 @@ nbl <- metadata_igrep[ metadata_igrep$cohort == "NBL",]
 giniplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = gini)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 3, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
+  myplot + myaxis +
   theme(axis.title.y = element_text(size = 30),
         axis.title.x = element_blank(),
-        axis.line = element_line(color = "black"),
-        axis.text.x = element_text(size = 30, angle = 45, hjust = 1, color = "black"),
-        axis.text.y = element_text(size = 30, color = "black")) +
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        plot.background = element_rect(fill = "transparent", colour = NA),
-        plot.margin = margin(1,1,1,2.5, "cm"),
-        plot.title = element_text(size = 30, hjust = 0.5)) +
-  theme(legend.position = "none") +
+        axis.text.x = element_text(size = 30),
+        axis.text.y = element_text(size = 30)) +
+  theme(plot.margin = margin(1, 1, 1, 2.5, "cm"),
+        plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none") +
   scale_color_manual(values = cluster_col) +
   labs(y = paste0("gini index (Ig)")) +
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Neutral")), y_position = 1.1,
@@ -246,18 +232,13 @@ cns <- metadata_igrep[ metadata_igrep$cohort != "NBL",]
 giniplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = gini)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 2, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
+  myplot + myaxis + 
   theme(axis.title.y = element_blank(),
         axis.title.x = element_blank(),
-        axis.line = element_line(color = "black"),
-        axis.text.x = element_text(size = 30,angle = 45, hjust = 1, color = "black"),
-        axis.text.y = element_text(size = 30, color = "black")) +
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        plot.background = element_rect(fill = "transparent", colour = NA),
-        plot.margin = margin(1,2.5,1,1, "cm"),
-        plot.title = element_text(size = 30, hjust = 0.5)) +
-  theme(legend.position = "none") +
+        axis.text.x = element_text(size = 30),
+        axis.text.y = element_text(size = 30)) +
+  theme(plot.margin = margin(1, 2.5, 1, 1, "cm"),
+        plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none") +
   scale_color_manual(values = cluster_col) +
   labs(y = paste0("gini index (Ig)")) +
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Myeloid Predominant")), y_position = 1,
