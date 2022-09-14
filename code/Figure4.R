@@ -363,9 +363,9 @@ C4 <- IC_oncoprint("Immune Excluded", ped_tmb, oncomat, "FALSE")
 percmutations <- rowSums(!is.na(oncomat))/ncol(oncomat)*100
 
 right_ha = rowAnnotation(`% mutated` = anno_barplot(percmutations, border = FALSE, 
-                                                    axis_param=list(gp = gpar(fontsize=50), labels_rot = 0)),
+                                                    axis_param=list(gp = gpar(fontsize=35), labels_rot = 0)),
                          width = unit(8,"cm"), annotation_name_side = "top", annotation_name_rot = 0,
-                         annotation_name_gp = gpar(fontsize = 50))
+                         annotation_name_gp = gpar(fontsize = 35))
 
 #legend
 lgd = Legend(labels = names(col), title = "", 

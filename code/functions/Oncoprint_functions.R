@@ -42,14 +42,15 @@ IC_oncoprint <- function(IC, dta, mat,showrownames){
                              show_heatmap_legend = FALSE,
                              show_column_names = FALSE,
                              show_row_names = showrownames,
-                             row_names_gp = gpar(fontsize = 50, fontface = "italic"),
+                             row_names_gp = gpar(fontsize = 35, fontface = "italic"),
                              remove_empty_rows = FALSE,
                              show_pct = FALSE,
                              right_annotation = NULL, 
                              row_names_side = "left",
                              top_annotation = NULL,
                              row_order = rownames(mat),
-                             column_title = paste0(IC,"\n","(n = ", n, ")"), column_title_gp = gpar(fontsize = 50)) 
+                             column_title = paste0(IC,"\n","(n = ", n, ")"), 
+                             column_title_gp = gpar(fontsize = 35)) 
   
   return(myIC_oncoprint)
 }
