@@ -278,7 +278,7 @@ lgd = Legend(col_fun = col_fun,
              labels_gp = gpar(fontsize = 20))
 
 pdf(paste0(plotpath, "Fig3_D.pdf"), width = 30, height = 10)
-draw(fig3d, annotation_legend_side =  "right",  annotation_legend_list = list(lgd))
+draw(fig3d, annotation_legend_side =  "right",  annotation_legend_list = list(lgd), gap = unit(1,"cm"))
 dev.off()
 
 ###############
