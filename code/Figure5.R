@@ -481,7 +481,7 @@ plot_ighg1_mp <- ggplot(data = vars_myeloid_genes, aes(x = grp, y = IGHG1s)) +
   labs(y = paste0("IGHG1")) 
 
 pdf(file = paste0(plotpath,"Fig5_G.pdf"),
-    width = 8, height = 18, useDingbats = FALSE)
+    width = 15, height = 30, useDingbats = FALSE)
 
 grid.draw(ggarrange(plots=list(plot_gini_pi, plot_gini_mp,
                                plot_ighg1_pi, plot_ighg1_mp,
