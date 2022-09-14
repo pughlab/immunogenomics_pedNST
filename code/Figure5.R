@@ -209,7 +209,7 @@ fig5e <- ggplot(data = mytab_melted, aes(x = variable, y = value, fill = immune_
   labs(y = "Isotype fraction") + coord_cartesian(ylim = c(0,0.75))
 
 #plot legend in two rows
-lgd <- get_legend(fig5d + theme(legend.position = "bottom") +  guides(fill=guide_legend(nrow=2, byrow=TRUE))) 
+lgd <- get_legend(fig5e + theme(legend.position = "bottom") +  guides(fill=guide_legend(nrow=2, byrow=TRUE))) 
 
 pdf(file = paste0(plotpath,"Fig5_E.pdf"),
     width = 12, 
