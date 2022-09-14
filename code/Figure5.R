@@ -453,7 +453,7 @@ plot_gini_mp <- ggplot(data = vars_myeloid_genes, aes(x = grp, y = gini)) +
 
 plot_ighg3_mp <- ggplot(data = vars_myeloid_genes, aes(x = grp, y = IGHG3s)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
-  geom_boxplot(outlier.shape = NA, fill = NA)  + myploy + myaxis +
+  geom_boxplot(outlier.shape = NA, fill = NA)  + myplot + myaxis +
   theme(axis.title.y = element_text(size = 30),
         axis.title.x = element_blank(),
         axis.text.x = element_text(size = 30),
