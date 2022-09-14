@@ -111,7 +111,7 @@ trbplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = estimated_Shannon)
   geom_signif(comparisons = list(c("Immune Neutral", "Immune Excluded")), y_position = 4,
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
   ggtitle(expression(~underline("NBL (n = 116)"))) +
-  scale_y_continuous(expand = c(0.1, 0))
+  scale_y_continuous(expand = c(1, 0))
 
 # cns
 cns <- metadata_TRB[ metadata_TRB$cohort != "NBL",]
