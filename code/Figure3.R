@@ -42,6 +42,8 @@ colnames(fc_mat_pathways) <- gsub("[.]", " ", colnames(fc_mat_pathways))
 
 fc_mat_pathways_t <- t(fc_mat_pathways)
 
+
+ht_opt$ROW_ANNO_PADDING = unit(10, "cm")
 #Heatmap
 col_fun= colorRamp2(c(-0.6, 0, 0.6), c("blue", "white", "red"))
 pathways_hm = Heatmap(fc_mat_pathways_t,
@@ -71,7 +73,7 @@ lgd = Legend(col_fun = col_fun,
              labels_gp = gpar(fontsize = 20))
 
 pdf(paste0(plotpath,"Fig3_A.pdf"), width = 30, height = 10)
-draw(pathways_hm, annotation_legend_side =  "right",  annotation_legend_list = list(lgd), gap = unit(1,"cm"))
+draw(pathways_hm, annotation_legend_side =  "right",  annotation_legend_list = list(lgd))
 decorate_heatmap_body("Log2_FC", {
   grid.rect(x = 0, y = 1, just = c("left", "top"),
             width = 0.45,height = 1, gp = gpar(col = "black", lwd = 5))
