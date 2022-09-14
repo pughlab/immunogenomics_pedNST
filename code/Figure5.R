@@ -189,7 +189,7 @@ plot_dc <- ggplot(data = trb_inflamed, aes(x = grp, y = `Dendritic cells`)) +
   labs(y = paste0("Dendritic cells")) 
 
 #Myeloid predominant
-trb_myeloid <- metadata_IC_TRB_genesets[ metadata_IC_TRB_genesets$immune_cluster == "Myeloid Predominant",]
+trb_myeloid <- metadata_TRB_genesets[ metadata_TRB_genesets$immune_cluster == "Myeloid Predominant",]
 
 trb_myeloid$grp <- NA
 trb_myeloid$grp[ trb_myeloid$residuals >= quantile(trb_myeloid$residuals,0.75)] <- "Residuals >= 75%"
