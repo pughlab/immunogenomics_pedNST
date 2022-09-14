@@ -32,8 +32,8 @@ theme(axis.title = element_blank(), axis.text.x = element_text(size = 25, angle 
 
 pdf(file = paste0(plotpath,"Fig1_A.pdf"),
     width = 10, height = 10, useDingbats = FALSE)
-grid.arrange(fig1a, sub=textGrob("Fig1A", gp = gpar(fontsize = 13, fontface = 'bold'),
-                                 hjust=1, vjust=0), heights = c(10,1))
+grid.arrange(fig1a, sub=textGrob("Fig1A", gp = gpar(fontsize = 25, fontface = 'bold'),
+                                 hjust=1, vjust=0, x = 1), heights = c(10,1))
 dev.off()
 
 ###############
@@ -145,7 +145,8 @@ fig1b <- ggplot() +
 
 pdf(file = paste0(plotpath,"Fig1_B.pdf"),
     width = 20, height = 8, useDingbats = FALSE)
-fig1b
+grid.arrange(fig1b, sub=textGrob("Fig1B", gp = gpar(fontsize = 25, fontface = 'bold'),
+                                 hjust=1, vjust=0, x = 1), heights = c(10,1))
 dev.off()
 
 ###############
@@ -191,11 +192,12 @@ lgd_cohort = Legend(labels = names(cohort_col)[2:13], title = "", nrow = 1,
 pdf(paste0(plotpath,"Fig1_C.pdf"),
     width = 18, height = 10)
 
-draw(fig1c, annotation_legend_side =  "bottom", legend_grouping = "original",
-     annotation_legend_list = list(lgd_cohort))
+grid.arrange(draw(fig1c, annotation_legend_side =  "bottom", legend_grouping = "original",
+                  annotation_legend_list = list(lgd_cohort)), 
+             sub=textGrob("Fig1A", gp = gpar(fontsize = 25, fontface = 'bold'),
+                          hjust=1, vjust=0, x = 1), heights = c(10,1))
 
 dev.off()
-
 
 ###############
 # Figure 1D
@@ -244,7 +246,8 @@ hm1D = Heatmap(cancer_IC_mat,
 
 pdf(paste0(plotpath,"Fig1_D.pdf"),
     width = 10, height = 10)
-draw(hm1D)
+grid.arrange(hm1D, sub=textGrob("Fig1D", gp = gpar(fontsize = 25, fontface = 'bold'),
+                                  hjust=1, vjust=0, x = 1), heights = c(10,1))
 dev.off()
 
 ###############
@@ -275,7 +278,8 @@ heplot <- ggplot(data = HE_manifest,
 
 pdf(paste0(plotpath,"Fig1_E.pdf"),
     width = 10, height = 12)
-print(heplot)
+grid.arrange(heplot, sub=textGrob("Fig1E", gp = gpar(fontsize = 25, fontface = 'bold'),
+                                  hjust=1, vjust=0, x = 1), heights = c(10,1))
 dev.off()
 
 ###############
@@ -310,7 +314,8 @@ fig1f <- plot_grid(allc, allf, nrow = 2, align = "v")
 
 pdf(file = paste0(plotpath,"Fig1_F.pdf"),
     width = 30, height = 10, useDingbats = FALSE)
-fig1f
+grid.arrange(fig1f, sub=textGrob("Fig1F", gp = gpar(fontsize = 25, fontface = 'bold'),
+                                  hjust=1, vjust=0, x = 1), heights = c(10,1))
 dev.off()
 
 ###############
