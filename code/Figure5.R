@@ -22,7 +22,7 @@ shan_trb <- TCRcap_rnaplot.fx(TRB_CapTCR_RNAseq, "estimated_Shannon_RNAseq", "ob
 
 #add title
 fig5a <- shan_trb + ggtitle(~underline("TRB diversity inference")) + 
-  theme(plot.margin = margin(1,0.2,1.5,0.2, "cm"))
+  theme(plot.margin = margin(1, 0.2, 1.5, 0.2, "cm"))
 
 pdf(file = paste0(plotpath,"Fig5_A.pdf"),
     width = 10, height = 10, useDingbats = FALSE)
@@ -59,7 +59,7 @@ fig5b <- ggplot(data = metadata_TRB, aes(y = estimated_Shannon, x = Reads, label
   theme(legend.position = "none") +
   theme(plot.title = element_text(hjust = 0.5, size = 45),
         axis.title = element_text(size = 45),
-        plot.margin = margin(1,2.5,1.5,0.5, "cm"),
+        plot.margin = margin(1, 2.5, 1.5, 0.5, "cm"),
         axis.line = element_line(color = "black"),
         axis.text.x = element_text(size = 45, color = "black"),
         axis.text.y = element_text(size = 45, color = "black")) +
@@ -162,6 +162,11 @@ dev.off()
 # Figure 5D
 ###############
 
+
+###############
+# Figure 5E
+###############
+
 load(file = paste0(datapath, "metadata_IGH.RData"))
 
 alligs <- c("IGHA1", "IGHA2", "IGHG1", "IGHG2", "IGHG3", "IGHG4", "IGHD", "IGHE", "IGHM")
@@ -187,7 +192,7 @@ mytab_melted$variable <- factor(mytab_melted$variable,
 pairwise.t.test(mytab$IGHG1, mytab$immune_cluster, "none", paired=FALSE, pool.sd=TRUE)
 pairwise.t.test(mytab$IGHG3, mytab$immune_cluster, "none", paired=FALSE, pool.sd=TRUE)
 
-fig5d <- ggplot(data = mytab_melted, aes(x = variable, y = value, fill = immune_cluster)) + 
+fig5e <- ggplot(data = mytab_melted, aes(x = variable, y = value, fill = immune_cluster)) + 
   geom_boxplot(outlier.color = NA, position = "dodge") + 
   myplot + myaxis + 
   theme(axis.title.x = element_blank(), axis.title.y = element_text(size = 45),
@@ -206,16 +211,16 @@ fig5d <- ggplot(data = mytab_melted, aes(x = variable, y = value, fill = immune_
 #plot legend in two rows
 lgd <- get_legend(fig5d + theme(legend.position = "bottom") +  guides(fill=guide_legend(nrow=2, byrow=TRUE))) 
 
-pdf(file = paste0(plotpath,"Fig5_D.pdf"),
+pdf(file = paste0(plotpath,"Fig5_E.pdf"),
     width = 12, 
     height = 10,
     useDingbats = FALSE)
-plot_grid(fig5d, lgd, nrow=2, ncol =1, rel_heights = c(3,0.4))
+plot_grid(fig5e, lgd, nrow=2, ncol =1, rel_heights = c(3,0.4))
 
 dev.off()
 
 ###############
-# Figure 5E
+# Figure 5F
 ###############
 
 load(file = paste0(datapath, "metadata_IGrep.RData"))
@@ -275,12 +280,17 @@ giniplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = gini)) +
               map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
   ggtitle(expression(~underline("pedCNS (n = 248)")))
 
-pdf(file = paste0(plotpath,"Fig5_E.pdf"),
+pdf(file = paste0(plotpath,"Fig5_F.pdf"),
     width = 14, 
     height = 10,
     useDingbats = FALSE)
 plot_grid(giniplot_nbl, giniplot_cns, nrow = 1, align = "h", ncol = 2)
 dev.off()
+
+###############
+# Figure 5G
+###############
+
 
 ###############
 # Compile in one file

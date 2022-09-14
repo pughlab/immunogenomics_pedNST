@@ -46,8 +46,6 @@ densplot.fx <- function(dat, pheno){
   return(densplot)  
 }
 
-
-
 # Stacked barplots for cancer subtypes
 subgroupcount_IC.fx <- function(metadata, tumour){
   #Subset to tumour
@@ -135,8 +133,6 @@ subgroupfreq_IC.fx <- function(metadata, tumour){
   return(freq_plot)
   
 }
-
-
 
 # Volcano plot for DEG
 volcano_DEG_plot <- function(genetable, contrast, foldchange, padj){
@@ -309,7 +305,7 @@ TCRcap_rnaplot.fx <- function(dta, met_rna, met_cap, labels, x,y){
           axis.text.x = element_text(size = 45, color = "black"),
           axis.text.y = element_text(size = 45, color = "black"),
           plot.title = element_text(hjust = 0.5, size = 45)) +
-    labs(y = paste0("Estimated ", labels, "\n(RNAseq)"), x = paste0(labels, "\n(CapTCR-seq)")) +
+    labs(y = paste0("Estimated ", labels, "\n(RNA-seq)"), x = paste0(labels, "\n(CapTCR-seq)")) +
     annotate("text", x=x, y=y, label= paste("R^2 = ", round(reg$r.squared,2)), size = 15) 
   
   return(cap_rna_plot)
