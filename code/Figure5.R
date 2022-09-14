@@ -310,7 +310,7 @@ dev.off()
 
 load(file = paste0(datapath, "metadata_IGrep.RData"))
 
-tcr_bcr <- merge(metadata_igrep, metadata_IC_TRB, by = "sample_id")
+tcr_bcr <- merge(metadata_igrep, metadata_TRB, by = "sample_id")
 rownames(tcr_bcr) <- tcr_bcr$sample_id
 
 vars_inflamed <- tcr_bcr[ tcr_bcr$immune_cluster.x == "Pediatric Inflamed",]
@@ -318,12 +318,8 @@ vars_inflamed$grp <- NA
 vars_inflamed$grp[ vars_inflamed$residuals >= quantile(vars_inflamed$residuals, 0.75)] <- "Residuals >= 75%"
 vars_inflamed$grp[ vars_inflamed$residuals <= quantile(vars_inflamed$residuals, 0.25)] <- "Residuals <= 25%"
 
-load(file = paste0(datapath, "exp_mat/IPD_ExprSet_log2_combat.RData"))
-vars <- pData(IPD_Set_log2_combat)
-tpms <- exprs(IPD_Set_log2_combat)
-tpms_t <- t(tpms)
-mygenes <-  c("IGHG2", "IGHG3", "IGHG1", "IGHG4", "IGHM", "IGHA1", "IGHA2")
-vars_inflamed_genes <- cbind(vars_inflamed, tpms_t[ vars_inflamed$sample_id,mygenes])
+load(file = paste0(datapath,"IG_genes.RData"))
+vars_inflamed_genes <- cbind(vars_inflamed, ig_genes[ vars_inflamed$sample_id,])
 
 mymed <- lapply(unique(vars_inflamed_genes$cohort.x), function(x){
   median(vars_inflamed_genes$IGHG3[ vars_inflamed_genes$cohort.x == x])})
