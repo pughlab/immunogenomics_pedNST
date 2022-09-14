@@ -42,8 +42,6 @@ colnames(fc_mat_pathways) <- gsub("[.]", " ", colnames(fc_mat_pathways))
 
 fc_mat_pathways_t <- t(fc_mat_pathways)
 
-
-ht_opt$ROW_ANNO_PADDING = unit(10, "cm")
 #Heatmap
 col_fun= colorRamp2(c(-0.6, 0, 0.6), c("blue", "white", "red"))
 pathways_hm = Heatmap(fc_mat_pathways_t,
@@ -69,7 +67,7 @@ col_fun= colorRamp2(c(-0.6, 0, 0.6), c("blue", "white", "red"))
 lgd = Legend(col_fun = col_fun, 
              at = c(-0.6, 0, 0.6), 
              title = "Fold change\n(Log2)", title_gp = gpar(fontsize = 20),
-             grid_height = unit(4, "cm"), #grid_width = unit(1, "cm"),
+             grid_height = unit(4, "cm"),
              labels_gp = gpar(fontsize = 20))
 
 pdf(paste0(plotpath,"Fig3_A.pdf"), width = 30, height = 10)
@@ -248,6 +246,7 @@ for( g in rownames(immunereg_genmat)){
   median_mat[g,4] <- median(immunereg_genmat_z[g, metadata_IC$sample_id[metadata_IC$immune_cluster == "Immune Excluded"]])
 }
 
+ht_opt$HEATMAP_LEGEND_PADDING = unit(10,"cm")
 #Heatmap
 col_fun = colorRamp2(c(-1, 0, 1), c("blue", "white", "red"))
 fig3d = Heatmap(t(median_mat),
@@ -264,12 +263,18 @@ fig3d = Heatmap(t(median_mat),
                 col = col_fun,
                 column_names_gp = gpar(fontsize = 20),
                 column_names_rot = 45,
-                show_heatmap_legend = FALSE,
                 row_names_gp = gpar(fontsize = 20),
                 width = unit(nrow(median_mat), "cm"),
                 height = unit(ncol(median_mat)*2, "cm"),
                 column_title = NULL,
-                row_title = NULL)
+                row_title = NULL,
+                show_heatmap_legend = TRUE,
+                heatmap_legend_param = list(col_fun = col_fun,
+                                            at = c(-1, 0, 1),
+                                            legend.height = unit(4, "cm"),
+                                            title_gp = gpar(fontsize = 20),
+                                            title = "Median z-score",
+                                            labels_gp = gpar(fontsize = 20)))
 
 
 col_fun = colorRamp2(c(-1, 0, 1), c("blue", "white", "red"))
