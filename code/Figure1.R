@@ -32,7 +32,8 @@ theme(axis.title = element_blank(), axis.text.x = element_text(size = 25, angle 
 
 pdf(file = paste0(plotpath,"Fig1_A.pdf"),
     width = 10, height = 10, useDingbats = FALSE)
-grid.arrange(fig1a, sub=textGrob("Fig1A", hjust=1, vjust=0, x=1))
+grid.arrange(fig1a, sub=textGrob("Fig1A", gp = gpar(fontsize = 13, fontface = 'bold'),
+                                 hjust=1, vjust=0), heights = c(10,1))
 dev.off()
 
 ###############
