@@ -74,8 +74,6 @@ dev.off()
 # Figure 5C
 ###############
 
-load(file = paste0(datapath, "metadata_TRB.RData"))
-
 # nbl
 nbl <- metadata_TRB[ metadata_TRB$cohort == "NBL",]
 
@@ -144,6 +142,55 @@ dev.off()
 ###############
 # Figure 5D
 ###############
+
+load( file = paste0(datapath, "geneset_cc_normalized.RData"))
+mygenesets <- as.data.frame(t(geneset_cc_norm))
+mygenesets$sample_id <- rownames(mygenesets)
+metadata_TRB_genesets <- merge(metadata_TRB, mygenesets, by = "sample_id")
+trb_inflamed <- metadata_TRB_genesets[ metadata_TRB_genesets$immune_cluster == "Pediatric Inflamed",]
+
+summary(trb_inflamed$residuals)
+
+trb_inflamed$grp <- NA
+trb_inflamed$grp[ trb_inflamed$residuals >= quantile(trb_inflamed$residuals, 0.75)] <- "Residuals >= 75%"
+trb_inflamed$grp[ trb_inflamed$residuals <= quantile(trb_inflamed$residuals, 0.25)] <- "Residuals <= 25%"
+
+trb_inflamed <- trb_inflamed[ !is.na(trb_inflamed$grp),]
+
+plot_tcells <- ggplot(data = trb_inflamed, aes(x = grp, y = T_cells)) + 
+  geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
+  geom_boxplot(outlier.shape = NA, fill = NA)  +
+  theme(axis.title.y = element_text(size = 50),
+        axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_text(size = 50)) +
+  theme(plot.title = element_text(size = 50, hjust = 0.5)) +
+  theme(legend.position = "none",
+        plot.margin = margin(1, 10, 1, 60)) +
+  geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 6.2,
+              map_signif_level=TRUE, textsize = 10, test = "t.test", vjust = 0.5) +
+  #scale_x_discrete(expand = c(0.4, 0)) + scale_y_continuous(expand = c(0.1, 0)) +
+  expand_limits(y = 0) +
+  labs(y = paste0("T cells")) +
+  ggtitle("Pediatric Inflamed\n(n = 42)")
+
+plot_dc <- ggplot(data = trb_inflamed, aes(x = grp, y = DC)) + 
+  geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
+  geom_boxplot(outlier.shape = NA, fill = NA)  +
+  theme(axis.title.y = element_text(size = 50),
+        axis.title.x = element_blank(),
+        axis.text.x = element_text(size = 50),
+        axis.text.y = element_text(size = 50)) +
+  theme(plot.title = element_blank(), legend.position = "none", plot.margin = margin(1, 10, 1, 60)) +
+  geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 4,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  expand_limits(y = 0) + scale_y_continuous(expand = c(0.1, 0)) +
+  labs(y = paste0("Dendritic cells")) 
+
+pdf(file = paste0(plotpath,"Fig5_D.pdf"),
+    width = 8, height = 14, useDingbats = FALSE)
+grid.draw(ggarrange(plots=list(plot_tcells, plot_dc)))
+dev.off()
 
 
 ###############
