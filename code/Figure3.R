@@ -68,8 +68,7 @@ pathways_hm = Heatmap(fc_mat_pathways_t,
                                                   legend_height = unit(2, "cm"),
                                                   title = "Fold change\n(Log2)"))
 
-pdf(paste0(plotpath,"Fig3_A.pdf"),
-    width = 40, height = 15)
+pdf(paste0(plotpath,"Fig3_A.pdf"), width = 40, height = 15)
 draw(pathways_hm)
 decorate_heatmap_body("Log2_FC", {
   grid.rect(x = 0, y = 1, just = c("left", "top"),
@@ -179,8 +178,7 @@ fig3b <- plot_grid(
 
 y.grob <- textGrob("Average protein z-score", gp=gpar(fontsize=30), rot=90)
 
-pdf(paste0(plotpath,"Fig3_B.pdf"),
-    width = 30, height = 15, useDingbats = FALSE)
+pdf(paste0(plotpath,"Fig3_B.pdf"), width = 30, height = 15, useDingbats = FALSE)
 fig3b
 dev.off()
 
@@ -217,9 +215,68 @@ C4_volcano <- volcano_DEG_plot(genetable, "C4-Others", 1.5, 0.1) +
 fig3c <- plot_grid(C1_volcano, C2_volcano, C3_volcano, C4_volcano,
                           ncol = 4, nrow =1, align = "h")
 
-pdf(paste0(plotpath,"Fig3_C.pdf"),
-    width = 50, height = 15, useDingbats = FALSE)
+pdf(paste0(plotpath,"Fig3_C.pdf"), width = 50, height = 15, useDingbats = FALSE)
 fig3c
+dev.off()
+
+###############
+# Figure 3D
+###############
+
+load(file = paste0(datapath, "immunereg_genmat.RData"))
+load(file = paste0(datapath,"metadata_IC.RData"))
+
+# median scaled gene expression for each cluster
+median_mat <- matrix(nrow = 59, ncol = 4,
+                     dimnames = list(rownames(immunereg_genmat), 
+                                     c("Pediatric Inflamed", "Myeloid Predominant", 
+                                       "Immune Neutral", "Immune Excluded")))
+#make a matrix
+immunereg_genmat <- as.matrix(immunereg_genmat)
+#scale
+immunereg_genmat_z <- t(scale(t(immunereg_genmat)))
+# median of each gene in z-score in each immune cluster
+for( g in rownames(immunereg_genmat)){
+  median_mat[g,1] <- median(immunereg_genmat_z[g, metadata_IC$sample_id[metadata_IC$immune_cluster == "Pediatric Inflamed"]])
+  median_mat[g,2] <- median(immunereg_genmat_z[g, metadata_IC$sample_id[metadata_IC$immune_cluster == "Myeloid Predominant"]])    
+  median_mat[g,3] <- median(immunereg_genmat_z[g, metadata_IC$sample_id[metadata_IC$immune_cluster == "Immune Neutral"]])
+  median_mat[g,4] <- median(immunereg_genmat_z[g, metadata_IC$sample_id[metadata_IC$immune_cluster == "Immune Excluded"]])
+}
+
+#Heatmap
+col_fun = colorRamp2(c(-1, 0, 1), c("blue", "white", "red"))
+fig3d = Heatmap(t(median_mat),
+                #titles and names   
+                name = "Median z score",   
+                show_row_names = TRUE,
+                show_column_names = TRUE,     
+                #clusters and orders  
+                cluster_columns = TRUE,
+                cluster_rows = TRUE,
+                show_column_dend = TRUE,
+                show_row_dend = TRUE,    
+                #aesthestics
+                col = col_fun,
+                column_names_gp = gpar(fontsize = 25),
+                column_names_rot = 45,
+                show_heatmap_legend = FALSE,
+                row_names_gp = gpar(fontsize = 25),
+                width = unit(nrow(median_mat), "cm"),
+                height = unit(ncol(median_mat)*2, "cm"),
+                column_title_gp = gpar(fontsize = 25),
+                column_title = NULL,
+                row_title = NULL)
+
+
+col_fun = colorRamp2(c(-1, 0, 1), c("blue", "white", "red"))
+lgd = Legend(col_fun = col_fun, 
+             at = c(-1,0,1), 
+             title = "Median\nz-score", title_gp = gpar(fontsize = 15),
+             grid_height = unit(2, "cm"),
+             labels_gp = gpar(fontsize = 15))
+
+pdf(paste0(plotpath, "Fig3_D.pdf"), width = 40, height = 20)
+draw(fig3d, annotation_legend_side =  "bottom",  annotation_legend_list = list(lgd))
 dev.off()
 
 ###############
