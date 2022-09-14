@@ -300,13 +300,13 @@ TCRcap_rnaplot.fx <- function(dta, met_rna, met_cap, labels, x,y){
     scale_x_continuous(trans = "log10") +
     annotation_logticks(sides = "bl") +
     theme(legend.position = "none", legend.title = element_blank()) +
-    theme(axis.title = element_text(size = 45),
+    theme(axis.title = element_text(size = 35),
           axis.line = element_line(color = "black"),
-          axis.text.x = element_text(size = 45, color = "black"),
-          axis.text.y = element_text(size = 45, color = "black"),
-          plot.title = element_text(hjust = 0.5, size = 45)) +
+          axis.text.x = element_text(size = 35, color = "black"),
+          axis.text.y = element_text(size = 35, color = "black"),
+          plot.title = element_text(hjust = 0.5, size = 4=35)) +
     labs(y = paste0("Estimated ", labels, "\n(RNA-seq)"), x = paste0(labels, "\n(CapTCR-seq)")) +
-    annotate("text", x=x, y=y, label= paste("R^2 = ", round(reg$r.squared,2)), size = 15) 
+    annotate("text", x=x, y=y, label= paste("R^2 = ", round(reg$r.squared,2)), size = 10) 
   
   return(cap_rna_plot)
 }
