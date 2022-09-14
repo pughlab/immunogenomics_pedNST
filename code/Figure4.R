@@ -303,7 +303,7 @@ col_labels = structure(c("RTK (71)", "PI3K (26)", "Wnt (48)", "Notch (51)", "HIP
                        names = names(pathwaycount))
 
 #order with cohort_mat
-pathway_mat <- pathway_mat[,colnames(cohort_mat_frac)]
+pathway_mat <- pathway_mat[,rownames(cohort_mat_frac)]
 
 # heatmap for fraction of mutated samples in each immune cluster (z score)
 col_fun = colorRamp2(c(-1.5, 0, 1.5), c("blue", "white", "red"))
