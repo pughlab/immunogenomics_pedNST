@@ -70,7 +70,7 @@ lgd = Legend(col_fun = col_fun,
              grid_height = unit(4, "cm"), #grid_width = unit(1, "cm"),
              labels_gp = gpar(fontsize = 20))
 
-pdf(paste0(plotpath,"Fig3_A.pdf"), width = 30, height = 10)
+pdf(paste0(plotpath,"Fig3_A.pdf"), width = 15, height = 5)
 draw(pathways_hm, annotation_legend_side =  "right",  annotation_legend_list = list(lgd))
 decorate_heatmap_body("Log2_FC", {
   grid.rect(x = 0, y = 1, just = c("left", "top"),
