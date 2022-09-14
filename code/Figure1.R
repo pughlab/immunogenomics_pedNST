@@ -268,7 +268,7 @@ heplot <- ggplot(data = HE_manifest,
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Excluded")), y_position = 0.45,
               map_signif_level=TRUE, textsize = 15, test = "wilcox.test", vjust = 0.5) +
   
-  labs(y = "Average TIL score") + ggtitle(~underline("H&E TIL score (n = 356)"))
+  labs(y = "Average TIL score") + ggtitle(~underline("H&E TIL score (n = 355)"))
 
 pdf(paste0(plotpath,"Fig1_E.pdf"),
     width = 10, height = 12)
