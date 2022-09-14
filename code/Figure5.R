@@ -147,6 +147,7 @@ load( file = paste0(datapath, "geneset_cc_normalized.RData"))
 mygenesets <- as.data.frame(t(geneset_cc_norm))
 mygenesets$sample_id <- rownames(mygenesets)
 metadata_TRB_genesets <- merge(metadata_TRB, mygenesets, by = "sample_id")
+print(colnames(metadata_TRB_genesets))
 trb_inflamed <- metadata_TRB_genesets[ metadata_TRB_genesets$immune_cluster == "Pediatric Inflamed",]
 
 summary(trb_inflamed$residuals)
@@ -191,7 +192,6 @@ pdf(file = paste0(plotpath,"Fig5_D.pdf"),
     width = 8, height = 14, useDingbats = FALSE)
 grid.draw(ggarrange(plots=list(plot_tcells, plot_dc)))
 dev.off()
-
 
 ###############
 # Figure 5E
@@ -307,6 +307,99 @@ dev.off()
 ###############
 # Figure 5G
 ###############
+
+load(file = paste0(datapath, "metadata_IGrep.RData"))
+
+tcr_bcr <- merge(metadata_igrep, metadata_IC_TRB, by = "sample_id")
+rownames(tcr_bcr) <- tcr_bcr$sample_id
+
+vars_inflamed <- tcr_bcr[ tcr_bcr$immune_cluster.x == "Pediatric Inflamed",]
+vars_inflamed$grp <- NA
+vars_inflamed$grp[ vars_inflamed$residuals >= quantile(vars_inflamed$residuals, 0.75)] <- "Residuals >= 75%"
+vars_inflamed$grp[ vars_inflamed$residuals <= quantile(vars_inflamed$residuals, 0.25)] <- "Residuals <= 25%"
+
+load(file = paste0(datapath, "exp_mat/IPD_ExprSet_log2_combat.RData"))
+vars <- pData(IPD_Set_log2_combat)
+tpms <- exprs(IPD_Set_log2_combat)
+tpms_t <- t(tpms)
+mygenes <-  c("IGHG2", "IGHG3", "IGHG1", "IGHG4", "IGHM", "IGHA1", "IGHA2")
+vars_inflamed_genes <- cbind(vars_inflamed, tpms_t[ vars_inflamed$sample_id,mygenes])
+
+mymed <- lapply(unique(vars_inflamed_genes$cohort.x), function(x){
+  median(vars_inflamed_genes$IGHG3[ vars_inflamed_genes$cohort.x == x])})
+names(mymed) <- unique(vars_inflamed_genes$cohort.x)
+
+myscaledgene <- vector(mode="numeric", length=nrow(vars_inflamed_genes))
+names(myscaledgene) <- rownames(vars_inflamed_genes)
+for(j in 1:nrow(vars_inflamed_genes)){
+  myscaledgene[j] <-  vars_inflamed_genes$IGHG3[j]-unlist(mymed[vars_inflamed_genes$cohort.x[j]])   
+}
+
+vars_inflamed_genes$IGHG3s <- myscaledgene[ rownames(vars_inflamed_genes)]
+
+mymed <- lapply(unique(vars_inflamed_genes$cohort.x), function(x){
+  median(vars_inflamed_genes$IGHG1[ vars_inflamed_genes$cohort.x == x])})
+names(mymed) <- unique(vars_inflamed_genes$cohort.x)
+
+myscaledgene <- vector(mode="numeric", length=nrow(vars_inflamed_genes))
+names(myscaledgene) <- rownames(vars_inflamed_genes)
+for(j in 1:nrow(vars_inflamed_genes)){
+  myscaledgene[j] <-  vars_inflamed_genes$IGHG1[j]-unlist(mymed[vars_inflamed_genes$cohort.x[j]])   
+}
+
+vars_inflamed_genes$IGHG1s <- myscaledgene[ rownames(vars_inflamed_genes)]
+
+vars_inflamed_genes <- vars_inflamed_genes[ !is.na(vars_inflamed_genes$grp),]
+
+plot_gini <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = gini)) + 
+  geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
+  geom_boxplot(outlier.shape = NA, fill = NA)  + myplot + myaxis +
+  theme(axis.title.y = element_text(size = 40),
+        axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_text(size = 40, color = "black")) +
+  theme(plot.title = element_text(size = 40, hjust = 0.5), legend.position = "none",
+        plot.margin = margin(1,10,1,60)) +
+  geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 1.0,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  scale_y_continuous(breaks = c(0.0, 0.25, 0.5, 0.75, 1), expand = c(0.1, 0)) + expand_limits(y = 0) + 
+  labs(y = paste0("gini index (Ig)")) +
+  ggtitle("Pediatric Inflamed\n(n = 36)")
+
+plot_ighg3 <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = IGHG3s)) + 
+  geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
+  geom_boxplot(outlier.shape = NA, fill = NA)  + myplot + myaxis + 
+  theme(axis.title.y = element_text(size = 40),
+        axis.title.x = element_blank(),
+        axis.text.x = element_text(size = 40),
+        axis.text.y = element_text(size = 40)) +
+  theme(plot.title = element_text(size = 40, hjust = 0.5),
+  legend.position = "none", plot.margin = margin(1, 10, 1, 60)) +
+  expand_limits(y = 0) + scale_y_continuous(expand = c(0.1, 0)) +
+  geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 3.3,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  labs(y = paste0("IGHG3")) 
+
+plot_ighg1 <- ggplot(data = vars_inflamed_genes, aes(x = grp, y = IGHG1s)) + 
+  geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
+  geom_boxplot(outlier.shape = NA, fill = NA)  + myplot + myaxis +
+  theme(axis.title.y = element_text(size = 40),
+        axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_text(size = 40, color = "black")) +
+  theme(plot.title = element_blank(), legend.position = "none", plot.margin = margin(1, 10, 1, 60)) +
+  expand_limits(y = 0) +
+  geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 4.2,
+              map_signif_level=TRUE, textsize = 15, test = "t.test", vjust = 0.5) +
+  scale_y_continuous(expand = c(0.1, 0)) +
+  labs(y = paste0("IGHG1")) 
+
+pdf(file = paste0(plotpath,"Fig5_G.pdf"),
+    width = 8, height = 18, useDingbats = FALSE)
+
+grid.draw(ggarrange(plots=list(plot_gini, plot_ighg1, plot_ighg3)))
+
+dev.off()
 
 
 ###############
