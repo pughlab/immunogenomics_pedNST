@@ -1,5 +1,5 @@
 metadata_version: 1
-name: ImmunePedNST
+name: Immunogenomic analysis of pediatric nervous system tumours
 description: 'To inform immunotherapy treatments in children, we performed an immunogenomic
   analysis of RNA-seq data from 925 treatment-naïve pediatric nervous system tumours
   (pedNST) spanning 12 cancer types from 3 public data sets. In contrast to 17% of
@@ -20,6 +20,8 @@ tags:
 - RNA-seq
 - Pediatric cancers
 - bioinformatics
+- cancer genomics
+- immune infiltration
 authors:
 - name: Arash Nabbi
   affiliations:
