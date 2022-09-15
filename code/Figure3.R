@@ -2,12 +2,12 @@
 # Figure 3
 ###############
 
-source("~/git/immunogenomics_pedNST//code/functions/dependencies.R")
-source("~/git/immunogenomics_pedNST//code/functions/ggplot2_theme.R")
-source("~/git/immunogenomics_pedNST//code/functions/color_schemes.R")
-source("~/git/immunogenomics_pedNST//code/functions/plotting_functions.R")
+source("/code/functions/dependencies.R")
+source("/code/functions/ggplot2_theme.R")
+source("/code/functions/color_schemes.R")
+source("/code/functions/plotting_functions.R")
 
-datapath <- "~/git/immunogenomics_pedNST/data/"
+datapath <- "/data/"
 plotpath <- "/results/"
 
 ###############
