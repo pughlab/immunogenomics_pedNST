@@ -1,4 +1,4 @@
-# Immunogenomics of pediatric nervous system tumours
+# Immunogenomic analysis of pediatric nervous system tumours
 
 This repo contains custom R codes used for figures in the manuscript "Transcriptional immunogenomic analysis reveals distinct immunological clusters in pediatric nervous system tumours".
 
