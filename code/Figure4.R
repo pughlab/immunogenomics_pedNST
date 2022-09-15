@@ -27,25 +27,19 @@ ped_tmb$indelpermb[ped_tmb$indelpermb == 0] <- 0.001
 fig4a <- ggplot(data = ped_tmb, aes(x = immune_cluster, y = snvpermb)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 0.7, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
-  theme(axis.title.y = element_text(size = 35),
+  myplot + myaxis +
+  theme(axis.title.y = element_text(size = 30),
         axis.title.x = element_blank(),
-        axis.line = element_line(color = "black"),
-        axis.text.x = element_text(size = 35, angle = 45, hjust = 1, color = "black"),
-        axis.text.y = element_text(size = 35, color = "black")) +
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        plot.background = element_rect(fill = "transparent", colour = NA),
-        plot.title = element_text(size = 35, hjust = 0.5)) +
-  theme(legend.position = "none") +
+        axis.text.x = element_text(size = 30),
+        axis.text.y = element_text(size = 30)) +
+  theme(plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none") +
   scale_color_manual(values = cluster_col) +
   scale_y_continuous(trans = "log10", breaks = c(0.01, 0.1, 1, 10, 100),
                      labels = scales::label_number(accuracy = 0.01)) + annotation_logticks(sides = "l") +
   labs(y = "SNV / Mb") +
   ggtitle(expression(~underline("pedNST (n = 763)")))
 
-pdf(file = paste0(plotpath,"Fig4_A.pdf"),
-    width = 10, height = 12, useDingbats = FALSE)
+pdf(file = paste0(plotpath,"Fig4_A.pdf"), width = 10, height = 12, useDingbats = FALSE)
 fig4a
 dev.off()
 
@@ -53,26 +47,19 @@ dev.off()
 fig4b <- ggplot(data = ped_tmb, aes(x = immune_cluster, y = mutpermb)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 0.7, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
-  theme(axis.title.y = element_text(size = 35),
+  myplot + myaxis +
+  theme(axis.title.y = element_text(size = 30),
         axis.title.x = element_blank(),
-        axis.line = element_line(color = "black"),
-        axis.text.x = element_text(size = 35,angle = 45, hjust = 1, color = "black"),
-        axis.text.y = element_text(size = 35, color = "black")) +
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        plot.background = element_rect(fill = "transparent", colour = NA),
-        plot.title = element_text(size = 35, hjust = 0.5)) +
-  theme(legend.position = "none") +
+        axis.text.x = element_text(size = 30),
+        axis.text.y = element_text(size = 30)) +
+  theme(plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none") +
   scale_color_manual(values = cluster_col) +
   scale_y_continuous(trans = "log10", breaks = c(0.01, 0.1, 1, 10, 100),
                      labels = scales::label_number(accuracy = 0.01)) + annotation_logticks(sides = "l") +
   labs(y = "SNV + InDel / Mb") +
   ggtitle(expression(~underline("pedNST (n = 763)")))
 
-
-pdf(file = paste0(plotpath,"Fig4_B.pdf"),
-    width = 10, height = 12, useDingbats = FALSE)
+pdf(file = paste0(plotpath,"Fig4_B.pdf"), width = 10, height = 12, useDingbats = FALSE)
 fig4b
 dev.off()
 
@@ -81,17 +68,12 @@ hgg <- ped_tmb[ped_tmb$cohort == "pedHGG",]
 fig4c <- ggplot(data = hgg, aes(x = immune_cluster, y = mutpermb)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 3, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
-  theme(axis.title.y = element_text(size = 35),
+  myplot + myaxis +
+  theme(axis.title.y = element_text(size = 30),
         axis.title.x = element_blank(),
-        axis.line = element_line(color = "black"),
-        axis.text.x = element_text(size = 35, angle = 45, hjust = 1, color = "black"),
-        axis.text.y = element_text(size = 35, color = "black")) +
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        plot.background = element_rect(fill = "transparent", colour = NA),
-        plot.title = element_text(size = 35, hjust = 0.5)) +
-  theme(legend.position = "none") +
+        axis.text.x = element_text(size = 30),
+        axis.text.y = element_text(size = 30)) +
+  theme(plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none") +
   scale_color_manual(values = cluster_col) +
   scale_y_continuous(trans = "log10", breaks = c(0.01, 0.1, 1, 10, 100),
                      labels = scales::label_number(accuracy = 0.01)) + annotation_logticks(sides = "l") +
@@ -102,8 +84,7 @@ fig4c <- ggplot(data = hgg, aes(x = immune_cluster, y = mutpermb)) +
   labs(y = "SNV + InDel / Mb") +
   ggtitle(expression(~underline("pedHGG (n = 63)")))
 
-pdf(file = paste0(plotpath,"Fig4_C.pdf"),
-    width = 10, height = 12, useDingbats = FALSE)
+pdf(file = paste0(plotpath,"Fig4_C.pdf"), width = 10, height = 12, useDingbats = FALSE)
 fig4c
 dev.off()
 
@@ -118,33 +99,25 @@ load(file = paste0(datapath, "pedNST_strongpeptides.RData"))
 fig4d <- ggplot(data = metadata_SB, aes(x = immune_cluster, y = binders)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 1, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
-  theme(axis.title.y = element_text(size = 35),
+  myplot + myaxis +
+  theme(axis.title.y = element_text(size = 30),
         axis.title.x = element_blank(),
-        axis.line = element_line(color = "black"),
-        axis.text.x = element_text(size = 35,angle = 45, hjust = 1, color = "black"),
-        axis.text.y = element_text(size = 35, color = "black")) +
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        plot.background = element_rect(fill = "transparent", colour = NA),
-        plot.title = element_text(size = 35, hjust = 0.5)) +
-  theme(legend.position = "none") +
+        axis.text.x = element_text(size = 30),
+        axis.text.y = element_text(size = 30)) +
+  theme(plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none") +
   scale_color_manual(values = cluster_col) +
   scale_y_continuous(trans = "log10", 
                      labels = scales::label_number(accuracy = 1)) + annotation_logticks(sides = "l") +
   labs(y = paste0("Strong binding peptides")) +
   ggtitle(expression(~underline("pedNST (n = 459)")))
 
-pdf(file = paste0(plotpath,"Fig4_D.pdf"),
-    width = 10, 
-    height = 12,
-    useDingbats = FALSE)
+pdf(file = paste0(plotpath,"Fig4_D.pdf"), width = 10,height = 12, useDingbats = FALSE)
 fig4d
 dev.off()
 
+#Fig4E
 load(file = paste0(datapath, "pedNST_strongpeptides.RData"))
 
-#Fig4E
 hgg <- metadata_SB[ metadata_SB$cohort == "pedHGG",]
 
 # make color transparent if number of data point are <=2
@@ -154,17 +127,12 @@ cluster_col[ names(cluster_col) %in% names(mytab)[ mytab <= 2] ] <- "transparent
 fig4e <- ggplot(data = hgg, aes(x = immune_cluster, y = binders)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5, aes(color = immune_cluster)) +
-  theme(axis.title.y = element_text(size = 35),
+  myplot + myaxis +
+  theme(axis.title.y = element_text(size = 30),
         axis.title.x = element_blank(),
-        axis.line = element_line(color = "black"),
-        axis.text.x = element_text(size = 35, angle = 45, hjust = 1, color = "black"),
-        axis.text.y = element_text(size = 35, color = "black")) +
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        plot.background = element_rect(fill = "transparent", colour = NA),
-        plot.title = element_text(size = 35, hjust = 0.5)) +
-  theme(legend.position = "none") +
+        axis.text.x = element_text(size = 30),
+        axis.text.y = element_text(size = 30)) +
+  theme(plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none") +
   scale_color_manual(values = cluster_col) +
   scale_y_continuous(trans = "log10", 
                      labels = scales::label_number(accuracy = 0.01)) + annotation_logticks(sides = "l") +
@@ -175,10 +143,7 @@ fig4e <- ggplot(data = hgg, aes(x = immune_cluster, y = binders)) +
               map_signif_level=TRUE, textsize = 20, test = "wilcox.test", vjust = 0.5) +
   ggtitle(expression(~underline("pedHGG (n = 35)")))  
 
-pdf(file = paste0(plotpath,"Fig4_E.pdf"),
-    width = 10, 
-    height = 12,
-    useDingbats = FALSE)
+pdf(file = paste0(plotpath,"Fig4_E.pdf"), width = 10, height = 12, useDingbats = FALSE)
 fig4e
 dev.off()
 
@@ -246,8 +211,8 @@ pathwaycount <- sort(pathwaycount, decreasing = T)
 
 # Heatmap annotation for total altered samples for oncogenic pathways
 ha = HeatmapAnnotation(`n altered` = anno_barplot(pathwaycount,
-                                                          border = FALSE, height = unit(3,"cm"),
-                                                          axis_param=list(gp = gpar(fontsize=20), labels_rot = 0)),
+                                                  border = FALSE, height = unit(3,"cm"),
+                                                  axis_param=list(gp = gpar(fontsize=20), labels_rot = 0)),
                        annotation_name_side = "left", annotation_name_rot = 0,
                        annotation_name_gp = gpar(fontsize = 20))
 
@@ -289,12 +254,11 @@ cohort_mat_frac <- cohort_mat_frac[names(pathwaycount),]
 
 # Heatmap annotation for fraction of altered samples in cancer types
 ha1 = HeatmapAnnotation(`Tumour type` = anno_barplot(cohort_mat_frac, 
-                                                             gp = gpar(fill = mycol[ colnames(cohort_mat_frac)]),
-                                                             border = FALSE, height = unit(3,"cm"),
-                                                             axis_param = list(gp = gpar(fontsize=20), labels_rot = 0)),
+                                                     gp = gpar(fill = mycol[ colnames(cohort_mat_frac)]),
+                                                     border = FALSE, height = unit(3,"cm"),
+                                                     axis_param = list(gp = gpar(fontsize=20), labels_rot = 0)),
                         annotation_name_side = "left", annotation_name_rot = 0,
                         annotation_name_gp = gpar(fontsize = 20))
-
 
 # cleanup pathway labels
 col_labels = structure(c("RTK (71)", "PI3K (26)", "Wnt (48)", "Notch (51)", "HIPPO (32)",
@@ -333,15 +297,9 @@ my_hm = Heatmap(scale(pathway_mat), #scale
 
 lgd_cohort = Legend(labels = names(mycol), title = "", nrow = 2, legend_gp = gpar(fill = mycol))
 
-pdf(file = paste0(plotpath,"Fig4_F.pdf"),
-    width = 12, 
-    height = 10,
-    useDingbats = FALSE)
-
+pdf(file = paste0(plotpath,"Fig4_F.pdf"), width = 12, height = 10, useDingbats = FALSE)
 draw(ha %v% ha1 %v% my_hm, annotation_legend_list = lgd_cohort, annotation_legend_side = "bottom")
-
 dev.off() 
-
 
 ###############
 # Figure 4G
@@ -372,14 +330,8 @@ lgd = Legend(labels = names(col), title = "",
              grid_height = unit(1, "cm"), grid_width = unit(1, "cm"),
              legend_gp = gpar(fill = col), labels_gp = gpar(fontsize = 30))
 
-pdf(file = paste0(plotpath,"Fig4_G.pdf"),
-    width = 40, 
-    height = 17,
-    useDingbats = FALSE)
-draw(C1 + C2 + C3 + C4 + right_ha, 
-     gap = unit(c(0.3,0.3,0.3,1),"cm"),
-     annotation_legend_side =  "right", 
-     annotation_legend_list = list(lgd))
+pdf(file = paste0(plotpath,"Fig4_G.pdf"), width = 40,  height = 17, useDingbats = FALSE)
+draw(C1 + C2 + C3 + C4 + right_ha, gap = unit(c(0.3,0.3,0.3,1),"cm"), annotation_legend_side =  "right", annotation_legend_list = list(lgd))
 dev.off()  
 
 ###############

@@ -18,10 +18,12 @@ plotpath <- "/results/"
 
 load(paste0(datapath,"estimate_ped_pdx.RData"))
 
+#only ped
 ped <- estimate_ped_pdx[ estimate_ped_pdx$group != "TCGA",]
 
 tab <- as.data.frame(table(ped$cohort), stringsAsFactors = F)
 tab <- tab[order(tab$Freq, decreasing = T),]
+#order
 ped$cohort <- factor(ped$cohort, levels = tab$Var1)
 ped$group <- factor(ped$group, levels = c("CBTN", "ICGC", "TARGET", "PDX (ITCC)"))
 
@@ -75,9 +77,12 @@ immune.cohorts[immune.cohorts$cohort %in% peds, 1] <- "Pediatric"
 immune.cohorts[immune.cohorts$cohort == "EMPTY1",1] <- "Pediatric"
 immune.cohorts[immune.cohorts$cohort == "EMPTY2",1] <- "Pediatric"
 
+#get medians for each cohort
 for(i in 1:nrow(immune.cohorts)){
-  immune.cohorts$median_immunereads[i]<-median(estimate_ped_pdx$percread[estimate_ped_pdx$cohort == immune.cohorts$cohort[i]])}
+  immune.cohorts$median_immunereads[i]<-median(estimate_ped_pdx$percread[estimate_ped_pdx$cohort == immune.cohorts$cohort[i]])
+  }
 
+#just to order cohorts
 tmp <- immune.cohorts[which(immune.cohorts$group == "Pediatric"),]
 tmp1 <- immune.cohorts[which(immune.cohorts$group == "Adult"),]
 immune.cohorts <- rbind(tmp,tmp1)
@@ -89,6 +94,7 @@ immune.cohorts$cohort <- factor(immune.cohorts$cohort, levels = c("PDX","ETMR", 
 
 immune.cohorts <- immune.cohorts[order(immune.cohorts$cohort),]
 
+# Splot 
 disease.width <- (nrow(estimate_ped_pdx)/nrow(immune.cohorts)) 
 sorted.estimate_ped_pdx <- estimate_ped_pdx[0,]
 
@@ -184,8 +190,8 @@ cluster_ha = HeatmapAnnotation(clusters = anno_mark(at = c(50, 235, 566, 844), l
 
 fig1c <- cluster_ha %v% cluster_hm %v% cells_hm %v% cohorts_hm
 
-lgd_cohort = Legend(labels = names(cohort_col)[2:13], title = "", nrow = 1,
-                    legend_gp = gpar(fill = cohort_col[2:13]))
+#legend
+lgd_cohort = Legend(labels = names(cohort_col)[2:13], title = "", nrow = 1, legend_gp = gpar(fill = cohort_col[2:13]))
 
 pdf(paste0(plotpath,"Fig1_C.pdf"),
     width = 18, height = 10)
@@ -194,7 +200,6 @@ draw(fig1c, annotation_legend_side =  "bottom", legend_grouping = "original",
      annotation_legend_list = list(lgd_cohort))
 
 dev.off()
-
 
 ###############
 # Figure 1D
@@ -205,6 +210,7 @@ load(file = paste0(datapath,"metadata_IC.RData"))
 tab <- as.data.frame(table(metadata_IC$cohort), stringsAsFactors = F)
 tab <- tab[order(tab$Freq, decreasing = F),]
 
+# matrix cohort x cluster
 cancer_IC_mat <- matrix(nrow = 12, ncol = 4,
                         dimnames = list(tab$Var1, 
                                         c("Pediatric Inflamed", "Myeloid Predominant", "Immune Neutral", "Immune Excluded")))
@@ -216,6 +222,7 @@ for(i in 1:nrow(cancer_IC_mat)){
   cancer_IC_mat[i, freq_tab$Var1] <- freq_tab$perc *100
 }
 
+#convert to 0 if NA
 cancer_IC_mat[is.na(cancer_IC_mat)] <- 0
 
 col_fun= colorRamp2(c(0, 100), c("white", "red"))
@@ -301,10 +308,13 @@ mbp_f <- subgroupfreq_IC.fx(metadata_IC, "MB")
 epnp_c <- subgroupcount_IC.fx(metadata_IC, "EPN")
 epnp_f <- subgroupfreq_IC.fx(metadata_IC, "EPN")
 
+#combine barplots
 allc <- plot_grid(atrtp_c + ggtitle("ATRT"), nblp_c + ggtitle("NBL"), mbp_c + ggtitle("MB"),
                   hggp_c + ggtitle("pedHGG"), lggp_c  + ggtitle("pedLGG"), epnp_c  + ggtitle("EPN"), ncol = 6, nrow =1, align = "h", label_size = 20)
+#stacked barplots
 allf <- plot_grid(atrtp_f, nblp_f, mbp_f, hggp_f, lggp_f, epnp_f, ncol = 6, nrow = 1, align = "h", label_size = 20)
 
+#all together
 fig1f <- plot_grid(allc, allf, nrow = 2, align = "v")
 
 pdf(file = paste0(plotpath,"Fig1_F.pdf"),

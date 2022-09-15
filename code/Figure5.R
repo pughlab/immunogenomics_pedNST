@@ -24,8 +24,7 @@ shan_trb <- TCRcap_rnaplot.fx(TRB_CapTCR_RNAseq, "estimated_Shannon_RNAseq", "ob
 fig5a <- shan_trb + ggtitle(~underline("TRB diversity inference")) + 
   theme(plot.margin = margin(0.2, 0.2, 0.2, 0.2, "cm")) 
 
-pdf(file = paste0(plotpath,"Fig5_A.pdf"),
-    width = 10, height = 10, useDingbats = FALSE)
+pdf(file = paste0(plotpath,"Fig5_A.pdf"), width = 10, height = 10, useDingbats = FALSE)
 fig5a
 dev.off()
 
@@ -153,10 +152,12 @@ trb_inflamed <- metadata_TRB_genesets[ metadata_TRB_genesets$immune_cluster == "
 
 summary(trb_inflamed$residuals)
 
+# groups of lower and upper quartiles
 trb_inflamed$grp <- NA
 trb_inflamed$grp[ trb_inflamed$residuals >= quantile(trb_inflamed$residuals, 0.75)] <- "Residuals >= 75%"
 trb_inflamed$grp[ trb_inflamed$residuals <= quantile(trb_inflamed$residuals, 0.25)] <- "Residuals <= 25%"
 
+#remove NA
 trb_inflamed <- trb_inflamed[ !is.na(trb_inflamed$grp),]
 
 plot_tcells <- ggplot(data = trb_inflamed, aes(x = grp, y = `T cells`)) + 
@@ -171,9 +172,7 @@ plot_tcells <- ggplot(data = trb_inflamed, aes(x = grp, y = `T cells`)) +
         plot.margin = margin(0.2, 0.2, 0.2, 3, "cm")) +
   geom_signif(comparisons = list(c("Residuals >= 75%", "Residuals <= 25%")), y_position = 6.2,
               map_signif_level=TRUE, textsize = 10, test = "t.test", vjust = 0.5) +
-  expand_limits(y = 0) +
-  labs(y = paste0("T cells")) +
-  ggtitle("Pediatric Inflamed\n(n = 42)")
+  expand_limits(y = 0) + labs(y = paste0("T cells")) + ggtitle("Pediatric Inflamed\n(n = 42)")
 
 plot_dc <- ggplot(data = trb_inflamed, aes(x = grp, y = `Dendritic cells`)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
@@ -254,6 +253,7 @@ mytab_melted <- melt(mytab[,c(1,3:9)])
 mytab_melted$variable <- factor(mytab_melted$variable,
                                 levels = c("IGHG1", "IGHG2", "IGHG3", "IGHG4", "IGHA1", "IGHA2", "IGHM"))
 
+#some tests
 pairwise.t.test(mytab$IGHG1, mytab$immune_cluster, "none", paired=FALSE, pool.sd=TRUE)
 pairwise.t.test(mytab$IGHG3, mytab$immune_cluster, "none", paired=FALSE, pool.sd=TRUE)
 
@@ -522,8 +522,6 @@ grid.draw(ggarrange(plots=list(plot_gini_pi, plot_gini_mp,
                                plot_ighg3_pi, plot_ighg3_mp),
                     nrow = 3, ncol = 2))
 dev.off()
-
-
 
 
 ###############

@@ -2,12 +2,12 @@
 # Figure 3
 ###############
 
-source("/code/functions/dependencies.R")
-source("/code/functions/ggplot2_theme.R")
-source("/code/functions/color_schemes.R")
-source("/code/functions/plotting_functions.R")
+source("~/git/immunogenomics_pedNST//code/functions/dependencies.R")
+source("~/git/immunogenomics_pedNST//code/functions/ggplot2_theme.R")
+source("~/git/immunogenomics_pedNST//code/functions/color_schemes.R")
+source("~/git/immunogenomics_pedNST//code/functions/plotting_functions.R")
 
-datapath <- "/data/"
+datapath <- "~/git/immunogenomics_pedNST/data/"
 plotpath <- "/results/"
 
 ###############
@@ -40,10 +40,12 @@ rownames(fc_mat_pathways) <- gsub("_", " ", rownames(fc_mat_pathways))
 colnames(fc_mat_pathways) <- gsub("-Others", "", colnames(fc_mat_pathways))
 colnames(fc_mat_pathways) <- gsub("[.]", " ", colnames(fc_mat_pathways))
 
+#transpose
 fc_mat_pathways_t <- t(fc_mat_pathways)
 
-ht_opt$HEATMAP_LEGEND_PADDING = unit(1,"cm")
 #Heatmap
+ht_opt$HEATMAP_LEGEND_PADDING = unit(1,"cm")
+
 col_fun= colorRamp2(c(-0.6, 0, 0.6), c("blue", "white", "red"))
 pathways_hm = Heatmap(fc_mat_pathways_t,
                       #titles and names   
@@ -90,10 +92,11 @@ Hs.H <- read.gmt(paste0(datapath, "h.all.v7.1.symbols.gmt"))
 # subset to those with matched RNAseq in pedNST
 metadata_IC_proteom <- metadata_IC[metadata_IC$sample_id %in% colnames(proteomics),]
 
+#as factor
 metadata_IC_proteom$immune_cluster <- factor(metadata_IC_proteom$immune_cluster,
                                              levels =c("Immune Excluded", "Immune Neutral",
                                                        "Myeloid Predominant", "Pediatric Inflamed"))
-
+#asterisks added manually based on the test
 coag <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_COAGULATION")
 label.df <- data.frame(x = c(1.2,1.2), y = c(2.3,1.3))
 coag <- coag + 
@@ -191,6 +194,9 @@ dev.off()
 
 load(file = paste0(datapath, "DESeq2_genetable.RData"))
 
+# remove pvalue = NA
+genetable <- genetable[ !is.na(genetable$pvalue),]
+
 C1_volcano <- volcano_DEG_plot(genetable, "C1-Others", 1.5, 0.1) + 
   scale_x_continuous(expand = c(0.4,0)) + 
   scale_y_continuous(expand = c(0.1,0)) +
@@ -238,6 +244,7 @@ median_mat <- matrix(nrow = 59, ncol = 4,
 immunereg_genmat <- as.matrix(immunereg_genmat)
 #scale
 immunereg_genmat_z <- t(scale(t(immunereg_genmat)))
+
 # median of each gene in z-score in each immune cluster
 for( g in rownames(immunereg_genmat)){
   median_mat[g,1] <- median(immunereg_genmat_z[g, metadata_IC$sample_id[metadata_IC$immune_cluster == "Pediatric Inflamed"]])
@@ -246,8 +253,8 @@ for( g in rownames(immunereg_genmat)){
   median_mat[g,4] <- median(immunereg_genmat_z[g, metadata_IC$sample_id[metadata_IC$immune_cluster == "Immune Excluded"]])
 }
 
-ht_opt$HEATMAP_LEGEND_PADDING = unit(1,"cm")
 #Heatmap
+ht_opt$HEATMAP_LEGEND_PADDING = unit(1,"cm")
 col_fun = colorRamp2(c(-1, 0, 1), c("blue", "white", "red"))
 fig3d = Heatmap(t(median_mat),
                 #titles and names   

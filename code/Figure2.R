@@ -15,6 +15,7 @@ plotpath <- "/results/"
 
 load(file = paste0(datapath,"metadata_IC.RData"))
 
+#remove gender = NA or Unknown
 metadata_gender <- metadata_IC[!is.na(metadata_IC$gender),]
 metadata_gender <- metadata_gender[metadata_gender$gender != "Unknown",]
 
@@ -53,6 +54,7 @@ dev.off()
 
 load(file = paste0(datapath,"metadata_IC.RData"))
 
+#remove age = NA
 metadata_age <- metadata_IC[!is.na(metadata_IC$age_at_diagnosis),]
 
 fig2c <- ggplot(data = metadata_age, aes(x = immune_cluster, y = age_at_diagnosis)) + 
@@ -84,6 +86,7 @@ dev.off()
 
 load(file = paste0(datapath,"metadata_IC.RData"))
 
+#vital status as numeric
 metadata_IC$vital_status <- as.numeric(as.character(metadata_IC$vital_status))
 
 cluster_names <- c("Pediatric Inflamed", "Myeloid Predominant", "Immune Neutral", "Immune Excluded")
@@ -102,6 +105,7 @@ dev.off()
 
 load(file = paste0(datapath,"metadata_IC.RData"))
 
+#recurrence as numeric
 metadata_IC$recurrence <- as.numeric(as.character(metadata_IC$recurrence))
 
 sfit <- survfit(Surv(days_to_progress, recurrence)~ immune_cluster, data=metadata_IC)
