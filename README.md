@@ -4,7 +4,7 @@ This repo contains custom R codes used for figures in the manuscript "Transcript
 
 # How to run
 
-This repo is linked to the CodeOcean capsule link xxxxxxxx. 
+This repo is linked to the CodeOcean capsule link: https://doi.org/10.24433/CO.0339991.v1
 
 # Data availability
 
