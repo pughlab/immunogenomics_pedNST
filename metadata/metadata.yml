@@ -1,0 +1,97 @@
+metadata_version: 1
+name: Immunogenomic analysis of pediatric nervous system tumors
+description: 'To inform immunotherapy treatments in children, we performed an immunogenomic
+  analysis of RNA-seq data from 925 treatment-naïve pediatric nervous system tumours
+  (pedNST) spanning 12 cancer types from 3 public data sets. In contrast to 17% of
+  adult cancers, 72% of pedNSTs harbored immunologically cold microenvironments. Within
+  pedNST, we uncovered four broad immune clusters: Pediatric Inflamed (10%), Myeloid
+  Predominant (30%), Immune Neutral (43%) and Immune Excluded (17%). We validated
+  these clusters using immunohistochemistry, methylation immune inference, and segmentation
+  analysis of tissue images. We report shared biology of these immune clusters within
+  and across cancer types, and characterization of specific immune cell composites
+  including T- and B-cell repertoires. We found no associations between immune infiltration
+  levels and tumour mutational burden, although molecular cancer subtypes were enriched
+  within specific immune clusters. Given the heterogeneity within pedNST, our findings
+  suggest personalized immunogenomic profiling is needed to guide selection of immunotherapeutic
+  strategies.'
+tags:
+- tumor-microenvironment
+- ImmunoOncology
+- RNA-seq
+- Pediatric cancers
+- bioinformatics
+- cancer genomics
+- immune infiltration
+authors:
+- name: Arash Nabbi
+  affiliations:
+  - name: University Health Network
+- name: Pengbo Beck
+  affiliations:
+  - name: Hopp Children’s Cancer Center Heidelberg
+- name: Alberto Delaidelli
+  affiliations:
+  - name: British Columbia Cancer Agency
+- name: Derek A. Oldridge
+  affiliations:
+  - name: Children’s Hospital of Philadelphia
+- name: Sumedha Sudhaman
+  affiliations:
+  - name: The Hospital for Sick Children
+- name: Kelsey Zhu
+  affiliations:
+  - name: University Health Network
+- name: S.Y. Cindy Yang
+  affiliations:
+  - name: University Health Network
+- name: David T Mulder
+  affiliations:
+  - name: University Health Network
+- name: Jeffrey P Bruce
+  affiliations:
+  - name: University Health Network
+- name: Joseph N Paulson
+  affiliations:
+  - name: Genentech
+- name: Pichai Raman
+  affiliations:
+  - name: Children’s Hospital of Philadelphia
+- name: Yuankun Zhu
+  affiliations:
+  - name: Children’s Hospital of Philadelphia
+- name: Adam C Resnick
+  affiliations:
+  - name: Children’s Hospital of Philadelphia
+- name: Poul H Sorensen
+  affiliations:
+  - name: British Columbia Cancer Agency
+- name: Martin Sill
+  affiliations:
+  - name: Hopp Children’s Cancer Center Heidelberg
+- name: Sebastian Brabetz
+  affiliations:
+  - name: Hopp Children’s Cancer Center Heidelberg
+- name: Sander Lambo
+  affiliations:
+  - name: Hopp Children’s Cancer Center Heidelberg
+- name: David Malkin
+  affiliations:
+  - name: The Hospital for Sick Children
+- name: Pascal D Johann
+  affiliations:
+  - name: Hopp Children’s Cancer Center Heidelberg
+- name: Marcel Kool
+  affiliations:
+  - name: Hopp Children’s Cancer Center Heidelberg
+- name: David TW Jones
+  affiliations:
+  - name: Hopp Children’s Cancer Center Heidelberg
+- name: Stefan M Pfister
+  affiliations:
+  - name: Hopp Children’s Cancer Center Heidelberg
+- name: Natalie Jäger
+  affiliations:
+  - name: Hopp Children’s Cancer Center Heidelberg
+corresponding_contributor:
+  name: Trevor J Pugh
+  email: trevor.pugh@utoronto.ca
