@@ -77,9 +77,9 @@ fig4c <- ggplot(data = hgg, aes(x = immune_cluster, y = mutpermb)) +
   scale_color_manual(values = cluster_col) +
   scale_y_continuous(trans = "log10", breaks = c(0.01, 0.1, 1, 10, 100),
                      labels = scales::label_number(accuracy = 0.01)) + annotation_logticks(sides = "l") +
-  geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Excluded")), 
+  geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Desert")), 
               map_signif_level=TRUE, textsize = 20, test = "wilcox.test", vjust = 0.5, y_position = 3) +
-  geom_signif(comparisons = list(c("Immune Neutral", "Immune Excluded")), 
+  geom_signif(comparisons = list(c("Immune Neutral", "Immune Desert")), 
               map_signif_level=TRUE, textsize = 20, test = "wilcox.test", vjust = 0.5, y_position = 2.6) +
   labs(y = "SNV + InDel / Mb") +
   ggtitle(expression(~underline("pedHGG (n = 63)")))
@@ -139,7 +139,7 @@ fig4e <- ggplot(data = hgg, aes(x = immune_cluster, y = binders)) +
   labs(y = paste0("Strong binding peptides")) +
   geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Neutral")), y_position = 3.1,
               map_signif_level=TRUE, textsize = 20, test = "wilcox.test", vjust = 0.5) +
-  geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Excluded")), y_position = 3.5,
+  geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Desert")), y_position = 3.5,
               map_signif_level=TRUE, textsize = 20, test = "wilcox.test", vjust = 0.5) +
   ggtitle(expression(~underline("pedHGG (n = 35)")))  
 
@@ -182,7 +182,7 @@ for( i in mypaths){
 
 # make a clusters x pathways matrix to hold fraction of samples with alterations in oncogenic pathways in immune clusters
 pathway_mat <- matrix(nrow = 4, ncol = 11)
-rownames(pathway_mat) <- c("Pediatric Inflamed", "Myeloid Predominant", "Immune Neutral", "Immune Excluded")
+rownames(pathway_mat) <- c("Pediatric Inflamed", "Myeloid Predominant", "Immune Neutral", "Immune Desert")
 colnames(pathway_mat) <- c("wnt_48", "notch_51", "rtk_71", "pi3k_26", "cellcycle_10", "mmr_5",
                            "myc_10", "hippo_32", "tp53_5", "nrf2_3", "tgfb_7")
 
@@ -315,7 +315,7 @@ oncomat <- oncomat[topgenesalters,]
 C1 <- IC_oncoprint("Pediatric Inflamed", ped_tmb, oncomat, "TRUE")
 C2 <- IC_oncoprint("Myeloid Predominant", ped_tmb, oncomat, "FALSE")
 C3 <- IC_oncoprint("Immune Neutral", ped_tmb, oncomat, "FALSE")
-C4 <- IC_oncoprint("Immune Excluded", ped_tmb, oncomat, "FALSE")
+C4 <- IC_oncoprint("Immune Desert", ped_tmb, oncomat, "FALSE")
 
 #Add total percentage mutations as row annotation on the left
 percmutations <- rowSums(!is.na(oncomat))/ncol(oncomat)*100

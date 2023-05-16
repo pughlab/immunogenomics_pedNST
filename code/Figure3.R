@@ -94,7 +94,7 @@ metadata_IC_proteom <- metadata_IC[metadata_IC$sample_id %in% colnames(proteomic
 
 #as factor
 metadata_IC_proteom$immune_cluster <- factor(metadata_IC_proteom$immune_cluster,
-                                             levels =c("Immune Excluded", "Immune Neutral",
+                                             levels =c("Immune Desert", "Immune Neutral",
                                                        "Myeloid Predominant", "Pediatric Inflamed"))
 #asterisks added manually based on the test
 coag <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_COAGULATION")
@@ -218,7 +218,7 @@ C3_volcano <- volcano_DEG_plot(genetable, "C3-Others", 1.5, 0.1) +
 C4_volcano <- volcano_DEG_plot(genetable, "C4-Others", 1.5, 0.1) + 
   scale_x_continuous(expand = c(0.3,0)) +
   scale_y_continuous(expand = c(0.1,0)) +
-  ggtitle(expression(~underline("Immune Excluded"))) +
+  ggtitle(expression(~underline("Immune Desert"))) +
   geom_vline(xintercept = c(-1.5, 1.5), linetype="dashed", color = "black")
 
 fig3c <- plot_grid(C1_volcano, C2_volcano, C3_volcano, C4_volcano,
@@ -239,7 +239,7 @@ load(file = paste0(datapath,"metadata_IC.RData"))
 median_mat <- matrix(nrow = 59, ncol = 4,
                      dimnames = list(rownames(immunereg_genmat), 
                                      c("Pediatric Inflamed", "Myeloid Predominant", 
-                                       "Immune Neutral", "Immune Excluded")))
+                                       "Immune Neutral", "Immune Desert")))
 #make a matrix
 immunereg_genmat <- as.matrix(immunereg_genmat)
 #scale
@@ -250,7 +250,7 @@ for( g in rownames(immunereg_genmat)){
   median_mat[g,1] <- median(immunereg_genmat_z[g, metadata_IC$sample_id[metadata_IC$immune_cluster == "Pediatric Inflamed"]])
   median_mat[g,2] <- median(immunereg_genmat_z[g, metadata_IC$sample_id[metadata_IC$immune_cluster == "Myeloid Predominant"]])    
   median_mat[g,3] <- median(immunereg_genmat_z[g, metadata_IC$sample_id[metadata_IC$immune_cluster == "Immune Neutral"]])
-  median_mat[g,4] <- median(immunereg_genmat_z[g, metadata_IC$sample_id[metadata_IC$immune_cluster == "Immune Excluded"]])
+  median_mat[g,4] <- median(immunereg_genmat_z[g, metadata_IC$sample_id[metadata_IC$immune_cluster == "Immune Desert"]])
 }
 
 #Heatmap

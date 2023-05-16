@@ -91,7 +91,7 @@ subgroupfreq_IC.fx <- function(metadata, tumour){
   print(subtype_tab)
   #Fisher test for each subtype and immune cluster
   mysubtypes <- subtype_tab$Var1
-  myk <- c("Pediatric Inflamed", "Myeloid Predominant", "Immune Neutral", "Immune Excluded")
+  myk <- c("Pediatric Inflamed", "Myeloid Predominant", "Immune Neutral", "Immune Desert")
   # if subtype is the subtype of interest == 0, if not 1. This is just to get a table with easier interpretation
   # ie. The test shows the odds of samples in the subtype of interest being in the cluster of interest (first cell in the contingency table)
   for( type in mysubtypes){

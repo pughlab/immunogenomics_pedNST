@@ -89,7 +89,7 @@ load(file = paste0(datapath,"metadata_IC.RData"))
 #vital status as numeric
 metadata_IC$vital_status <- as.numeric(as.character(metadata_IC$vital_status))
 
-cluster_names <- c("Pediatric Inflamed", "Myeloid Predominant", "Immune Neutral", "Immune Excluded")
+cluster_names <- c("Pediatric Inflamed", "Myeloid Predominant", "Immune Neutral", "Immune Desert")
 
 sfit <- survfit(Surv(days_to_death, vital_status) ~ immune_cluster, data=metadata_IC)
 fig2d <- KM_plot(metadata_IC, sfit, cluster_col, "", "Overall survival", cluster_names)

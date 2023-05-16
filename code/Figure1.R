@@ -181,7 +181,7 @@ cells_mat <- geneset_cc_norm[,rownames(cluster_cohort)]
 cells_hm <- cells_hm.fx(cells_mat)
 
 #annotation
-annotation_order <- c("Pediatric Inflammed", "Myeloid Predominant", "Immune Neutral", "Immune Excluded")
+annotation_order <- c("Pediatric Inflammed", "Myeloid Predominant", "Immune Neutral", "Immune Desert")
 
 cluster_ha = HeatmapAnnotation(clusters = anno_mark(at = c(50, 235, 566, 844), labels_rot = 0,
                                                     labels = annotation_order, side = "top",
@@ -213,7 +213,7 @@ tab <- tab[order(tab$Freq, decreasing = F),]
 # matrix cohort x cluster
 cancer_IC_mat <- matrix(nrow = 12, ncol = 4,
                         dimnames = list(tab$Var1, 
-                                        c("Pediatric Inflamed", "Myeloid Predominant", "Immune Neutral", "Immune Excluded")))
+                                        c("Pediatric Inflamed", "Myeloid Predominant", "Immune Neutral", "Immune Desert")))
 
 for(i in 1:nrow(cancer_IC_mat)){
   mycancer <- metadata_IC[ metadata_IC$cohort == rownames(cancer_IC_mat)[i],]    
@@ -274,7 +274,7 @@ heplot <- ggplot(data = HE_manifest,
         plot.title = element_text(size = 30, hjust = 0.5)) + 
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Myeloid Predominant")), y_position = 0.4,
               map_signif_level=TRUE, textsize = 10, test = "wilcox.test", vjust = 0.5) +
-  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Excluded")), y_position = 0.45,
+  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Desert")), y_position = 0.45,
               map_signif_level=TRUE, textsize = 10, test = "wilcox.test", vjust = 0.5) +
   
   labs(y = "Average TIL score") + ggtitle(~underline("H&E TIL score (n = 355)"))

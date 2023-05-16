@@ -89,15 +89,15 @@ trbplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = estimated_Shannon)
   scale_color_manual(values = cluster_col) +
   scale_y_continuous(trans = "log10", 
                      labels = scales::label_number(accuracy = 1)) + annotation_logticks(sides = "l") +
-  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Excluded")), y_position = 5.5,
+  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Desert")), y_position = 5.5,
               map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Neutral")), y_position = 4.5,
               map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Neutral")), y_position = 4,
               map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
-  geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Excluded")), y_position = 5,
+  geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Desert")), y_position = 5,
               map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
-  geom_signif(comparisons = list(c("Immune Neutral", "Immune Excluded")), y_position = 4,
+  geom_signif(comparisons = list(c("Immune Neutral", "Immune Desert")), y_position = 4,
               map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   labs(y = paste0("Estimated\nShannon diversity")) +
   ggtitle(expression(~underline("NBL (n = 116)"))) 
@@ -301,9 +301,9 @@ giniplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = gini)) +
   labs(y = paste0("gini index (Ig)")) +
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Neutral")), y_position = 1.1,
               map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
-  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Excluded")), y_position = 1.2,
+  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Desert")), y_position = 1.2,
               map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
-  geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Excluded")), y_position = 1,
+  geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Desert")), y_position = 1,
               map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   ggtitle(expression(~underline("NBL (n = 113)"))) +
   scale_y_continuous(expand = c(0.1, 0))
@@ -327,7 +327,7 @@ giniplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = gini)) +
               map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Neutral")), y_position = 1.1,
               map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
-  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Excluded")), y_position = 1.2,
+  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Desert")), y_position = 1.2,
               map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
   ggtitle(expression(~underline("pedCNS (n = 248)"))) +
   scale_y_continuous(expand = c(0.1, 0))
