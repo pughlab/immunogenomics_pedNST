@@ -232,7 +232,7 @@ ha = rowAnnotation(`cohort size` = anno_barplot(tab$Freq, bar_width = 1,
                                                 width = unit(3, "cm")), 
                    show_annotation_name = FALSE)
 
-ha_1 = HeatmapAnnotation(`immune size` = anno_barplot( as.matrix(table(metadata_IC_genesets$immune_cluster)),  bar_width = 1,
+ha_1 = HeatmapAnnotation(`immune size` = anno_barplot( as.matrix(table(metadata_IC$immune_cluster)),  bar_width = 1,
                                                        gp = gpar(col = "white", fill = "#4d4d4d"), 
                                                        border = FALSE,
                                                        axis_param = list(at = c(0, 100,200,300), labels_rot = 45, gp = gpar(fontsize = 20)),
