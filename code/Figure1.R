@@ -345,6 +345,7 @@ dev.off()
 ###############
 
 load(file = paste0(datapath,"metadata_IC.RData"))
+n_x <- 4
 
 lggp_c <- subgroupcount_IC.fx(metadata_IC, "pedLGG")
 lggp_f <- subgroupfreq_IC.fx(metadata_IC, "pedLGG")

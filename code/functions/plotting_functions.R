@@ -46,6 +46,16 @@ densplot.fx <- function(dat, pheno){
   return(densplot)  
 }
 
+# stacked barplots for tumour subtypes
+# 
+expand_n <- function(n_unq){
+  if((n_x - n_unq)==0 ){
+    waiver()
+  } else {
+    expansion(add = c(0.6, (n_x-n_unq+0.56)))
+  }
+}
+
 subgroupcount_IC.fx <- function(metadata, tumour){
   #Subset to tumour
   mytumour <- metadata[metadata$cohort == tumour,]
