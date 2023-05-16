@@ -256,14 +256,17 @@ dev.off()
 ###############
 # Figure 1E
 ###############
-tab <- as.data.frame(table(metadata_IC_genesets$CRI_cluster), stringsAsFactors = F)
+load(file = paste0(datapath,"metadata_IC.RData"))
+
+tab <- as.data.frame(table(metadata_IC$CRI_cluster), stringsAsFactors = F)
 tab <- tab[order(tab$Freq, decreasing = F),]
+
 cri_IC_mat <- matrix(nrow = 6, ncol = 4,
                      dimnames = list(tab$Var1,c("Pediatric Inflamed", "Myeloid Predominant", 
-                                                "Immune Neutral", "Immune Excluded")))
+                                                "Immune Neutral", "Immune Desert")))
 for(i in 1:nrow(cri_IC_mat)){
   
-  mycancer <- metadata_IC_genesets[ metadata_IC_genesets$CRI_cluster == rownames(cri_IC_mat)[i],]    
+  mycancer <- metadata_IC[ metadata_IC$CRI_cluster == rownames(cri_IC_mat)[i],]    
   freq_tab <- as.data.frame(table(mycancer$immune_cluster), stringsAsFactors = F)
   freq_tab$perc <- freq_tab$Freq/sum(freq_tab$Freq)    
   
