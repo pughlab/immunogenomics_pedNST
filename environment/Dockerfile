@@ -1,4 +1,4 @@
-# hash:sha256:e8eca61c0130c6d7ef36480eb2984653f314fc750747068f229786c76dde6ae3
+# hash:sha256:ccdfef88f5d7f9dd013dbe43fbc227bd2baed4962a57fb77a2071ba058808167
 FROM registry.codeocean.com/codeocean/r-studio:1.4.1106-r4.0.5-ubuntu18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -7,11 +7,11 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential=12.4ubuntu1 \
         cmake=3.10.2-1ubuntu2.18.04.2 \
-        curl=7.58.0-2ubuntu3.20 \
-        fftw3=3.3.7-1 \
-        fftw3-dev=3.3.7-1 \
-        ghostscript=9.26~dfsg+0-0ubuntu0.18.04.16 \
-        libnlopt-dev=2.4.2+dfsg-4 \
+        curl \
+        fftw3 \
+        fftw3-dev \
+        ghostscript \
+        libnlopt-dev \
     && rm -rf /var/lib/apt/lists/*
 
 RUN Rscript -e 'remotes::install_version("BiocManager", "1.30.18")' \
