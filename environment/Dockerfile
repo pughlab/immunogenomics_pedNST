@@ -1,4 +1,4 @@
-# hash:sha256:1cb0813f268ee5e85053984a10718f59428d601ba21ce262df0f13ff6d3fba07
+# hash:sha256:e8eca61c0130c6d7ef36480eb2984653f314fc750747068f229786c76dde6ae3
 FROM registry.codeocean.com/codeocean/r-studio:1.4.1106-r4.0.5-ubuntu18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -42,8 +42,9 @@ RUN Rscript -e 'remotes::install_github( \
 RUN Rscript -e 'options(warn=2); install.packages("BiocManager")'
 RUN Rscript -e 'options(warn=2); BiocManager::install(c( \
         "ComplexHeatmap", \
+        "patchwork", \
         "qusage" \
-    ))' # Original versions: 2.10.0 2.28.0
+    ))' # Original versions: 2.10.0 latest 2.28.0
 
 COPY postInstall /
 RUN /postInstall
