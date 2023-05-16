@@ -46,11 +46,10 @@ densplot.fx <- function(dat, pheno){
   return(densplot)  
 }
 
-# Stacked barplots for cancer subtypes
 subgroupcount_IC.fx <- function(metadata, tumour){
   #Subset to tumour
   mytumour <- metadata[metadata$cohort == tumour,]
-  message(tumour)
+  
   # Remove ND subtypes
   mytumour <- mytumour[!grepl("ND", mytumour$tumour_subtype),]
   # Create tables   
@@ -58,29 +57,30 @@ subgroupcount_IC.fx <- function(metadata, tumour){
   # Remove ND subtypes
   subtype_tab <- subtype_tab[!grepl("ND", subtype_tab$Var1),]
   
-  tumour_tab <- mytumour %>% group_by(tumour_subtype,immune_cluster) %>% summarise(n = n()) %>% 
-    mutate(freq = n / sum(n))  
-  
   #Count plot  
   subtype_tab$Var1 <- factor(subtype_tab$Var1, levels = subtype_tab$Var1[order(subtype_tab$Freq, decreasing = T)])
+  
+  n_unq <- length(levels(subtype_tab$Var1))
   
   subtype_count_plot <- ggplot(subtype_tab,aes(x = Var1, y = Freq)) +
     geom_bar(stat = "identity", width = 0.8) + myaxis + myplot +
     theme(axis.title.x=element_blank(),
           axis.text.x=element_blank(),
-          axis.text.y = element_text(size = 20, color = "black"),
-          axis.title.y = element_text(size = 20),
-          plot.title = element_text(size = 20, hjust = 0.5)) + 
-    labs(y = "Frequency")
+          axis.text.y = element_text(size = 30, color = "black"),
+          axis.title.y = element_text(size = 30),
+          plot.title = element_text(size = 30, hjust = 0.5),
+          plot.margin = unit(c(0,0,0,0), "cm")) + 
+    labs(y = "Frequency") +
+    scale_x_discrete(expand= expand_n(n_unq)) +
+    annotate(geom = 'rect', xmin = n_unq+0.5, xmax = Inf, ymin = -Inf, ymax = Inf, fill = 'transparent') 
   
   return(subtype_count_plot)
 }
 
-
 subgroupfreq_IC.fx <- function(metadata, tumour){
   #Subset to tumour
   mytumour <- metadata[metadata$cohort == tumour,]
-  message(tumour)
+  
   # Remove ND subtypes
   mytumour <- mytumour[!grepl("ND", mytumour$tumour_subtype),]
   # Create tables   
@@ -88,51 +88,36 @@ subgroupfreq_IC.fx <- function(metadata, tumour){
   
   tumour_tab <- mytumour %>% group_by(tumour_subtype,immune_cluster) %>% summarise(n = n()) %>% 
     mutate(freq = n / sum(n))
-  print(subtype_tab)
-  #Fisher test for each subtype and immune cluster
-  mysubtypes <- subtype_tab$Var1
-  myk <- c("Pediatric Inflamed", "Myeloid Predominant", "Immune Neutral", "Immune Desert")
-  # if subtype is the subtype of interest == 0, if not 1. This is just to get a table with easier interpretation
-  # ie. The test shows the odds of samples in the subtype of interest being in the cluster of interest (first cell in the contingency table)
-  for( type in mysubtypes){
-    message(type)
-    mytumour$subtypegroup <- NA
-    mytumour$subtypegroup[ mytumour$tumour_subtype ==  type] <- 0
-    mytumour$subtypegroup[ mytumour$tumour_subtype !=  type] <- 1
-    
-    for(k in myk){
-      message(k)
-      mytumour$immunegroup <- NA
-      mytumour$immunegroup[ mytumour$immune_cluster ==  k] <- 0
-      mytumour$immunegroup[ mytumour$immune_cluster !=  k] <- 1    
-      mytab <- table(mytumour$subtypegroup, mytumour$immunegroup , 
-                     dnn = c("tumour subtype", "immune cluster"))
-      print(mytab)
-      print(fisher.test(mytab, alternative = "greater"))
-    }
-  }    
   
   #Freq plot
   tumour_tab$tumour_subtype <- factor(tumour_tab$tumour_subtype, levels = subtype_tab$Var1[order(subtype_tab$Freq, decreasing = T)])
+  n_unq <- length(levels(tumour_tab$tumour_subtype))
   
   freq_plot <- ggplot(tumour_tab, aes(fill=immune_cluster, y=freq, x= tumour_subtype)) + 
     geom_bar(position="stack", stat="identity") +
     scale_fill_manual(values = cluster_col) +
-    theme(axis.title.y = element_text(size = 20),
+    theme(axis.title.y = element_text(size = 30),
           axis.title.x = element_blank(),
           axis.line = element_line(color = "black"),
-          axis.text.x = element_text(size = 20, color = "black", angle = 45, hjust = 1),
-          axis.text.y = element_text(size = 20, color = "black")) +
+          axis.text.x = element_text(size = 30, color = "black", angle = 45, hjust = 1),
+          axis.text.y = element_text(size = 30, color = "black")) +
     theme(panel.grid.major = element_blank(),
           panel.grid.minor = element_blank(),
           panel.background = element_blank(),
           plot.background = element_rect(fill = "transparent", colour = NA),
-          plot.title = element_text(size = 20, hjust = 0.5)) +
-    theme(legend.position = "none") + labs(y = "Fraction")
+          plot.title = element_blank(),
+          plot.margin = unit(c(0,0,0,0), "cm") ) +
+    theme(legend.position = "none") + labs(y = "Fraction") +
+    scale_x_discrete(expand = expand_n(n_unq)) +
+    annotate(geom = 'rect', xmin = n_unq+0.5, xmax = Inf, ymin = -Inf, ymax = Inf, fill = 'transparent')
+  
   
   return(freq_plot)
   
 }
+
+
+
 
 # Volcano plot for DEG
 volcano_DEG_plot <- function(genetable, contrast, foldchange, padj){

@@ -28,8 +28,8 @@ ped$cohort <- factor(ped$cohort, levels = tab$Var1)
 ped$group <- factor(ped$group, levels = c("CBTN", "ICGC", "TARGET", "PDX (ITCC)"))
 
 fig1a <- ggplot(data = ped) + geom_bar(aes(y = cohort, fill = group)) + myaxis + myplot +
-theme(axis.title = element_blank(), axis.text.x = element_text(size = 25, angle = 0, hjust = 0.5), 
-      legend.position = c(0.8,0.9), legend.title = element_blank(), plot.margin = margin(1,1,1,1, "cm")) + 
+  theme(axis.title = element_blank(), axis.text.x = element_text(size = 25, angle = 0, hjust = 0.5), 
+        legend.position = c(0.8,0.9), legend.title = element_blank(), plot.margin = margin(1,1,1,1, "cm")) + 
   scale_fill_manual(values = group_col)
 
 pdf(file = paste0(plotpath,"Fig1_A.pdf"),
@@ -80,7 +80,7 @@ immune.cohorts[immune.cohorts$cohort == "EMPTY2",1] <- "Pediatric"
 #get medians for each cohort
 for(i in 1:nrow(immune.cohorts)){
   immune.cohorts$median_immunereads[i]<-median(estimate_ped_pdx$percread[estimate_ped_pdx$cohort == immune.cohorts$cohort[i]])
-  }
+}
 
 #just to order cohorts
 tmp <- immune.cohorts[which(immune.cohorts$group == "Pediatric"),]
@@ -227,26 +227,26 @@ cancer_IC_mat[is.na(cancer_IC_mat)] <- 0
 
 col_fun= colorRamp2(c(0, 100), c("white", "red"))
 hm1D = Heatmap(cancer_IC_mat,
-                    #titles and names   
-                    name = "% cancer",   
-                    show_row_names = TRUE,
-                    show_column_names = TRUE,     
-                    #clusters and orders  
-                    cluster_columns = FALSE,
-                    cluster_rows = FALSE,
-                    show_column_dend = TRUE,
-                    #aesthestics
-                    row_names_side = "left",
-                    col = col_fun,
-                    column_names_rot = 45,
-                    column_names_gp = gpar(fontsize = 10),
-                    row_names_gp = gpar(fontsize = 10),
-                    height = unit(nrow(cancer_IC_mat), "cm"),
-                    width = unit(ncol(cancer_IC_mat), "cm"),
-                    column_title_gp = gpar(fontsize = 10),
-                    column_title = NULL,
-                    row_title = NULL,
-                    show_heatmap_legend = TRUE)
+               #titles and names   
+               name = "% cancer",   
+               show_row_names = TRUE,
+               show_column_names = TRUE,     
+               #clusters and orders  
+               cluster_columns = FALSE,
+               cluster_rows = FALSE,
+               show_column_dend = TRUE,
+               #aesthestics
+               row_names_side = "left",
+               col = col_fun,
+               column_names_rot = 45,
+               column_names_gp = gpar(fontsize = 10),
+               row_names_gp = gpar(fontsize = 10),
+               height = unit(nrow(cancer_IC_mat), "cm"),
+               width = unit(ncol(cancer_IC_mat), "cm"),
+               column_title_gp = gpar(fontsize = 10),
+               column_title = NULL,
+               row_title = NULL,
+               show_heatmap_legend = TRUE)
 
 pdf(paste0(plotpath,"Fig1_D.pdf"),
     width = 10, height = 10)
@@ -255,6 +255,59 @@ dev.off()
 
 ###############
 # Figure 1E
+###############
+tab <- as.data.frame(table(metadata_IC_genesets$CRI_cluster), stringsAsFactors = F)
+tab <- tab[order(tab$Freq, decreasing = F),]
+cri_IC_mat <- matrix(nrow = 6, ncol = 4,
+                     dimnames = list(tab$Var1,c("Pediatric Inflamed", "Myeloid Predominant", 
+                                                "Immune Neutral", "Immune Excluded")))
+for(i in 1:nrow(cri_IC_mat)){
+  
+  mycancer <- metadata_IC_genesets[ metadata_IC_genesets$CRI_cluster == rownames(cri_IC_mat)[i],]    
+  freq_tab <- as.data.frame(table(mycancer$immune_cluster), stringsAsFactors = F)
+  freq_tab$perc <- freq_tab$Freq/sum(freq_tab$Freq)    
+  
+  cri_IC_mat[i, freq_tab$Var1] <- freq_tab$perc *100
+}
+cri_IC_mat[is.na(cri_IC_mat)] <- 0
+col_fun= colorRamp2(c(0, 100), c("white", "red"))
+
+cri_hm = Heatmap(cri_IC_mat,
+                 #titles and names   
+                 name = "% CRI-iAtlas cluster",   
+                 show_row_names = TRUE,
+                 show_column_names = TRUE,     
+                 #clusters and orders  
+                 cluster_columns = FALSE,
+                 cluster_rows = FALSE,
+                 show_column_dend = TRUE,
+                 #aesthestics
+                 row_names_side = "left",
+                 col = col_fun,
+                 column_names_rot = 45,                 
+                 column_names_gp = gpar(fontsize = 15),
+                 row_names_gp = gpar(fontsize = 15),
+                 height = unit(nrow(cri_IC_mat), "cm"),
+                 width = unit(ncol(cri_IC_mat), "cm"),
+                 column_title_gp = gpar(fontsize = 15),
+                 column_title = NULL,
+                 row_title = NULL,
+                 show_heatmap_legend = TRUE)
+
+ha = rowAnnotation(
+  `cohort size` = anno_barplot(tab$Freq, bar_width = 1, 
+                               gp = gpar(col = "white", fill = "#4d4d4d"), 
+                               border = FALSE, 
+                               axis_param = list(gp = gpar(fontsize=15), at = c(0, 100,250,500), labels_rot = 45),
+                               width = unit(4, "cm")), 
+  show_annotation_name = FALSE)
+
+pdf(paste0(plotpath, "Fig1_E.pdf"), width = 10, height = 10)
+cri_hm + ha
+dev.off()
+
+###############
+# Figure 1F
 ###############
 
 load(file = file.path(datapath,"HE_manifest.RData"))
@@ -279,13 +332,13 @@ heplot <- ggplot(data = HE_manifest,
   
   labs(y = "Average TIL score") + ggtitle(~underline("H&E TIL score (n = 355)"))
 
-pdf(paste0(plotpath,"Fig1_E.pdf"),
+pdf(paste0(plotpath,"Fig1_F.pdf"),
     width = 10, height = 12)
 print(heplot)
 dev.off()
 
 ###############
-# Figure 1F
+# Figure 1G
 ###############
 
 load(file = paste0(datapath,"metadata_IC.RData"))
@@ -309,17 +362,19 @@ epnp_c <- subgroupcount_IC.fx(metadata_IC, "EPN")
 epnp_f <- subgroupfreq_IC.fx(metadata_IC, "EPN")
 
 #combine barplots
-allc <- plot_grid(atrtp_c + ggtitle("ATRT"), nblp_c + ggtitle("NBL"), mbp_c + ggtitle("MB"),
-                  hggp_c + ggtitle("pedHGG"), lggp_c  + ggtitle("pedLGG"), epnp_c  + ggtitle("EPN"), ncol = 6, nrow =1, align = "h", label_size = 20)
-#stacked barplots
-allf <- plot_grid(atrtp_f, nblp_f, mbp_f, hggp_f, lggp_f, epnp_f, ncol = 6, nrow = 1, align = "h", label_size = 20)
+c_ls = list(atrtp_c + ggtitle(expression(~underline("ATRT"))), 
+            nblp_c+ ggtitle(expression(~underline("NBL"))), 
+            mbp_c+ ggtitle(expression(~underline("MB"))), 
+            hggp_c + ggtitle(expression(~underline("pedHGG"))), 
+            lggp_c + ggtitle(expression(~underline("pedLGG"))), 
+            epnp_c + ggtitle(expression(~underline("EPN"))))
+f_ls = list(atrtp_f, nblp_f, mbp_f, hggp_f, lggp_f, epnp_f )
 
 #all together
-fig1f <- plot_grid(allc, allf, nrow = 2, align = "v")
+pdf(paste0(plotpath, "Fig1_G.pdf"),
+    width = 20, height = 10, useDingbats = FALSE)
+wrap_plots(c(c_ls, f_ls), nrow = 2)
 
-pdf(file = paste0(plotpath,"Fig1_F.pdf"),
-    width = 30, height = 10, useDingbats = FALSE)
-fig1f
 dev.off()
 
 ###############

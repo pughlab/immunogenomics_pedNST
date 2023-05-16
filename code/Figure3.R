@@ -101,7 +101,7 @@ coag <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_COAGU
 label.df <- data.frame(x = c(1.2,1.2), y = c(2.3,1.3))
 coag <- coag + 
   geom_text(data = label.df,aes(x = x, y = y), label = c("*", "***"), size = 15) +
-  labs(title = "Coagulation\n(n = 47)") + 
+  labs(title = "Coagulation\n(n = 47/138)") + 
   theme(plot.margin = unit(c(1,0,0,0), "cm"), axis.text.y = element_blank(),
         axis.title.x = element_blank()) +
   scale_x_continuous(labels = scales::label_number(accuracy = 1))
@@ -109,7 +109,7 @@ coag <- coag +
 emt <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_EPITHELIAL_MESENCHYMAL_TRANSITION")
 label.df <- data.frame(x = c(1.2,1.2), y = c(1.3,2.3))
 emt <- emt + geom_text(data = label.df,aes(x = x, y = y), label = c("***", "**"), size = 15) +
-  labs(title = "EMT\n(n = 27)") + 
+  labs(title = "EMT\n(n = 27/200)") + 
   theme(plot.margin = unit(c(1,0,0,0), "cm"), axis.text.y = element_blank(),
         axis.title.x = element_blank()) +
   scale_x_continuous(breaks = c(-1,0,1),labels = scales::label_number(accuracy = 1), limits = c(-1.5,1.5))
@@ -117,7 +117,7 @@ emt <- emt + geom_text(data = label.df,aes(x = x, y = y), label = c("***", "**")
 angio <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_ANGIOGENESIS")
 label.df <- data.frame(x = c(1.2,1.2), y = c(1.3,2.3))
 angio <- angio + geom_text(data = label.df,aes(x = x, y = y), label = c("***", "*"), size = 15) +
-  labs(title = "Angiogenesis\n(n = 7)") + 
+  labs(title = "Angiogenesis\n(n = 7/36)") + 
   theme(plot.margin = unit(c(1,0,0,0), "cm"), axis.text.y = element_blank(),
         axis.title.x = element_blank()) +
   scale_x_continuous(breaks = c(-1,0,1),labels = scales::label_number(accuracy = 1))
@@ -125,14 +125,14 @@ angio <- angio + geom_text(data = label.df,aes(x = x, y = y), label = c("***", "
 ifng <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_INTERFERON_GAMMA_RESPONSE")
 label.df <- data.frame(x = c(1.2,1.2), y = c(1.3,2.3))
 ifng <- ifng + geom_text(data = label.df,aes(x = x, y = y), label = "***", size = 15) +
-  labs(title = "IFN-gamma\n(n = 100)") + 
+  labs(title = "IFN-gamma\n(n = 100/200)") + 
   theme(plot.margin = unit(c(1,0,0,0), "cm"), axis.title.x = element_blank()) +
   scale_x_continuous(breaks = c(-1,0,1),labels = scales::label_number(accuracy = 1))
 
 ifna <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_INTERFERON_ALPHA_RESPONSE")
 label.df <- data.frame(x = c(1.2,1.2), y = c(1.3,2.3))
 ifna <- ifna + geom_text(data = label.df,aes(x = x, y = y), label = "***", size = 15) +
-  labs(title = "IFN-alpha\n(n = 56)") + 
+  labs(title = "IFN-alpha\n(n = 56/97)") + 
   theme(plot.margin = unit(c(1,0,0,0), "cm"), axis.text.y = element_blank(),
         axis.title.x = element_blank()) +
   scale_x_continuous(breaks = c(-1,0,1),labels = scales::label_number(accuracy = 1))
@@ -140,7 +140,7 @@ ifna <- ifna + geom_text(data = label.df,aes(x = x, y = y), label = "***", size 
 inflam <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_INFLAMMATORY_RESPONSE")
 label.df <- data.frame(x = c(1.2,1.2), y = c(1.3,2.3))
 inflam <- inflam + geom_text(data = label.df,aes(x = x, y = y), label = "***", size = 15) +
-  labs(title = "Inflammatory\n(n = 54)") + 
+  labs(title = "Inflammatory\n(n = 54/200)") + 
   theme(plot.margin = unit(c(1,0,0,0), "cm"), axis.text.y = element_blank(),
         axis.title.x = element_blank()) +
   scale_x_continuous(breaks = c(-1,0,1),labels = scales::label_number(accuracy = 1), limits = c(-1.5,1.5))
@@ -148,7 +148,7 @@ inflam <- inflam + geom_text(data = label.df,aes(x = x, y = y), label = "***", s
 il6 <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_IL6_JAK_STAT3_SIGNALING")
 label.df <- data.frame(x = c(1.2,1.2), y = c(1.3,2.3))
 il6 <- il6 + geom_text(data = label.df, aes(x = x, y = y), label = c("***", "**"), size = 15) +
-  labs(title = "IL6/JAK/STAT3\n(n = 23)") + 
+  labs(title = "IL6/JAK/STAT3\n(n = 23/87)") + 
   theme(plot.margin = unit(c(1,0,0,0), "cm"), axis.text.y = element_blank(),
         axis.title.x = element_blank()) +
   scale_x_continuous(breaks = c(-1,0,1), labels = scales::label_number(accuracy = 1), limits = c(-1.5,1.5))
@@ -156,7 +156,7 @@ il6 <- il6 + geom_text(data = label.df, aes(x = x, y = y), label = c("***", "**"
 complement <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_COMPLEMENT")
 label.df <- data.frame(x = c(1.2,1.2), y = c(1.3,2.3))
 complement <- complement + geom_text(data = label.df,aes(x = x, y = y), label = "***", size = 15) +
-  labs(title = "Complement\n(n = 123)") + 
+  labs(title = "Complement\n(n = 123/200)") + 
   theme(plot.margin = unit(c(1,0,0,0), "cm"), axis.text.y = element_blank(),
         axis.title.x = element_blank()) +
   scale_x_continuous(breaks = c(-1,0,1),labels = scales::label_number(accuracy = 1), limits = c(-1.5,1.5))
@@ -164,7 +164,7 @@ complement <- complement + geom_text(data = label.df,aes(x = x, y = y), label = 
 tnfa <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_TNFA_SIGNALING_VIA_NFKB")
 label.df <- data.frame(x = c(1.2,1.2), y = c(1.3,2.3))
 tnfa <- tnfa + geom_text(data = label.df,aes(x = x, y = y), label = "***", size = 15) +
-  labs(title = "TNFa\n(n = 51)") + 
+  labs(title = "TNFa\n(n = 51/200)") + 
   theme(plot.margin = unit(c(1,0,0,0), "cm"), axis.text.y = element_blank(),
         axis.title.x = element_blank()) +
   scale_x_continuous(breaks = c(-1,0,1),labels = scales::label_number(accuracy = 1), limits = c(-1.5,1.5))
@@ -172,7 +172,7 @@ tnfa <- tnfa + geom_text(data = label.df,aes(x = x, y = y), label = "***", size 
 allograft <- hallmark_IC_stats_ridge(proteomics, metadata_IC_proteom, "HALLMARK_ALLOGRAFT_REJECTION")
 label.df <- data.frame(x = c(1,1), y = c(1.3,2.3))
 allograft <- allograft + geom_text(data = label.df,aes(x = x, y = y), label = "***", size = 15) +
-  labs(title = "Allograft rejection\n(n = 72)") + 
+  labs(title = "Allograft rejection\n(n = 72/200)") + 
   theme(plot.margin = unit(c(1,0,0,0), "cm"), axis.text.y = element_blank(),
         axis.title.x = element_blank()) +
   scale_x_continuous(breaks = c(-1,0,1),labels = scales::label_number(accuracy = 1))
@@ -222,7 +222,7 @@ C4_volcano <- volcano_DEG_plot(genetable, "C4-Others", 1.5, 0.1) +
   geom_vline(xintercept = c(-1.5, 1.5), linetype="dashed", color = "black")
 
 fig3c <- plot_grid(C1_volcano, C2_volcano, C3_volcano, C4_volcano,
-                          ncol = 4, nrow =1, align = "h")
+                   ncol = 4, nrow =1, align = "h")
 
 pdf(paste0(plotpath,"Fig3_C.pdf"), width = 50, height = 15, useDingbats = FALSE)
 fig3c
