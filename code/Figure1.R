@@ -225,6 +225,20 @@ for(i in 1:nrow(cancer_IC_mat)){
 #convert to 0 if NA
 cancer_IC_mat[is.na(cancer_IC_mat)] <- 0
 
+ha = rowAnnotation(`cohort size` = anno_barplot(tab$Freq, bar_width = 1,
+                                                gp = gpar(col = "white", fill = "#4d4d4d"), 
+                                                border = FALSE,
+                                                axis_param = list(at = c(0, 100, 200, 300), labels_rot = 45, gp = gpar(fontsize = 20)),
+                                                width = unit(3, "cm")), 
+                   show_annotation_name = FALSE)
+
+ha_1 = HeatmapAnnotation(`immune size` = anno_barplot( as.matrix(table(metadata_IC_genesets$immune_cluster)),  bar_width = 1,
+                                                       gp = gpar(col = "white", fill = "#4d4d4d"), 
+                                                       border = FALSE,
+                                                       axis_param = list(at = c(0, 100,200,300), labels_rot = 45, gp = gpar(fontsize = 20)),
+                                                       height = unit(3, "cm")), 
+                         show_annotation_name = FALSE)
+
 col_fun= colorRamp2(c(0, 100), c("white", "red"))
 hm1D = Heatmap(cancer_IC_mat,
                #titles and names   
@@ -246,7 +260,9 @@ hm1D = Heatmap(cancer_IC_mat,
                column_title_gp = gpar(fontsize = 10),
                column_title = NULL,
                row_title = NULL,
-               show_heatmap_legend = TRUE)
+               show_heatmap_legend = TRUE,
+               right_annotation = ha,
+               top_annotation = ha_1,)
 
 pdf(paste0(plotpath,"Fig1_D.pdf"),
     width = 10, height = 10)
