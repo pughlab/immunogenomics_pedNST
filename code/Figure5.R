@@ -248,9 +248,6 @@ mytab_melted <- melt(mytab[,c(1,3:9)])
 mytab_melted$variable <- factor(mytab_melted$variable,
                                 levels = c("IGHG1", "IGHG2", "IGHG3", "IGHG4", "IGHA1", "IGHA2", "IGHM"))
 
-#some tests
-pairwise.t.test(mytab$IGHG1, mytab$immune_cluster, "none", paired=FALSE, pool.sd=TRUE)
-pairwise.t.test(mytab$IGHG3, mytab$immune_cluster, "none", paired=FALSE, pool.sd=TRUE)
 
 fig5e <- ggplot(data = mytab_melted, aes(x = variable, y = value, fill = immune_cluster)) + 
   geom_boxplot(outlier.color = NA, position = "dodge") + 
@@ -298,7 +295,6 @@ giniplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = gini)) +
         plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none") +
   scale_color_manual(values = cluster_col) +
   labs(y = paste0("gini index (Ig)")) +
-  geom_signif(annotation="*",y_position= 1.2, xmin= 0.9, xmax=1.1, textsize = 10, vjust = 0.5) + #bonferroni adjusted p
   geom_signif(y_position = 1.2, xmin = 1, xmax = 4, annotation = "*",
               textsize = 15, vjust = 0.5) +
   ggtitle(expression(~underline("NBL (n = 113)"))) +
