@@ -76,6 +76,9 @@ dev.off()
 # nbl
 nbl <- metadata_TRB[ metadata_TRB$cohort == "NBL",]
 
+pairwise.t.test(log10(nbl$estimated_Shannon), nbl$immune_cluster,
+                p.adjust = "bonferroni", pool.sd = FALSE)
+
 trbplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = estimated_Shannon)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 4, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5, aes(color = immune_cluster)) +
@@ -89,21 +92,17 @@ trbplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = estimated_Shannon)
   scale_color_manual(values = cluster_col) +
   scale_y_continuous(trans = "log10", 
                      labels = scales::label_number(accuracy = 1)) + annotation_logticks(sides = "l") +
-  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Desert")), y_position = 5.5,
-              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
-  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Neutral")), y_position = 4.5,
-              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
-  geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Neutral")), y_position = 4,
-              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
-  geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Desert")), y_position = 5,
-              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
-  geom_signif(comparisons = list(c("Immune Neutral", "Immune Desert")), y_position = 4,
-              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
+  geom_signif(y_position = c(4.8,5.2,4.4,4), xmin = c(1,1,2,3), xmax = c(3,4,4,4), #bonferroni adjusted p
+              annotation = c("*", "***", "***", "*"), textsize = 15, vjust = 0.5) +
+  
   labs(y = paste0("Estimated\nShannon diversity")) +
   ggtitle(expression(~underline("NBL (n = 116)"))) 
 
 # cns
 cns <- metadata_TRB[ metadata_TRB$cohort != "NBL",]
+
+pairwise.t.test(log10(cns$estimated_Shannon), cns$immune_cluster, #Ignore immune desert because there are too few datapoints
+                p.adjust = "bonferroni", pool.sd = FALSE)
 
 # make color transparent if number of data point are <=2
 mytab <- table(cns$immune_cluster) 
@@ -124,12 +123,8 @@ trbplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = estimated_Shannon)
   scale_y_continuous(trans = "log10", 
                      labels = scales::label_number(accuracy = 1)) + annotation_logticks(sides = "l") +
   labs(y = paste0("Estimated\nShannon diversity")) +
-  geom_signif(comparisons = list(c("Pediatric Inflamed", "Myeloid Predominant")), y_position = 4.3,
-              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
-  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Neutral")), y_position = 5.5,
-              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
-  geom_signif(comparisons = list(c("Myeloid Predominant", "Immune Neutral")), y_position = 4.8,
-              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
+  geom_signif(y_position = c(3.1,3.5,3.1), xmin = c(1,1,2), xmax = c(2,3,3), #bonferroni adjusted p
+              annotation = c("***", "***", "***"), textsize = 15, vjust = 0.5) +
   ggtitle(expression(~underline("pedCNS (n = 245)"))) 
 
 fig5c <- plot_grid(trbplot_nbl, trbplot_cns, nrow = 1, align = "h", ncol = 2)
@@ -287,6 +282,10 @@ load(file = paste0(datapath, "metadata_IGrep.RData"))
 
 #nbl
 nbl <- metadata_igrep[ metadata_igrep$cohort == "NBL",]
+
+pairwise.t.test(nbl$gini, nbl$immune_cluster, 
+                p.adjust = "bonferroni", pool.sd = FALSE)
+
 giniplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = gini)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 3, alpha = 0.7, shape = 16) + 
   geom_boxplot(outlier.shape = NA, fill = NA, lwd = 1.5,aes(color = immune_cluster)) +
@@ -299,13 +298,16 @@ giniplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = gini)) +
         plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none") +
   scale_color_manual(values = cluster_col) +
   labs(y = paste0("gini index (Ig)")) +
-  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Desert")), y_position = 1.2,
-              map_signif_level=FALSE, textsize = 12, test = "t.test", vjust = 0.5) +
+  geom_signif(annotation="*",y_position= 1.2, xmin= 0.9, xmax=1.1, textsize = 10, vjust = 0.5) + #bonferroni adjusted p
+  geom_signif(y_position = 1.2, xmin = 1, xmax = 4, annotation = "*",
+              textsize = 15, vjust = 0.5) +
   ggtitle(expression(~underline("NBL (n = 113)"))) +
   scale_y_continuous(expand = c(0.1, 0))
 
 #cns
 cns <- metadata_igrep[ metadata_igrep$cohort != "NBL",]
+pairwise.t.test(cns$gini, cns$immune_cluster, 
+                p.adjust = "bonferroni", pool.sd = FALSE)
 
 giniplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = gini)) + 
   geom_beeswarm(color = "grey", size = 5, cex = 2, alpha = 0.7, shape = 16) + 
@@ -319,10 +321,8 @@ giniplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = gini)) +
         plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none") +
   scale_color_manual(values = cluster_col) +
   labs(y = paste0("gini index (Ig)")) +
-  geom_signif(comparisons = list(c("Pediatric Inflamed", "Myeloid Predominant")), y_position = 1,
-              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
-  geom_signif(comparisons = list(c("Pediatric Inflamed", "Immune Neutral")), y_position = 1.1,
-              map_signif_level=TRUE, textsize = 12, test = "t.test", vjust = 0.5) +
+  geom_signif(y_position = c(1, 1.1), xmin = c(1,1), xmax = c(2,3), annotation = c("*", "**"), #bonferroni adjusted p
+              textsize = 15, vjust = 0.5) +
   ggtitle(expression(~underline("pedCNS (n = 248)"))) +
   scale_y_continuous(expand = c(0.1, 0))
 
