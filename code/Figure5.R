@@ -90,7 +90,7 @@ trbplot_nbl <- ggplot(data = nbl, aes(x = immune_cluster, y = estimated_Shannon)
   theme(plot.title = element_text(size = 30, hjust = 0.5),
         legend.position = "none") +
   scale_color_manual(values = cluster_col) +
-  scale_y_continuous(trans = "log10", 
+  scale_y_continuous(trans = "log10", breaks = c(10,100, 1000, 10000, 100000), limits = c(1,200000),
                      labels = scales::label_number(accuracy = 1)) + annotation_logticks(sides = "l") +
   geom_signif(y_position = c(4.8,5.2,4.4,4), xmin = c(1,1,2,3), xmax = c(3,4,4,4), #bonferroni adjusted p
               annotation = c("*", "***", "***", "*"), textsize = 15, vjust = 0.5) +
@@ -120,7 +120,7 @@ trbplot_cns <- ggplot(data = cns, aes(x = immune_cluster, y = estimated_Shannon)
         axis.text.y = element_text(size = 30)) +
   theme(plot.title = element_text(size = 30, hjust = 0.5), legend.position = "none") +
   scale_color_manual(values = clustcol) +
-  scale_y_continuous(trans = "log10", 
+  scale_y_continuous(trans = "log10", breaks = c(10,100, 1000, 10000, 100000), limits = c(1,200000),
                      labels = scales::label_number(accuracy = 1)) + annotation_logticks(sides = "l") +
   labs(y = paste0("Estimated\nShannon diversity")) +
   geom_signif(y_position = c(3.1,3.5,3.1), xmin = c(1,1,2), xmax = c(2,3,3), #bonferroni adjusted p
