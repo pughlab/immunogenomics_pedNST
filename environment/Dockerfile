@@ -1,4 +1,4 @@
-# hash:sha256:433a2c2a3e021bf40cfcf334ce0d0d8cde00371885bc90fa23496c1a35dd57b6
+# hash:sha256:bad301c6eadb462d615833684135e68e1fff6d60e1956987c1fc77f08c4166d5
 FROM registry.codeocean.com/codeocean/r-studio:1.4.1106-r4.0.5-ubuntu18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -25,6 +25,7 @@ RUN Rscript -e 'remotes::install_version("BiocManager", "1.30.20")' \
     && Rscript -e 'remotes::install_version("ggrepel", "0.9.3")' \
     && Rscript -e 'remotes::install_version("ggridges", "0.5.3")' \
     && Rscript -e 'remotes::install_version("ggsignif", "0.6.4")' \
+    && Rscript -e 'remotes::install_version("ggstatsplot")' \
     && Rscript -e 'remotes::install_version("ggtext", "0.1.2")' \
     && Rscript -e 'remotes::install_version("grid")' \
     && Rscript -e 'remotes::install_version("gridExtra", "2.3")' \
