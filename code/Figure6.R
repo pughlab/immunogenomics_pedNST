@@ -269,6 +269,93 @@ dev.off()
 # Figure 6D
 ###############
 
+load(file = paste0(datapath, "metadata_inflamed.RData"))
+load(file = paste0(datapath, "tpm_inflamed_selectgenes.RData"))
+
+# heatmap median of select genes different in TG2 vs TG5
+mygenes <- c("HLA-A", "HLA-B", "HLA-C", "FOS","FOSB", "JUN", "JUNB", "ATF3",
+             "CXCL8", "CXCL1", "IL6","CD86", "CD69", "TLR2", "TLR4",
+             "CD22", "CD19", "BTLA", "FCER2", "FCRL2")
+# bind tpms and metadata
+metadata_inflamed_genes <- cbind(metadata_inflamed, tpm_inflamed_selectgenes[ metadata_inflamed$sample_id, mygenes])
+# order
+metadata_inflamed_genes <- metadata_inflamed_genes[order(metadata_inflamed_genes$Tcellgroups, metadata_inflamed_genes$cohort),]
+
+# make a matrix sample x gene
+genmat <- matrix( ncol = nrow(vars_inflamed_genes), nrow = length(mygenes))
+rownames(genmat) <- mygenes
+colnames(genmat) <- rownames(metadata_inflamed_genes)
+
+for(g in 1:nrow(genmat)){
+# for each gene, get median for each cancer
+  gen <- rownames(genmat)[g]
+  mymed <- lapply(unique(vars_inflamed_genes$cohort), function(x){
+    median(vars_inflamed_genes[[gen]][ vars_inflamed_genes$cohort == x])})
+  names(mymed) <- unique(vars_inflamed_genes$cohort)
+  
+# center gene tpm for each sample using median of the corresponding cancer
+  myscaledgene <- vector(mode = "numeric", length = ncol(genmat))
+  names(myscaledgene) <- rownames(vars_inflamed_genes)
+  for(i in 1:nrow(vars_inflamed_genes)){
+    myscaledgene[i] <- vars_inflamed_genes[[gen]][i]-unlist(mymed[vars_inflamed_genes$cohort[i]])  
+  }
+  # fill the matrix with centered gene tpm
+  genmat[g,] <- myscaledgene[colnames(genmat)]
+}
+
+# heatmap median of gene tpms centered with median of each cancer type
+medmat <- matrix( ncol = 2, nrow = length(mygenes))
+rownames(medmat) <- mygenes
+colnames(medmat) <- c("TG2", "TG5")
+
+TG2s <- vars_inflamed_genes$sample_id[ vars_inflamed_genes$Tcellgroups == "TG2"]
+TG5s <- vars_inflamed_genes$sample_id[ vars_inflamed_genes$Tcellgroups == "TG5"]
+
+for(g in 1:nrow(medmat)){
+  gen <- rownames(medmat)[g]
+  medmat[g, "TG2"] <- median(genmat[gen, TG2s], na.rm = T)
+  medmat[g, "TG5"] <- median(genmat[gen, TG5s], na.rm = T)   
+  }
+
+genegroup <- c(rep("TG5", 15), rep("TG2",5))
+names(genegroup) <- rownames(medmat)
+
+col_fun = colorRamp2(c(-1.5, 0, 1.5), c("blue", "white", "red"))
+med_hm <- Heatmap(t(medmat),
+                  #titles and names   
+                  name = "Median\nnormalized\nexpression",   
+                  show_row_names = TRUE,
+                  show_column_names = TRUE,  
+                  col = col_fun,
+                  #clusters and orders  
+                  cluster_columns = FALSE,
+                  cluster_rows = FALSE,
+                  show_column_dend = FALSE,
+                  #aesthestics
+                  column_names_gp = gpar(fontsize = 20),
+                  row_names_gp = gpar(fontsize = 20),
+                  width = unit(19,"cm"),
+                  height = unit(2, "cm"),
+                  column_title_gp = gpar(fontsize = 20),
+                  row_title_gp = gpar(fontsize = 20),
+                  column_title = " ",
+                  row_title_rot = 90,
+                  column_split = factor(genegroup, levels = c("TG5", "TG2")),  
+                  column_names_rot = 45,
+                  column_gap = unit(0.5, "cm"),
+                  cluster_column_slices = FALSE,
+                  # legends
+                  show_heatmap_legend = TRUE,
+                  heatmap_legend_param = list(col_fun = col_fun, 
+                                              at = c(-1.5,0,1.5),
+                                              labels = c("<-1.5", "0", ">1.5"),
+                                              title = "Median\nnormalized\nexpression")
+                  )
+
+pdf(paste0(plotpath, "Fig_6D.pdf"),
+    width = 10, height = 10)
+draw(med_hm)
+dev.off()
 
 ###############
 # Figure 6E
