@@ -441,38 +441,36 @@ dev.off()
 ###############
 # Figure 6F
 ###############
+load(file = paste0(datapath, "metadata_IC.RData"))
+load(file = paste0(datapath, "metadata_myeloid.RData"))
+load(file = paste0(datapath, "microglia_geneset_norm.RData"))
 
-load(file = paste0(datapath, "TME_clusters/vars_myeloid.RData"))
-load(file = paste0(datapath, "/TME_clusters/microglia_geneset_norm.RData"))
+metadata_microglia <- metadata_myeloid[metadata_myeloid$immune_cluster == "Myeloid Predominant" & 
+                                         metadata_myeloid$cohort != "NBL",]
 
-C2samples_microglia <- metadata_IC$sample_id[metadata_IC$immune_cluster == "Myeloid Predominant" &
-                                               metadata_IC$cohort != "NBL"]
+# order
+metadata_microglia <- metadata_microglia[order(metadata_microglia$Myeloidgroups, metadata_microglia$cohort),]
 
-tpms_microglia <- tpms_myeloid[,C2samples_microglia]
-vars_microglia <- vars_myeloid[C2samples_microglia,]
-
-
-vars_microglia <- vars_microglia[order(vars_microglia$Myeloidgroups, vars_microglia$cohort),]
-
-myMcluster <- as.character(vars_microglia$Myeloidgroups)
-names(myMcluster) <- rownames(vars_microglia)
+myMcluster <- as.character(metadata_microglia$Myeloidgroups)
+names(myMcluster) <- rownames(metadata_microglia)
 class_mat <- t(as.matrix(myMcluster))
 rownames(class_mat) <- "Cluster"
 
-mycohort <- vars_microglia$cohort
-names(mycohort) <- rownames(vars_microglia)
+mycohort <- metadata_microglia$cohort
+names(mycohort) <- rownames(metadata_microglia)
 
 mycohorts <- t(as.matrix(mycohort))
 rownames(mycohorts) <- "Cohort"
 cohorts_hm <- cohorts_hm.fx(mycohorts)
 
 #Order
-microglia_cells_mat <- microglia_geneset_norm[,rownames(vars_microglia)]
-
+microglia_cells_mat <- microglia_geneset_norm[,rownames(metadata_microglia)]
 
 Mha <- HeatmapAnnotation(`Myeloid group` = anno_block(labels = c("MG1", "MG2","MG3", "MG4", "MG5"),
                                                       labels_gp = gpar(fontsize = 10),
                                                       show_name = T, height = unit(1,"cm")))
+
+summary(as.vector(microglia_cells_mat))
 
 col_fun = colorRamp2(c(-2, 0, 2), c("blue", "white", "red"))
 Microglia_hm <- Heatmap(microglia_cells_mat,
@@ -485,34 +483,182 @@ Microglia_hm <- Heatmap(microglia_cells_mat,
                         cluster_columns = FALSE,
                         cluster_rows = FALSE,
                         show_column_dend = FALSE,
+                        # annotation
+                        top_annotation = Mha,
                         #aesthestics
                         column_names_gp = gpar(fontsize = 5),
                         row_names_gp = gpar(fontsize = 20),
                         height = unit(2, "cm"),
                         column_title_gp = gpar(fontsize = 20),
                         row_title_gp = gpar(fontsize = 20),
-                        show_heatmap_legend = FALSE,
                         row_title = "Microglia",   
                         row_title_rot = 90,
                         column_split = myMcluster, 
                         column_title = "Myeloid-driven - pedCNS (n = 234)",                  
                         cluster_row_slices = FALSE,
-                        top_annotation = Mha)
+                        # legends
+                        show_heatmap_legend = TRUE,
+                        heatmap_legend_param = list(col_fun = col_fun, 
+                                                    at = c(-2,0,2),
+                                                    labels = c("<-2", "0", ">2"),
+                                                    title = "Cell-type\nz-score")
+                        )
 
-pdf(file = paste0(plotpath, "CC_microgliacells.pdf"),
+pdf(file = paste0(plotpath, "Fig_6F.pdf"),
     width = 8, height = 10)
 Microglia_hm %v% cohorts_hm
 dev.off()
 
-summary(as.vector(microglia_cells_mat))
-
-
-
-
-
 ###############
 # Figure 6G
 ###############
+
+load(file = paste0(datapath, "TME_clusters/vars_myeloid.RData"))
+
+load(file = paste0(paste0(datapath, "DEG/mg1vsmg5.RData")))
+load(file = paste0(paste0(datapath, "DEG/mg1vsmg3.RData")))
+load(file = paste0(paste0(datapath, "DEG/mg3vsmg5.RData")))
+
+mg3vsmg5["FCGR1A",]
+
+load(paste0(datapath, "exp_mat/IPD_ExprSet_log2_combat.RData"))
+vars <- pData(IPD_Set_log2_combat)
+tpms <- exprs(IPD_Set_log2_combat)
+
+tpms_myeloid <- tpms[, vars_myeloid$sample_id]
+
+mg1vsmg3$gene <- rownames(mg1vsmg3)
+
+colnames(mg1vsmg5)<-paste0("mg1vsmg5_", colnames(mg1vsmg5))
+colnames(mg1vsmg3) <- paste0("mg1vsmg3_", colnames(mg1vsmg3))
+
+mg1 <- cbind(mg1vsmg5, mg1vsmg3[rownames(mg1vsmg5),])
+
+mg1 <- mg1[ !is.na(mg1$mg1vsmg3_padj),]
+
+load(file = paste0(datapath, "TME_clusters/myeloid_celltype_genes_list.RData"))
+
+dim(mg1)
+
+mg1 <- mg1[!rownames(mg1) %in% unlist(myeloid_celltype_genes_list),]
+
+dim(mg1)
+
+myset <- mg1[ mg1$mg1vsmg5_log2FoldChange > 2 &
+                mg1$mg1vsmg5_padj < 0.05 &
+                mg1$mg1vsmg3_log2FoldChange > 2 &
+                mg1$mg1vsmg3_padj < 0.05,]
+
+myset <- myset[order(myset$mg1vsmg5_log2FoldChange, myset$mg1vsmg3_log2FoldChange),]
+
+#colnames(mg1vsmg5)<-paste0("mg1vsmg5_", colnames(mg1vsmg5))
+colnames(mg3vsmg5) <- paste0("mg3vsmg5_", colnames(mg3vsmg5))
+
+mg3 <- cbind(mg3vsmg5, mg1vsmg3[rownames(mg3vsmg5),])
+
+mg3 <- mg3[ !is.na(mg3$mg1vsmg3_padj),]
+
+dim(mg3)
+
+mg3 <- mg3[!rownames(mg3) %in% unlist(myeloid_celltype_genes_list),]
+
+myset <- mg3[ mg3$mg3vsmg5_log2FoldChange > 0 &
+                mg3$mg3vsmg5_padj < 0.05 &
+                mg3$mg1vsmg3_log2FoldChange < -1 &
+                mg3$mg1vsmg3_padj < 0.05,]
+
+myset <- myset[ order(myset$mg3vsmg5_log2FoldChange, decreasing = T),]
+
+(myset)
+
+mygenes <- c("FGFBP2","TSPAN8", "PENK", "ANGPTL7", "F2RL2", "COL14A1", "COL23A1", "IL34",
+             "ESM1", "APLN",  "ALCAM", "EDIL3", "POSTN","ITGAV", "ITGB3", "HRH1","HNMT")
+
+tpms_myeloid_t <- t(tpms_myeloid)
+
+vars_myeloid_genes <- cbind(vars_myeloid, tpms_myeloid_t[ vars_myeloid$sample_id, mygenes])
+
+vars_myeloid_genes <- vars_myeloid_genes[order(vars_myeloid_genes$Myeloidgroups, vars_myeloid_genes$cohort),]
+
+genmat <- matrix( ncol = nrow(vars_myeloid_genes), nrow = length(mygenes))
+rownames(genmat) <- mygenes
+colnames(genmat) <- rownames(vars_myeloid_genes)
+
+for(g in 1:nrow(genmat)){
+  gen <- rownames(genmat)[g]
+  mymed <- lapply(unique(vars_myeloid_genes$cohort), function(x){
+    median(vars_myeloid_genes[[gen]][ vars_myeloid_genes$cohort == x])}) 
+  
+  names(mymed) <- unique(vars_myeloid_genes$cohort)
+  names(mymad) <- unique(vars_myeloid_genes$cohort)
+  #print(mymed)
+  myscaledgene <- vector(mode = "numeric", length = ncol(genmat))
+  names(myscaledgene) <- rownames(vars_myeloid_genes)
+  
+  for(i in 1:nrow(vars_myeloid_genes)){
+    myscaledgene[i] <-  (vars_myeloid_genes[[gen]][i]-unlist(mymed[vars_myeloid_genes$cohort[i]]))  
+    
+  }
+  genmat[g,] <- myscaledgene[colnames(genmat)]
+}
+
+medmat <- matrix( ncol = 3, nrow = length(mygenes))
+rownames(medmat) <- mygenes
+colnames(medmat) <- c("MG1","MG3", "MG5")
+
+MG1s <- vars_myeloid_genes$sample_id[ vars_myeloid_genes$Myeloidgroups == "MG1"]
+MG3s <- vars_myeloid_genes$sample_id[ vars_myeloid_genes$Myeloidgroups == "MG3"]
+MG5s <- vars_myeloid_genes$sample_id[ vars_myeloid_genes$Myeloidgroups == "MG5"]
+
+for(g in 1:nrow(medmat)){
+  gen <- rownames(medmat)[g]
+  medmat[g, "MG1"] <- median(genmat[gen, MG1s], na.rm = T)
+  medmat[g, "MG3"] <- median(genmat[gen, MG3s], na.rm = T)
+  medmat[g, "MG5"] <- median(genmat[gen, MG5s], na.rm = T) 
+}
+
+genegroup <- c(rep("MG1", 8), rep("MG3",9))
+
+names(genegroup) <- rownames(medmat)
+
+medmat
+
+col_fun = colorRamp2(c(-1, 0, 1), c("blue", "white", "red"))
+med_hm <- Heatmap(t(medmat),
+                  #titles and names   
+                  name = "Median\nnormalized\nexpression",   
+                  show_row_names = TRUE,
+                  show_column_names = TRUE,  
+                  col = col_fun,
+                  #clusters and orders  
+                  cluster_columns = FALSE,
+                  cluster_rows = FALSE,
+                  show_column_dend = FALSE,
+                  #aesthestics
+                  column_names_gp = gpar(fontsize = 20),
+                  row_names_gp = gpar(fontsize = 20),
+                  width = unit(17,"cm"),
+                  height = unit(3, "cm"),
+                  column_title_gp = gpar(fontsize = 20),
+                  row_title_gp = gpar(fontsize = 20),
+                  column_title = " ",
+                  row_title_rot = 90,
+                  column_split = factor(genegroup, levels = c("MG1", "MG3", "MG5")),  
+                  column_names_rot = 45,
+                  column_gap = unit(0.5, "cm"),
+                  cluster_column_slices = FALSE,
+                  # legends
+                  show_heatmap_legend = TRUE,
+                  heatmap_legend_param = list(col_fun = col_fun, 
+                                               at = c(-1,0,1),
+                                               labels = c("<-1", "0", ">1"),
+                                               title = "Median\nnormalized\nexpression")
+                  )
+
+pdf(paste0(plotpath, "Fig_6G.pdf"),
+    width = 10, height = 10)
+draw(med_hm)
+dev.off()
 
 ###############
 # Compile in one file
