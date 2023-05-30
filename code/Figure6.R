@@ -62,7 +62,7 @@ Tcellsgroups <- factor(Tcellsgroups, levels = c("Naive","NME1+","ISG+", "Tm", "T
 
 # annotation for TGs
 Tha <- HeatmapAnnotation(`T-cell group` = anno_block(labels = c("TG1", "TG2","TG3", "TG4", "TG5"),
-                                                     labels_gp = gpar(fontsize = 15),
+                                                     labels_gp = gpar(fontsize = 10),
                                                      show_name = T, height = unit(1,"cm")))
 
 col_fun = colorRamp2(c(-2, 0, 2), c("blue", "white", "red"))
@@ -77,10 +77,10 @@ Tcellscells_hm <- Heatmap(cells_mat,
                           cluster_rows = FALSE,
                           show_column_dend = FALSE,
                           #aesthestics
-                          row_names_gp = gpar(fontsize = 20),
+                          row_names_gp = gpar(fontsize = 10),
                           row_names_max_width = unit(10,"cm"),
-                          column_title_gp = gpar(fontsize = 25),
-                          row_title_gp = gpar(fontsize = 25),
+                          column_title_gp = gpar(fontsize = 15),
+                          row_title_gp = gpar(fontsize = 15),
                           column_title = "Pediatric Inflamed (n = 90)",
                           row_title_rot = 0,
                           column_split = myTcluster,                       
@@ -96,7 +96,7 @@ Tcellscells_hm <- Heatmap(cells_mat,
                                                       title = "Cell-type\nz-score")
                           )
 
-pdf(file = paste0(plotpath, "CC_Tcells_inflamed.pdf"),
+pdf(file = paste0(plotpath, "Fig6A.pdf"),
     width = 12, height = 18)
 Tcellscells_hm %v% cohorts_hm
 dev.off()
