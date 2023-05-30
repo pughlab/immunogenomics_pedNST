@@ -16,25 +16,25 @@ plotpath <- "/results/"
 # Figure 6A
 ###############
 
-load(file = paste0(datapath, "geneset_Tcells_norm.RData"))
-load(file = paste0(datapath, "vars_inflamed.RData"))
+load(file = paste0(datapath, "gsea_Tcellgroups_norm.RData"))
+load(file = paste0(datapath, "metadata_inflamed.RData"))
 
 #order
-vars_inflamed <- vars_inflamed[order(vars_inflamed$Tcellgroups, vars_inflamed$cohort),]
+metadata_inflamed <- metadata_inflamed[order(metadata_inflamed$Tcellgroups, metadata_inflamed$cohort),]
 
-myTcluster <- as.character(vars_inflamed$Tcellgroups)
-names(myTcluster) <- rownames(vars_inflamed)
+myTcluster <- as.character(metadata_inflamed$Tcellgroups)
+names(myTcluster) <- rownames(metadata_inflamed)
 class_mat <- t(as.matrix(myTcluster))
 rownames(class_mat) <- "Cluster"
 
-mycohort <- vars_inflamed$cohort
-names(mycohort) <- vars_inflamed$sample_id
+mycohort <- metadata_inflamed$cohort
+names(mycohort) <- metadata_inflamed$sample_id
 
 mycohorts <- t(as.matrix(mycohort))
 rownames(mycohorts) <- "Cohort"
 cohorts_hm <- cohorts_hm.fx(mycohorts)
 
-cells_mat <- geneset_Tcells_norm[,rownames(vars_inflamed)]
+cells_mat <- gsea_Tcellgroups_norm[,rownames(metadata_inflamed)]
 
 #Group signatures
 Tcellclusters <- c('CD4.c01(Tn)','CD4.c03(ADSL+ Tn)','CD4.c04(IL7R- Tn)', 'CD8.c01(Tn)', #Naive
@@ -105,9 +105,165 @@ dev.off()
 # Figure 6B
 ###############
 
+load(file = paste0(datapath, "metadata_TRB.RData"))
+load(file = paste0(datapath, "metadata_inflamed.RData"))
+
+# Div plot
+TG_TRB_inflamed <- merge(metadata_TRB, metadata_inflamed[, c("sample_id", "Tcellgroups")], by = "sample_id")
+
+pairwise.t.test(log10(TG_TRB_inflamed$estimated_Shannon), 
+                TG_TRB_inflamed$Tcellgroups,
+                p.adjust = "bonferroni", pool.sd = F)
+
+TG_div_plot <- ggplot(data = TG_TRB_inflamed,
+                      aes(x = Tcellgroups, y = estimated_Shannon)) + 
+  geom_beeswarm(cex = 3,aes(color = cohort), size = 5) + 
+  geom_boxplot(width = 0.5, outlier.colour = NA, fill = NA) + 
+  myaxis + myplot +
+  scale_color_manual(values = cohort_col) +
+  scale_y_continuous(trans = "log10") + annotation_logticks(sides = "l") +
+  theme(legend.position = "none", 
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(size = 30),
+        axis.text.x = element_text(size = 30),
+        axis.text.y = element_text(size = 30),
+        plot.title = element_text(size = 30, hjust = 0.5)) + 
+  geom_signif(y_position = c(4.3, 4.5, 4.7), 
+              xmin = c(1,2,2), xmax = c(2,4,5), annotation = c("**", "**", "**"),
+              textsize = 15, vjust = 0.5) +
+  labs(y = "Estimated\nShannon diversity") + ggtitle(~underline("Pediatric Inflamed (n = 82)"))
+
+
+pdf(file = paste0(plotpath,"Fig6_B1.pdf"),
+    width = 8, 
+    height = 10,
+    useDingbats = FALSE)
+TG_div_plot
+dev.off()
+
+# TMB
+load(file = paste0(datapath,"pedNST_TMB.RData"))
+load(file = paste0(datapath,"metadata_IC.RData"))
+
+ped_tmb_IC <- merge(ped_tmb, metadata_IC[,c("sample_id", "immune_cluster")], by = "sample_id")
+TG_TMB_inflamed <- merge(ped_tmb_IC, metadata_inflamed[, c("sample_id", "Tcellgroups")], by = "sample_id")
+
+dim(TG_TMB_inflamed)
+
+TG_tmb_plot <- ggplot(data = TG_TMB_inflamed,
+                      aes(x = Tcellgroups, y = mutpermb)) + 
+  geom_beeswarm(cex = 1.8,aes(color = cohort), size = 5) + 
+  geom_boxplot(width = 0.5, outlier.colour = NA, fill = NA) + 
+  myaxis + myplot +
+  scale_color_manual(values = cohort_col) +
+  scale_y_continuous(trans = "log10") + annotation_logticks(sides = "l") +
+  theme(legend.position = "none", 
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(size = 30),
+        axis.text.x = element_text(size = 30),
+        axis.text.y = element_text(size = 30),
+        plot.title = element_text(size = 30, hjust = 0.5)) + 
+  geom_signif(comparisons = list(c("TG1", "TG2")), y_position = 1, map_signif_level=TRUE,
+              textsize = 15, test = "wilcox.test", vjust = 0.5) +
+  labs(y = "SNV + Indel / Mb") + ggtitle(~underline("Pediatric Inflamed (n = 72)"))
+
+pdf(file = paste0(plotpath,"Fig6_B2.pdf"),
+    width = 8, 
+    height = 10,
+    useDingbats = FALSE)
+TG_tmb_plot
+dev.off()
+
 ###############
 # Figure 6C
 ###############
+load(file = paste0(datapath, "metadata_inflamed.RData"))
+load(file = paste0(datapath, "geneset_cc_normalized.RData"))
+
+geneset_cc_norm_t <- t(geneset_cc_norm)
+metadata_inflamed_genesets <- cbind(metadata_inflamed, geneset_cc_norm_t[ vars_inflamed$sample_id,])
+
+vars_inflamed_genesets$Tcellgroups <- as.factor(vars_inflamed_genesets$Tcellgroups)
+
+# bases plots
+dc <- celltype_baseplot.fx(vars_inflamed_genesets, "DC", "Dendritic cells")
+tcells <- celltype_baseplot.fx(vars_inflamed_genesets, "T_cells", "T cells")
+bcells <- celltype_baseplot.fx(vars_inflamed_genesets, "B_cells", "B cells")
+nkcells <- celltype_baseplot.fx(vars_inflamed_genesets, "NK_cells", "NK cells")
+granuls <- celltype_baseplot.fx(vars_inflamed_genesets, "Granulocytes", "Granulocytes")
+mono <- celltype_baseplot.fx(vars_inflamed_genesets, "Monocytes", "Monocytes")
+
+# for each celltype, do pairwise_comparison and save as DF
+DC_sig <- pairwise_comparisons(vars_inflamed_genesets, Tcellgroups, DC, p.adjust.method = "bonferroni") %>%
+  dplyr::mutate(groups = purrr::pmap(.l = list(group1, group2), .f = c)) %>%
+  dplyr::arrange(group1)
+DC_sig <- signif_column(DC_sig, p.value)
+
+T_sig <- pairwise_comparisons(vars_inflamed_genesets, Tcellgroups, T_cells, p.adjust.method = "bonferroni") %>%
+  dplyr::mutate(groups = purrr::pmap(.l = list(group1, group2), .f = c)) %>%
+  dplyr::arrange(group1)
+T_sig <- signif_column(T_sig, p.value)
+
+B_sig <- pairwise_comparisons(vars_inflamed_genesets, Tcellgroups, B_cells, p.adjust.method = "bonferroni") %>%
+  dplyr::mutate(groups = purrr::pmap(.l = list(group1, group2), .f = c)) %>%
+  dplyr::arrange(group1)
+B_sig <- signif_column(B_sig, p.value)
+
+NK_sig <- pairwise_comparisons(vars_inflamed_genesets, Tcellgroups, NK_cells, p.adjust.method = "bonferroni") %>%
+  dplyr::mutate(groups = purrr::pmap(.l = list(group1, group2), .f = c)) %>%
+  dplyr::arrange(group1)
+NK_sig <- signif_column(NK_sig, p.value)
+
+gran_sig <- pairwise_comparisons(vars_inflamed_genesets, Tcellgroups, Granulocytes, p.adjust.method = "bonferroni") %>%
+  dplyr::mutate(groups = purrr::pmap(.l = list(group1, group2), .f = c)) %>%
+  dplyr::arrange(group1)
+gran_sig <- signif_column(gran_sig, p.value)
+
+mono_sig <- pairwise_comparisons(vars_inflamed_genesets, Tcellgroups, Monocytes, p.adjust.method = "bonferroni") %>%
+  dplyr::mutate(groups = purrr::pmap(.l = list(group1, group2), .f = c)) %>%
+  dplyr::arrange(group1)
+mono_sig <- signif_column(mono_sig, p.value)
+
+# add to base plots
+dc <- dc + geom_signif(comparisons= DC_sig$groups, map_signif_level = TRUE, textsize = 7, vjust = 0.5, 
+                       annotations= DC_sig$significance, na.rm = TRUE, step_increase = 0.1, y_position = 1.2, test = NULL, tip_length = 0.01)
+
+nkcells <- nkcells + geom_signif(comparisons= NK_sig$groups, map_signif_level = TRUE, textsize = 7, vjust = 0.5, annotations= NK_sig$significance, 
+                                 na.rm = TRUE, y_position =c(4,0,0,6,0,4.5,5,0,5.5,0), test = NULL, tip_length = 0.01) + scale_y_continuous(expand = c(0.1,0.1))
+
+tcells <- tcells + geom_signif(comparisons= T_sig$groups, map_signif_level = TRUE, textsize = 7, vjust = 0.5, annotations= T_sig$significance, 
+                               na.rm = TRUE, y_position = 6.6, test = NULL, tip_length = 0.01) + scale_y_continuous(expand = c(0.1,0.1))
+
+bcells <- bcells + geom_signif(comparisons= B_sig$groups, map_signif_level = TRUE, textsize = 7, vjust = 0.5, annotations= B_sig$significance, 
+                               na.rm = TRUE, y_position = 4.3, test = NULL, tip_length = 0.01) + scale_y_continuous(expand = c(0.1,0.1))
+
+mono <- mono + geom_signif(comparisons= mono_sig$groups, map_signif_level = TRUE, textsize = 7, vjust = 0.5, annotations= mono_sig$significance, 
+                           na.rm = TRUE, y_position = c(0,0,0,7.5,0,6,7,5.5,6.5,0), test = NULL, tip_length = 0.01) + scale_y_continuous(expand = c(0.1,0.1))
+
+granuls <- granuls + geom_signif(comparisons= gran_sig$groups, map_signif_level = TRUE, textsize = 7, vjust = 0.5, annotations= gran_sig$significance, 
+                                 na.rm = TRUE, test = NULL, y_position = c(6.1,0,0,0,0,6.6,7,0,0,0), tip_length = 0.01) #+ scale_y_continuous(expand = c(0.1,0.1))
+
+
+# bind all
+all <- cowplot::plot_grid(tcells + theme(axis.text.x = element_blank()), 
+                          mono + theme(axis.text.x = element_blank()), 
+                          bcells + theme(axis.text.x = element_blank()), 
+                          granuls + theme(axis.text.x = element_blank()),
+                          nkcells, 
+                          dc, 
+                          ncol = 2, nrow = 3, align = "vh")
+
+#save with ggarrange
+pdf(file = paste0(plotpath,"Fig6_C.pdf"),
+    width = 10, height = 12, useDingbats = FALSE)
+grid.draw(ggarrange(plots=list(
+  tcells + theme(axis.text.x = element_blank())+ ggtitle(~underline("Lymphoid cells")) ,
+  mono + theme(axis.text.x = element_blank())+ ggtitle(~underline("Myeloid cells")) ,
+  bcells + theme(axis.text.x = element_blank()) ,
+  granuls + theme(axis.text.x = element_blank()) ,
+  nkcells,
+  dc), align = "hv"))
+dev.off()
 
 ###############
 # Figure 6D
@@ -198,6 +354,74 @@ dev.off()
 ###############
 # Figure 6F
 ###############
+
+load(file = paste0(datapath, "TME_clusters/vars_myeloid.RData"))
+load(file = paste0(datapath, "/TME_clusters/microglia_geneset_norm.RData"))
+
+C2samples_microglia <- metadata_IC$sample_id[metadata_IC$immune_cluster == "Myeloid Predominant" &
+                                               metadata_IC$cohort != "NBL"]
+
+tpms_microglia <- tpms_myeloid[,C2samples_microglia]
+vars_microglia <- vars_myeloid[C2samples_microglia,]
+
+
+vars_microglia <- vars_microglia[order(vars_microglia$Myeloidgroups, vars_microglia$cohort),]
+
+myMcluster <- as.character(vars_microglia$Myeloidgroups)
+names(myMcluster) <- rownames(vars_microglia)
+class_mat <- t(as.matrix(myMcluster))
+rownames(class_mat) <- "Cluster"
+
+mycohort <- vars_microglia$cohort
+names(mycohort) <- rownames(vars_microglia)
+
+mycohorts <- t(as.matrix(mycohort))
+rownames(mycohorts) <- "Cohort"
+cohorts_hm <- cohorts_hm.fx(mycohorts)
+
+#Order
+microglia_cells_mat <- microglia_geneset_norm[,rownames(vars_microglia)]
+
+
+Mha <- HeatmapAnnotation(`Myeloid group` = anno_block(labels = c("MG1", "MG2","MG3", "MG4", "MG5"),
+                                                      labels_gp = gpar(fontsize = 10),
+                                                      show_name = T, height = unit(1,"cm")))
+
+col_fun = colorRamp2(c(-2, 0, 2), c("blue", "white", "red"))
+Microglia_hm <- Heatmap(microglia_cells_mat,
+                        #titles and names   
+                        name = "Cell-types z score",   
+                        show_row_names = TRUE,
+                        show_column_names = TRUE,  
+                        col = col_fun,
+                        #clusters and orders  
+                        cluster_columns = FALSE,
+                        cluster_rows = FALSE,
+                        show_column_dend = FALSE,
+                        #aesthestics
+                        column_names_gp = gpar(fontsize = 5),
+                        row_names_gp = gpar(fontsize = 20),
+                        height = unit(2, "cm"),
+                        column_title_gp = gpar(fontsize = 20),
+                        row_title_gp = gpar(fontsize = 20),
+                        show_heatmap_legend = FALSE,
+                        row_title = "Microglia",   
+                        row_title_rot = 90,
+                        column_split = myMcluster, 
+                        column_title = "Myeloid-driven - pedCNS (n = 234)",                  
+                        cluster_row_slices = FALSE,
+                        top_annotation = Mha)
+
+pdf(file = paste0(plotpath, "CC_microgliacells.pdf"),
+    width = 8, height = 10)
+Microglia_hm %v% cohorts_hm
+dev.off()
+
+summary(as.vector(microglia_cells_mat))
+
+
+
+
 
 ###############
 # Figure 6G
