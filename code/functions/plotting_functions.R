@@ -306,3 +306,36 @@ TCRcap_rnaplot.fx <- function(dta, met_rna, met_cap, labels, x,y){
   return(cap_rna_plot)
 }
 
+
+# baseplot for celltypes - Fig6C
+celltype_baseplot.fx <- function(df, celltype, ylab){
+  
+  myp <- ggplot(data = df, aes( x = Tcellgroups, y = eval(as.name(celltype)))) + 
+    geom_beeswarm(cex = 1.8,aes(color = cohort), size = 3) + 
+    geom_boxplot(width = 0.5, outlier.colour = NA, fill = NA) + 
+    myaxis + myplot +
+    scale_color_manual(values = cohort_col) +
+    theme(legend.position = "none", 
+          axis.title.x = element_blank(),
+          axis.title.y = element_text(size = 25),
+          axis.text.x = element_text(size = 25),
+          axis.text.y = element_text(size = 25),
+          plot.title = element_text(size = 25, hjust = 0.5)) + labs(y = ylab)
+  return(myp)
+}
+
+# add new significance column based on standard APA guidelines
+# from author of ggsignif github
+signif_column <- function(data, p) {
+  dplyr::mutate(
+    data,
+    significance = dplyr::case_when(
+      {{ p }} >= 0.050 ~ NA,
+      {{ p }} < 0.050 & {{ p }} >= 0.010 ~ "*",
+      {{ p }} < 0.010 & {{ p }} >= 0.001 ~ "**",
+      {{ p }} < 0.001 ~ "***"
+    )
+  )
+}
+
+
