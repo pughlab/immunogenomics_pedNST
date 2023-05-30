@@ -1,4 +1,4 @@
-# hash:sha256:bad301c6eadb462d615833684135e68e1fff6d60e1956987c1fc77f08c4166d5
+# hash:sha256:0ddb323e9a8e6282398ebe78c5d4891f85a2999c86da775b4d8fa15adcc17775
 FROM registry.codeocean.com/codeocean/r-studio:1.4.1106-r4.0.5-ubuntu18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -45,7 +45,7 @@ RUN Rscript -e 'options(warn=2); BiocManager::install(c( \
         "ComplexHeatmap", \
         "patchwork", \
         "qusage" \
-    ))' # Original versions: 2.10.0 1.1.2 2.28.0
+    ))' # Original versions: latest latest latest
 
 COPY postInstall /
 RUN /postInstall
