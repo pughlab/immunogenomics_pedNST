@@ -45,6 +45,7 @@ RUN Rscript -e 'options(warn=2); BiocManager::install(c( \
         "ComplexHeatmap", \
         "patchwork", \
         "qusage" \
+        force = TRUE \
     ))' # Original versions: latest latest latest
 
 COPY postInstall /
