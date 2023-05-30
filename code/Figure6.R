@@ -91,32 +91,127 @@ Tcellscells_hm <- Heatmap(cells_mat,
                           # legends
                           show_heatmap_legend = TRUE,
                           heatmap_legend_param = list(
-                                                      at = c(-2,0,2),
-                                                      labels = c("<-2", "0", ">2"),
-                                                      title = "Cell-type\nz-score")
-                          )
+                            at = c(-2,0,2),
+                            labels = c("<-2", "0", ">2"),
+                            title = "Cell-type\nz-score")
+)
 
-pdf(file = paste0(plotpath, "Fig6A.pdf"),
+pdf(file = paste0(plotpath, "Fig6_A.pdf"),
     width = 12, height = 18)
 Tcellscells_hm %v% cohorts_hm
 dev.off()
-
 
 ###############
 # Figure 6B
 ###############
 
+###############
+# Figure 6C
+###############
 
+###############
+# Figure 6D
+###############
+
+
+###############
+# Figure 6E
+###############
+
+load(file = paste0(datapath, "vars_myeloid.RData"))
+load(file = paste0(datapath, "myeloid_geneset_norm.RData"))
+
+# cohort
+vars_myeloid <- vars_myeloid[order(vars_myeloid$Myeloidgroups, vars_myeloid$cohort),]
+myMcluster <- as.character(vars_myeloid$Myeloidgroups)
+names(myMcluster) <- rownames(vars_myeloid)
+class_mat <- t(as.matrix(myMcluster))
+rownames(class_mat) <- "Cluster"
+mycohort <- vars_myeloid$cohort
+names(mycohort) <- rownames(vars_myeloid)
+
+mycohorts <- t(as.matrix(mycohort))
+rownames(mycohorts) <- "Cohort"
+cohorts_hm <- cohorts_hm.fx(mycohorts)
+
+#Order
+myeloid_cells_mat <- myeloid_geneset_norm[,rownames(vars_myeloid)]
+
+#Some reordering for heatmap
+myeloid_cells_mat <- myeloid_cells_mat[c('hM01_Mast.TPSAB1',
+                                         'hM04_cDC1.BATF3','hM03_cDC2.CD1C','hM02_pDC.LILRA4',
+                                         'hM06_Mono.CD16',
+                                         'hM09_Macro.PLTP','hM10_Macro.IL1B',
+                                         'hM12_TAM.C1QC','hM13_TAM.SPP1'),]
+
+summary(as.vector(myeloid_cells_mat))
+
+#Group signatures
+Myeloidgroups <- c("Mast", rep("DC", 3), "Mono", rep("Mac", 2), rep("TAM", 2))
+names(Myeloidgroups) <- rownames(myeloid_cells_mat)
+
+Myeloidgroups <- factor(Myeloidgroups, levels = c("Mast","DC","Mono","Mac","TAM"))
+
+# annotation
+
+Mha <- HeatmapAnnotation(`Myeloid group` = anno_block(labels = c("MG1", "MG2","MG3", "MG4", "MG5"),
+                                                      labels_gp = gpar(fontsize = 15),
+                                                      show_name = T, height = unit(1,"cm")))                                         
+col_fun = colorRamp2(c(-2, 0, 2), c("blue", "white", "red"))
+Myeloid_hm <- Heatmap(myeloid_cells_mat,
+                      #titles and names   
+                      name = "Cell-types z-score",   
+                      show_row_names = TRUE,
+                      show_column_names = TRUE,  
+                      col = col_fun,
+                      #clusters and orders  
+                      cluster_columns = FALSE,
+                      cluster_rows = FALSE,
+                      show_column_dend = FALSE,
+                      # annotations
+                      top_annotation = Mha,
+                      #aesthestics
+                      column_names_gp = gpar(fontsize = 5),
+                      row_names_gp = gpar(fontsize = 10),
+                      row_names_max_width = unit(8,"cm"),                      
+                      height = unit(9, "cm"),
+                      column_title_gp = gpar(fontsize = 10),
+                      row_title_gp = gpar(fontsize = 10),
+                      row_title_rot = 0,
+                      column_split = myMcluster, 
+                      column_title = "Myeloid Predominant (n = 279)",                  
+                      row_split = Myeloidgroups, 
+                      cluster_row_slices = FALSE,
+                      #legend
+                      show_heatmap_legend = TRUE,
+                      heatmap_legend_param = list(col_fun = col_fun, 
+                                                  at = c(-2,0,2),
+                                                  labels = c("<-2", "0", ">2"),
+                                                  title = "Cell-type\nz-score")
+)
+
+pdf(file = paste0(plotpath, "Fig6_E.pdf"),
+    width = 10, height = 10)
+Myeloid_hm %v% cohorts_hm
+dev.off()
+
+###############
+# Figure 6F
+###############
+
+###############
+# Figure 6G
+###############
 
 ###############
 # Compile in one file
 ###############
 
-# setwd(plotpath)
-# 
-# plotflow:::mergePDF(
-#   in.file = list.files(file.path(plotpath), pattern = "Fig5_", full.names = TRUE),
-#   file="Figure5.pdf"
-# )
-# 
-# do.call(file.remove, list(list.files(plotpath, pattern = "Fig5_", full.names = TRUE)))
+setwd(plotpath)
+
+plotflow:::mergePDF(
+  in.file = list.files(file.path(plotpath), pattern = "Fig6_", full.names = TRUE),
+  file="Figure6.pdf"
+)
+
+do.call(file.remove, list(list.files(plotpath, pattern = "Fig6_", full.names = TRUE)))
